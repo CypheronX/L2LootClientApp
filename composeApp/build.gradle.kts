@@ -36,6 +36,8 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "com.l2loot.MainKt"
+        
+        jvmArgs += listOf("--enable-native-access=ALL-UNNAMED")
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
