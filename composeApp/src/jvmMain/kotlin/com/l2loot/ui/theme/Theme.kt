@@ -4,8 +4,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
+import com.l2loot.design.LocalSpacing
+import com.l2loot.design.Spacing
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -101,10 +104,12 @@ val unspecified_scheme = ColorFamily(
 fun AppTheme(
     content: @Composable() () -> Unit
 ) {
-  MaterialTheme(
-    colorScheme = darkScheme,
-    typography = getAppTypography(),
-    content = content
-  )
+    CompositionLocalProvider(LocalSpacing provides Spacing()) {
+        MaterialTheme(
+            colorScheme = darkScheme,
+            typography = getAppTypography(),
+            content = content
+        )
+    }
 }
 
