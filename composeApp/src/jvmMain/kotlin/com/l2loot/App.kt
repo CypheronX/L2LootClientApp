@@ -3,15 +3,14 @@ package com.l2loot
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
@@ -34,6 +33,8 @@ import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.ColorFilter
+import com.l2loot.design.LocalSpacing
+import com.l2loot.di.initKoin
 
 @Serializable
 object Explore
@@ -63,6 +64,10 @@ fun App() {
     }
 
     val density = LocalDensity.current
+
+    fun isCurrentlyChosen(currentDestination: Int): Boolean {
+        return selectedDestination == currentDestination
+    }
 
     LaunchedEffect(Unit) {
         try {
@@ -97,8 +102,8 @@ fun App() {
                     header = {
                         logoPainter?.let { logo ->
                             Column(
-                                modifier = Modifier.padding(top = 35.dp)
-                                    .padding(horizontal = 10.dp),
+                                modifier = Modifier.padding(top = LocalSpacing.current.space36)
+                                    .padding(horizontal = LocalSpacing.current.space10),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Image(
@@ -114,9 +119,11 @@ fun App() {
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier
                             .fillMaxHeight()
+                            .offset(y = -(LocalSpacing.current.space36))
+
                     ) {
                         NavigationRailItem(
-                            selected = selectedDestination == 0,
+                            selected = isCurrentlyChosen(L2LootScreens.Explore.ordinal),
                             onClick = {
                                 navController.navigate(route = Explore)
                                 selectedDestination = L2LootScreens.Explore.ordinal
@@ -124,25 +131,23 @@ fun App() {
                             icon = {
                                 spoilPainter?.let { spoil ->
                                     Image(painter = spoil, null,
-                                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
+                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                                         modifier = Modifier
                                             .size(24.dp))
                                 }
                             },
-                            label = {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Text("Explore Spoil",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = if (selectedDestination == 0)
-                                            MaterialTheme.colorScheme.secondary else
-                                            MaterialTheme.colorScheme.onSurfaceVariant)
-                                }
-                            },
-                            modifier = Modifier.width(100.dp)
-                                .padding(bottom = 10.dp)
+                            label = { Text("Explore Spoil",
+                                color = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
+                                    MaterialTheme.colorScheme.secondary else
+                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.labelMedium)
+                            }
                         )
+                        Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
                         NavigationRailItem(
-                            selected = selectedDestination == 1,
+                            selected = isCurrentlyChosen(L2LootScreens.Sellable.ordinal),
                             onClick = {
                                 navController.navigate(route = Sellable)
                                 selectedDestination = L2LootScreens.Sellable.ordinal
@@ -150,21 +155,19 @@ fun App() {
                             icon = {
                                 sellablePainter?.let { sellable ->
                                     Image(sellable, null,
-                                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                                         modifier = Modifier
                                             .size(24.dp))
                                 }
                             },
-                            label = {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Text("Sellable",
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = if (selectedDestination == 1)
-                                            MaterialTheme.colorScheme.secondary else
-                                            MaterialTheme.colorScheme.onSurfaceVariant)
-                                }
-                            },
-                            modifier = Modifier.width(100.dp)
+                            label = { Text("Sellable",
+                                color = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                    MaterialTheme.colorScheme.secondary else
+                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.labelMedium)
+                            }
                         )
                     }
                 }
