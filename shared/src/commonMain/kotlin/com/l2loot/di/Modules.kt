@@ -1,11 +1,13 @@
 package com.l2loot.di
 
-import org.koin.core.module.Module
+import com.l2loot.data.MonsterRepository
+import com.l2loot.data.MonsterRepositoryImpl
+import com.l2loot.data.createDatabase
 import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
-//expect val platformModule: Module
-
 val sharedModule = module {
-//    singleOf()
+    single { createDatabase(get()) }
+    singleOf(::MonsterRepositoryImpl) bind MonsterRepository::class
 }

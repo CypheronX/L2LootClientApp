@@ -11,6 +11,7 @@ logback = "1.5.18"
 nav-version = "2.9.0"
 koin = "4.1.1"
 lifecycleViewModel = "2.9.4"
+sqlDelight = "2.1.0"
 
 [libraries]
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
@@ -33,6 +34,8 @@ ktor-serverTestHost = { module = "io.ktor:ktor-server-test-host-jvm", version.re
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "nav-version"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
+sql-delight = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight"}
+
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
@@ -41,3 +44,4 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+sql-delight = { id = "app.cash.sqldelight", version.ref = "sqlDelight"}
