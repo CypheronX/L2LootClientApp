@@ -1,0 +1,16 @@
+
+CREATE TABLE droplist (
+    mob_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    min INTEGER NOT NULL,
+    max INTEGER NOT NULL,
+    chance INTEGER NOT NULL,
+    category INTEGER NOT NULL,
+    PRIMARY KEY (mob_id, item_id),
+    FOREIGN KEY (mob_id) REFERENCES monsters(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES sellable_item(id) ON DELETE CASCADE
+);
+
+CREATE INDEX droplist_mob_id_idx ON droplist(mob_id);
+CREATE INDEX droplist_item_id_idx ON droplist(item_id);
+CREATE INDEX droplist_category_idx ON droplist(category);

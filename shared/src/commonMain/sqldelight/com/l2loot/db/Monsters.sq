@@ -1,0 +1,24 @@
+import kotlin.Boolean;
+
+CREATE TABLE monsters (
+    id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    level INTEGER NOT NULL,
+    exp INTEGER NOT NULL,
+    is_rift INTEGER AS Boolean DEFAULT 0,
+    chronicle TEXT NOT NULL,
+    hp_multiplier TEXT NOT NULL,
+    PRIMARY KEY (id, chronicle)
+);
+
+CREATE INDEX monsters_id_idx ON monsters(id);
+
+selectAll:
+SELECT *
+FROM monsters;
+
+insert:
+INSERT INTO monsters(`id`,`name`,`level`,`exp`,`is_rift`,`chronicle`,`hp_multiplier`) VALUES (18001,'Blood Queen',60,4536,0,'c5','x1');
+INSERT INTO monsters(`id`,`name`,`level`,`exp`,`is_rift`,`chronicle`,`hp_multiplier`) VALUES (18001,'Blood Queen',60,4536,0,'interlude','x1');
+INSERT INTO monsters(`id`,`name`,`level`,`exp`,`is_rift`,`chronicle`,`hp_multiplier`) VALUES (21659,'Otherworldly Invader Soldier',30,1457,1,'c5','x3');
+INSERT INTO monsters(`id`,`name`,`level`,`exp`,`is_rift`,`chronicle`,`hp_multiplier`) VALUES (21659,'Otherworldly Invader Soldier',30,1457,1,'interlude','x3');
