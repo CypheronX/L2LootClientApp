@@ -1,9 +1,9 @@
 package com.l2loot.data
 
 import app.cash.sqldelight.db.SqlDriver
-import com.l2loot.db.L2LootDatabase
+import com.l2loot.L2LootDatabase
 
-interface DriverFactory {
+expect class DriverFactory {
     fun createDriver(): SqlDriver
 }
 

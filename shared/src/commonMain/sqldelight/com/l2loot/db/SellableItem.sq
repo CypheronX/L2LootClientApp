@@ -1,5 +1,0 @@
-
-CREATE TABLE sellable_item (
-    id INTEGER PRIMARY KEY NOT NULL,
-    item_price INTEGER NOT NULL
-);

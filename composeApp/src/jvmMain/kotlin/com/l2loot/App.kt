@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -95,11 +96,12 @@ fun App() {
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
             Scaffold { contentPadding ->
-                NavigationRail(
-                    modifier = Modifier
-                        .padding(contentPadding),
-                    containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                    header = {
+                Row(
+                    modifier = Modifier.fillMaxSize().padding(contentPadding)
+                ) {
+                    NavigationRail(
+                        containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                        header = {
                         logoPainter?.let { logo ->
                             Column(
                                 modifier = Modifier.padding(top = LocalSpacing.current.space36)
@@ -171,9 +173,14 @@ fun App() {
                         )
                     }
                 }
-                NavHost(navController = navController, startDestination = Explore) {
-                    composable<Explore> { ExploreScreen() }
-                    composable<Sellable> { SellableScreen() }
+                    NavHost(
+                        navController = navController,
+                        startDestination = Explore,
+                        modifier = Modifier.weight(1f).fillMaxHeight()
+                    ) {
+                        composable<Explore> { ExploreScreen() }
+                        composable<Sellable> { SellableScreen() }
+                    }
                 }
             }
 
