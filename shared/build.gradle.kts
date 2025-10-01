@@ -1,6 +1,19 @@
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.sql.delight)
+}
+
+sqldelight {
+    databases {
+        create("L2LootDatabase") {
+            packageName.set("com.l2loot")
+            deriveSchemaFromMigrations.set(false)
+            verifyMigrations.set(true)
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+        }
+    }
 }
 
 kotlin {
@@ -8,7 +21,6 @@ kotlin {
     
     sourceSets {
         commonMain.dependencies {
-            implementation(project.dependencies.platform(libs.koin.bom))
             api(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
@@ -18,6 +30,8 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
+        jvmMain.dependencies {
+            implementation(libs.sql.delight)
+        }
     }
 }
-

@@ -1,0 +1,217 @@
+[
+	{
+		"item_id" : 57,
+		"name" : "Adena",
+		"price" : 1
+	},
+	{
+		"item_id" : 729,
+		"name" : "Scroll: Enchant Weapon (Grade A)",
+		"price" : 1800000
+	},
+	{
+		"item_id" : 730,
+		"name" : "Scroll: Enchant Armor (Grade A)",
+		"price" : 240000
+	},
+	{
+		"item_id" : 947,
+		"name" : "Scroll: Enchant Weapon (Grade B)",
+		"price" : 500000
+	},
+	{
+		"item_id" : 948,
+		"name" : "Scroll: Enchant Armor (Grade B)",
+		"price" : 80000
+	},
+	{
+		"item_id" : 951,
+		"name" : "Scroll: Enchant Weapon (Grade C)",
+		"price" : 110000
+	},
+	{
+		"item_id" : 952,
+		"name" : "Scroll: Enchant Armor (Grade C)",
+		"price" : 15000
+	},
+	{
+		"item_id" : 955,
+		"name" : "Scroll: Enchant Weapon (Grade D)",
+		"price" : 50000
+	},
+	{
+		"item_id" : 956,
+		"name" : "Scroll: Enchant Armor (Grade D)",
+		"price" : 6000
+	},
+	{
+		"item_id" : 959,
+		"name" : "Scroll: Enchant Weapon (Grade S)",
+		"price" : 5000000
+	},
+	{
+		"item_id" : 960,
+		"name" : "Scroll: Enchant Armor (Grade S)",
+		"price" : 500000
+	},
+	{
+		"item_id" : 1864,
+		"name" : "Stem",
+		"price" : 100
+	},
+	{
+		"item_id" : 1865,
+		"name" : "Varnish",
+		"price" : 200
+	},
+	{
+		"item_id" : 1866,
+		"name" : "Suede",
+		"price" : 300
+	},
+	{
+		"item_id" : 1867,
+		"name" : "Animal Skin",
+		"price" : 150
+	},
+	{
+		"item_id" : 1868,
+		"name" : "Thread",
+		"price" : 100
+	},
+	{
+		"item_id" : 1869,
+		"name" : "Iron Ore",
+		"price" : 200
+	},
+	{
+		"item_id" : 1870,
+		"name" : "Coal",
+		"price" : 200
+	},
+	{
+		"item_id" : 1871,
+		"name" : "Charcoal",
+		"price" : 200
+	},
+	{
+		"item_id" : 1872,
+		"name" : "Animal Bone",
+		"price" : 150
+	},
+	{
+		"item_id" : 1873,
+		"name" : "Silver Nugget",
+		"price" : 500
+	},
+	{
+		"item_id" : 1874,
+		"name" : "Oriharukon Ore",
+		"price" : 3000
+	},
+	{
+		"item_id" : 1875,
+		"name" : "Stone of Purity",
+		"price" : 3000
+	},
+	{
+		"item_id" : 1876,
+		"name" : "Mithril Ore",
+		"price" : 1000
+	},
+	{
+		"item_id" : 1877,
+		"name" : "Adamantite Nugget",
+		"price" : 5000
+	},
+	{
+		"item_id" : 1878,
+		"name" : "Braided Hemp",
+		"price" : 500
+	},
+	{
+		"item_id" : 1879,
+		"name" : "Cokes",
+		"price" : 1200
+	},
+	{
+		"item_id" : 1880,
+		"name" : "Steel",
+		"price" : 2000
+	},
+	{
+		"item_id" : 1881,
+		"name" : "Coarse Bone Powder",
+		"price" : 1500
+	},
+	{
+		"item_id" : 1882,
+		"name" : "Leather",
+		"price" : 900
+	},
+	{
+		"item_id" : 1884,
+		"name" : "Cord",
+		"price" : 325
+	},
+	{
+		"item_id" : 1885,
+		"name" : "High Grade Suede",
+		"price" : 2400
+	},
+	{
+		"item_id" : 1894,
+		"name" : "Crafted Leather",
+		"price" : 5700
+	},
+	{
+		"item_id" : 1895,
+		"name" : "Metallic Fiber",
+		"price" : 700
+	},
+	{
+		"item_id" : 4039,
+		"name" : "Mold Glue",
+		"price" : 6000
+	},
+	{
+		"item_id" : 4040,
+		"name" : "Mold Lubricant",
+		"price" : 10000
+	},
+	{
+		"item_id" : 4041,
+		"name" : "Mold Hardener",
+		"price" : 23000
+	},
+	{
+		"item_id" : 4042,
+		"name" : "Enria",
+		"price" : 12000
+	},
+	{
+		"item_id" : 4043,
+		"name" : "Asofe",
+		"price" : 6000
+	},
+	{
+		"item_id" : 4044,
+		"name" : "Thons",
+		"price" : 6000
+	},
+	{
+		"item_id" : 5220,
+		"name" : "Metal Hardener",
+		"price" : 5000
+	},
+	{
+		"item_id" : 5549,
+		"name" : "Metallic Thread",
+		"price" : 2000
+	},
+	{
+		"item_id" : 5550,
+		"name" : "Durable Metal Plate",
+		"price" : 15000
+	}
+]

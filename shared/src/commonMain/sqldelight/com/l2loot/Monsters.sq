@@ -1,0 +1,31 @@
+import kotlin.Boolean;
+
+
+CREATE TABLE monsters (
+    id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    level INTEGER NOT NULL,
+    exp INTEGER NOT NULL,
+    is_rift INTEGER AS Boolean DEFAULT 0,
+    chronicle TEXT NOT NULL,
+    hp_multiplier REAL NOT NULL,
+    PRIMARY KEY (id, chronicle)
+);
+
+CREATE INDEX monsters_id_idx ON monsters(id);
+
+selectAll:
+SELECT *
+FROM monsters;
+
+getMonstersByLevelRange:
+SELECT *
+FROM monsters
+WHERE level >= :minLevel
+  AND level <= :maxLevel
+  AND chronicle = :chronicle
+LIMIT :limit;
+
+insert:
+INSERT INTO monsters (id, name, level, exp, is_rift, chronicle, hp_multiplier)
+VALUES (?, ?, ?, ?, ?, ?, ?);
