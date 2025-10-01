@@ -1,0 +1,36 @@
+CREATE TABLE droplist (
+    mob_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    min INTEGER NOT NULL,
+    max INTEGER NOT NULL,
+    chance INTEGER NOT NULL,
+    category INTEGER NOT NULL,
+    chronicle TEXT NOT NULL,
+    PRIMARY KEY (mob_id, item_id),
+    FOREIGN KEY (mob_id) REFERENCES monsters(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+CREATE INDEX droplist_mob_id_idx ON droplist(mob_id);
+CREATE INDEX droplist_item_id_idx ON droplist(item_id);
+CREATE INDEX droplist_category_idx ON droplist(category);
+
+getDropsWithPrices:
+SELECT
+    d.mob_id,
+    d.item_id,
+    d.min,
+    d.max,
+    d.chance,
+    d.category,
+    si.name AS item_name,
+    si.item_price
+FROM droplist d
+INNER JOIN sellable_item si ON d.item_id = si.item_id
+WHERE d.mob_id IN :mobIds
+  AND d.chronicle = :chronicle;
+
+insert:
+INSERT OR IGNORE INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
