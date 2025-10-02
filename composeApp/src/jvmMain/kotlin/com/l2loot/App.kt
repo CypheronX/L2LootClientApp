@@ -8,9 +8,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
@@ -35,7 +39,9 @@ import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.ColorFilter
 import com.l2loot.design.LocalSpacing
-import com.l2loot.di.initKoin
+import org.koin.compose.koinInject
+import com.l2loot.data.LoadDbDataRepository
+import kotlinx.coroutines.delay
 
 @Serializable
 object Explore
@@ -53,6 +59,16 @@ fun App() {
     val navController = rememberNavController()
     val startDestination = L2LootScreens.Explore
     var selectedDestination by remember { mutableStateOf(startDestination.ordinal) }
+
+    val loadDbDataRepository: LoadDbDataRepository = koinInject()
+    
+    val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
+    val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
+    
+    var startupProgress by remember { mutableStateOf(0f) }
+    var isStartupComplete by remember { mutableStateOf(false) }
+    
+    println("🔍 Debug - isDatabaseEmpty: $isDatabaseEmpty, isStartupComplete: $isStartupComplete")
 
     var spoilPainter by remember {
         mutableStateOf<Painter?>(null)
@@ -90,100 +106,153 @@ fun App() {
         }
     }
 
+    LaunchedEffect(Unit) {
+        if (!isDatabaseEmpty) {
+            for (i in 0..100 step 5) {
+                startupProgress = i / 100f
+                delay(10)
+            }
+            startupProgress = 1f
+            delay(100)
+            isStartupComplete = true
+        }
+    }
+    
+    LaunchedEffect(Unit) {
+        if (isDatabaseEmpty) {
+            isStartupComplete = true
+            loadDbDataRepository.load()
+        }
+    }
+
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
             Scaffold { contentPadding ->
-                Row(
-                    modifier = Modifier.fillMaxSize().padding(contentPadding)
-                ) {
-                    NavigationRail(
-                        containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                        header = {
-                        logoPainter?.let { logo ->
+                val isLoading = !isStartupComplete || (isDatabaseEmpty && dbLoadProgress < 1.0f)
+                val currentProgress = if (!isStartupComplete) startupProgress else dbLoadProgress
+                
+                if (isLoading) {
+                    Column(
+                        modifier = Modifier.fillMaxSize().padding(contentPadding),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        LinearProgressIndicator(
+                            progress = { currentProgress },
+                            gapSize = LocalSpacing.current.none,
+                            drawStopIndicator = { },
+                            modifier = Modifier.padding(horizontal = 32.dp)
+                                .fillMaxWidth(fraction = 0.6f)
+                        )
+                        Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
+                        Text(
+                            text = if (!isStartupComplete) "Starting..." else "Loading database...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                } else {
+                    Row(
+                        modifier = Modifier.fillMaxSize().padding(contentPadding)
+                    ) {
+                        NavigationRail(
+                            containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                            header = {
+                                logoPainter?.let { logo ->
+                                    Column(
+                                        modifier = Modifier.padding(top = LocalSpacing.current.space36)
+                                            .padding(horizontal = LocalSpacing.current.space10),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Image(
+                                            painter = logo,
+                                            contentDescription = null,
+                                            modifier = Modifier.size(95.dp, 37.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        ) {
                             Column(
-                                modifier = Modifier.padding(top = LocalSpacing.current.space36)
-                                    .padding(horizontal = LocalSpacing.current.space10),
-                                horizontalAlignment = Alignment.CenterHorizontally
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier
+                                    .fillMaxHeight()
+                                    .offset(y = -(LocalSpacing.current.space36))
+
                             ) {
-                                Image(
-                                    painter = logo, 
-                                    contentDescription = null,
-                                    modifier = Modifier.size(95.dp, 37.dp)
+                                NavigationRailItem(
+                                    selected = isCurrentlyChosen(L2LootScreens.Explore.ordinal),
+                                    onClick = {
+                                        navController.navigate(route = Explore)
+                                        selectedDestination = L2LootScreens.Explore.ordinal
+                                    },
+                                    icon = {
+                                        spoilPainter?.let { spoil ->
+                                            Image(
+                                                painter = spoil, null,
+                                                colorFilter = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
+                                                    ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                    ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                            )
+                                        }
+                                    },
+                                    label = {
+                                        Text(
+                                            "Explore Spoil",
+                                            color = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
+                                                MaterialTheme.colorScheme.secondary else
+                                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                            style = MaterialTheme.typography.labelMedium
+                                        )
+                                    }
+                                )
+                                Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
+                                NavigationRailItem(
+                                    selected = isCurrentlyChosen(L2LootScreens.Sellable.ordinal),
+                                    onClick = {
+                                        navController.navigate(route = Sellable)
+                                        selectedDestination = L2LootScreens.Sellable.ordinal
+                                    },
+                                    icon = {
+                                        sellablePainter?.let { sellable ->
+                                            Image(
+                                                sellable, null,
+                                                colorFilter = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                                    ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                    ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                modifier = Modifier
+                                                    .size(24.dp)
+                                            )
+                                        }
+                                    },
+                                    label = {
+                                        Text(
+                                            "Sellable",
+                                            color = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                                MaterialTheme.colorScheme.secondary else
+                                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                            style = MaterialTheme.typography.labelMedium
+                                        )
+                                    }
                                 )
                             }
                         }
-                    }
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .offset(y = -(LocalSpacing.current.space36))
-
-                    ) {
-                        NavigationRailItem(
-                            selected = isCurrentlyChosen(L2LootScreens.Explore.ordinal),
-                            onClick = {
-                                navController.navigate(route = Explore)
-                                selectedDestination = L2LootScreens.Explore.ordinal
-                            },
-                            icon = {
-                                spoilPainter?.let { spoil ->
-                                    Image(painter = spoil, null,
-                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
-                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
-                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-                                        modifier = Modifier
-                                            .size(24.dp))
-                                }
-                            },
-                            label = { Text("Explore Spoil",
-                                color = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
-                                    MaterialTheme.colorScheme.secondary else
-                                        MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.labelMedium)
-                            }
-                        )
-                        Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
-                        NavigationRailItem(
-                            selected = isCurrentlyChosen(L2LootScreens.Sellable.ordinal),
-                            onClick = {
-                                navController.navigate(route = Sellable)
-                                selectedDestination = L2LootScreens.Sellable.ordinal
-                            },
-                            icon = {
-                                sellablePainter?.let { sellable ->
-                                    Image(sellable, null,
-                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
-                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
-                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-                                        modifier = Modifier
-                                            .size(24.dp))
-                                }
-                            },
-                            label = { Text("Sellable",
-                                color = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
-                                    MaterialTheme.colorScheme.secondary else
-                                        MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.labelMedium)
-                            }
-                        )
-                    }
-                }
-                    NavHost(
-                        navController = navController,
-                        startDestination = Explore,
-                        modifier = Modifier.weight(1f).fillMaxHeight()
-                    ) {
-                        composable<Explore> { ExploreScreen() }
-                        composable<Sellable> { SellableScreen() }
+                        NavHost(
+                            navController = navController,
+                            startDestination = Explore,
+                            modifier = Modifier.weight(1f).fillMaxHeight()
+                        ) {
+                            composable<Explore> { ExploreScreen() }
+                            composable<Sellable> { SellableScreen() }
+                        }
                     }
                 }
             }
-
         }
     }
 }
