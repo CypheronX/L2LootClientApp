@@ -16,15 +16,6 @@ actual class DriverFactory {
         if (isNewDatabase) {
             println("🆕 Creating new database schema...")
             L2LootDatabase.Schema.create(driver)
-            println("✅ Schema created successfully")
-            
-            println("📦 Populating database with initial data...")
-            val db = L2LootDatabase(driver)
-            
-            DatabasePopulator.populateDatabase(db)
-            
-            val monsterCount = db.monstersQueries.selectAll().executeAsList().size
-            println("📊 Database contains $monsterCount monsters")
         } else {
             println("✅ Using existing database")
         }
