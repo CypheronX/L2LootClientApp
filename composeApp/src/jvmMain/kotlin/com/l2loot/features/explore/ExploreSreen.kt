@@ -13,15 +13,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.l2loot.Monsters
+import com.l2loot.features.explore.components.ExploreForm
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ExploreScreen() {
     val viewModel: ExploreViewModel = koinViewModel()
-    val monsters by viewModel.monsters.collectAsState()
+    val state by viewModel.state.collectAsState()
     val scrollState = rememberScrollState()
     
     Column (
@@ -31,9 +34,19 @@ fun ExploreScreen() {
             .verticalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        monsters.forEach { monster ->
-            MonsterCard(monster)
-        }
+        ExploreForm(
+            chronicle = state.chronicle,
+            minLevel = state.minLevel,
+            maxLevel = state.maxLevel,
+            limit = state.limit,
+            showRiftMobs = state.showRiftMobs,
+            onChronicleChange = { viewModel.onEvent(ExploreScreenEvent.ChronicleChanged(it)) },
+            onMinLevelChange = { viewModel.onEvent(ExploreScreenEvent.MinLevelChanged(it)) },
+            onMaxLevelChange = { viewModel.onEvent(ExploreScreenEvent.MaxLevelChanged(it)) },
+            onLimitChange = { viewModel.onEvent(ExploreScreenEvent.LimitChanged(it)) },
+            onShowRiftMobsChange = { viewModel.onEvent(ExploreScreenEvent.ShowRiftMobsChanged(it)) },
+            onSubmit = { viewModel.onEvent(ExploreScreenEvent.Explore) },
+        )
     }
 }
 
