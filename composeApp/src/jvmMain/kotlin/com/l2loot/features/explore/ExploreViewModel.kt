@@ -14,11 +14,11 @@ internal class ExploreViewModel(
     private val monsterRepository: MonsterRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow<ExploreScreenState>(ExploreScreenState.initial())
+    private val _state = MutableStateFlow(ExploreScreenState.initial())
     val state = _state.asStateFlow()
     private val _monsters = MutableStateFlow<List<Monsters>>(emptyList())
     val monsters: StateFlow<List<Monsters>> = _monsters.asStateFlow()
-    
+
     init {
         loadMonsters()
     }

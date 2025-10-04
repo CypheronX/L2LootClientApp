@@ -15,7 +15,7 @@ internal data class ExploreScreenState(
         fun initial() = ExploreScreenState(
             monsters = emptyList(),
             loading = true,
-            chronicle = "",
+            chronicle = "c5",
             minLevel = "",
             maxLevel = "",
             limit = "",
