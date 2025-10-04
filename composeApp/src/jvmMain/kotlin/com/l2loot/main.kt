@@ -7,8 +7,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import androidx.compose.ui.window.rememberWindowState
 import com.l2loot.di.appModule
 import com.l2loot.di.initKoin
 import l2loot.composeapp.generated.resources.Res
@@ -24,7 +27,8 @@ fun main() {
         var spoilLogoPainter by remember {
             mutableStateOf<Painter?>(null)
         }
-        
+        val windowRatio = rememberWindowState(size = DpSize(1280.dp, 720.dp))
+
         LaunchedEffect(Unit) {
             try {
                 val spoilLogoBytes = Res.readBytes("files/app_icon/spoil_logo.png")
@@ -41,7 +45,8 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             title = "L2Loot",
-            icon = spoilLogoPainter
+            icon = spoilLogoPainter,
+            state = windowRatio
         ) {
             App()
         }

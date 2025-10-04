@@ -19,6 +19,11 @@ internal class ExploreViewModel(
     private val _monsters = MutableStateFlow<List<Monsters>>(emptyList())
     val monsters: StateFlow<List<Monsters>> = _monsters.asStateFlow()
 
+    val chronicleOptions: List<String>
+        get() {
+            return listOf("c5", "interlude")
+        }
+
     init {
         loadMonsters()
     }
