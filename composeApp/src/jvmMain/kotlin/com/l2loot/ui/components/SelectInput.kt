@@ -33,15 +33,13 @@ fun SelectInput(
 ) {
     ExposedDropdownMenuBox(
         expanded = expanded,
-        onExpandedChange = onExpandedChange,
-        modifier = modifier
+        onExpandedChange = onExpandedChange
     ) {
         TextField(
             modifier = Modifier
                 .width(width)
                 .height(height)
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
-                .pointerHoverIcon(PointerIcon(Cursor(Cursor.HAND_CURSOR))),
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true),
             value = value.replaceFirstChar { it.uppercase() },
             onValueChange = { },
             readOnly = true,
