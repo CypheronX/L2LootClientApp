@@ -7,17 +7,48 @@ import com.l2loot.Monsters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ExploreViewModel(
+internal class ExploreViewModel(
     private val monsterRepository: MonsterRepository
 ) : ViewModel() {
-    
+
+    private val _state = MutableStateFlow(ExploreScreenState.initial())
+    val state = _state.asStateFlow()
     private val _monsters = MutableStateFlow<List<Monsters>>(emptyList())
     val monsters: StateFlow<List<Monsters>> = _monsters.asStateFlow()
-    
+
+    val chronicleOptions: List<String>
+        get() {
+            return listOf("c5", "interlude")
+        }
+
     init {
         loadMonsters()
+    }
+
+    fun onEvent(event: ExploreScreenEvent) {
+        when (event) {
+            is ExploreScreenEvent.ChronicleChanged -> {
+                _state.update { it.copy(chronicle = event.chronicle) }
+            }
+            is ExploreScreenEvent.MinLevelChanged -> {
+                _state.update { it.copy(minLevel = event.minLevel) }
+            }
+            is ExploreScreenEvent.MaxLevelChanged -> {
+                _state.update { it.copy(maxLevel = event.maxLevel) }
+            }
+            is ExploreScreenEvent.LimitChanged -> {
+                _state.update { it.copy(limit = event.limit) }
+            }
+            is ExploreScreenEvent.ShowRiftMobsChanged -> {
+                _state.update { it.copy(showRiftMobs = event.showRiftMobs) }
+            }
+            is ExploreScreenEvent.Explore -> {
+                loadMonsters()
+            }
+        }
     }
     
     private fun loadMonsters() {
