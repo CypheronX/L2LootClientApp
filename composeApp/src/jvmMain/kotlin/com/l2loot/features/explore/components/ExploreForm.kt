@@ -31,6 +31,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l2loot.design.LocalSpacing
@@ -69,12 +71,12 @@ fun ExploreForm(
                 disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             ),
             modifier = modifier
-                .widthIn(min = 930.dp, max = maxWidth - 110.dp)
+                .widthIn(min = 930.dp, max = maxWidth - LocalSpacing.current.space34)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(LocalSpacing.current.space24)
+                modifier = Modifier.padding(LocalSpacing.current.space20)
             ) {
                 Row(
                     modifier = Modifier.weight(1f)
@@ -178,7 +180,9 @@ fun ExploreForm(
                             color = MaterialTheme.colorScheme.onSurface)
                         Switch(
                             checked = showRiftMobs,
-                            onCheckedChange = onShowRiftMobsChange
+                            onCheckedChange = onShowRiftMobsChange,
+                            modifier = Modifier
+                                .pointerHoverIcon(PointerIcon.Hand)
                         )
                     }
                 }
@@ -189,6 +193,7 @@ fun ExploreForm(
                     modifier = Modifier
                         .width(125.dp)
                         .height(56.dp)
+                        .pointerHoverIcon(PointerIcon.Hand)
                 ) {
                     Text("Let's Spoil",
                         style = MaterialTheme.typography.titleMedium)
