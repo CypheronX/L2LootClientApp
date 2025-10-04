@@ -2,18 +2,23 @@ package com.l2loot.features.explore.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -24,7 +29,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
+import androidx.compose.ui.unit.dp
 import com.l2loot.design.LocalSpacing
+import org.jetbrains.skiko.Cursor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,8 +54,7 @@ fun ExploreForm(
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val options = listOf("C5", "Interlude")
+    var expanded by mutableStateOf(false)
 
     Card(
         colors = CardColors(
@@ -66,64 +77,81 @@ fun ExploreForm(
             ) {
                 ExposedDropdownMenuBox(
                     expanded = expanded,
-                    onExpandedChange = { expanded = !expanded }
+                    onExpandedChange = { expanded = it }
                 ) {
                     TextField(
-                        value = chronicle,
+                        modifier = Modifier
+                            .width(135.dp)
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                            .pointerHoverIcon(PointerIcon(Cursor(Cursor.HAND_CURSOR))),
+                        value = chronicle.replaceFirstChar { it.uppercase() },
                         onValueChange = { },
                         readOnly = true,
-                        label = { Text("Chronicle") },
+                        label = { Text(text = "Chronicle", style = MaterialTheme.typography.bodySmall) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) }
                     )
                     ExposedDropdownMenu(
                         expanded = expanded,
                         onDismissRequest = { expanded = false }
                     ) {
-                        options.forEach { selectionOption ->
-                            DropdownMenuItem(
-                                text = { Text(selectionOption) },
-                                onClick = {
-                                    onChronicleChange(selectionOption)
-                                    expanded = false
-                                }
-                            )
-                        }
+                        DropdownMenuItem(
+                            text = { Text(text = "C5", style = MaterialTheme.typography.bodyLarge) },
+                            onClick = {
+                                expanded = false
+                                onChronicleChange("c5")
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(text = "Interlude", style = MaterialTheme.typography.bodyLarge) },
+                            onClick = {
+                                expanded = false
+                                onChronicleChange("interlude")
+                            }
+                        )
                     }
                 }
 
                 TextField(
+                    modifier = Modifier
+                        .width(130.dp),
                     value = minLevel,
                     onValueChange = { newValue ->
                         if (newValue.all { it.isDigit() }) {
                             onMinLevelChange(newValue)
                         }
                     },
-                    label = { Text("Min Level") }
+                    label = { Text(text = "Min Level", style = MaterialTheme.typography.bodySmall) }
                 )
                 TextField(
+                    modifier = Modifier
+                        .width(130.dp),
                     value = maxLevel,
                     onValueChange = { newValue ->
                         if (newValue.all { it.isDigit() }) {
                             onMaxLevelChange(newValue)
                         }
                     },
-                    label = { Text("Max Level") }
+                    label = { Text(text = "Max Level", style = MaterialTheme.typography.bodySmall) }
                 )
                 TextField(
+                    modifier = Modifier
+                        .width(130.dp),
                     value = limit,
                     onValueChange = { newValue ->
                         if (newValue.all { it.isDigit() }) {
                             onLimitChange(newValue)
                         }
                     },
-                    label = { Text("Results Count") }
+                    label = { Text(text = "Results Count", style = MaterialTheme.typography.bodySmall) }
                 )
 
                 Column(
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier
+                        .width(133.dp),
                 ) {
                     Text("Include Rift Mobs",
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurface)
                     Switch(
                         checked = showRiftMobs,
@@ -139,7 +167,8 @@ fun ExploreForm(
                         horizontal = LocalSpacing.current.space24,
                         vertical = LocalSpacing.current.space16
                     )
-                    .background(MaterialTheme.colorScheme.primary, MaterialTheme.shapes.large)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clip(CircleShape)
             ) {
                 Text("Let's Spoil",
                     style = MaterialTheme.typography.titleMedium,

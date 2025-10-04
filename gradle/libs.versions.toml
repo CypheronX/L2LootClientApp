@@ -1,7 +1,7 @@
 [versions]
 androidx-lifecycle = "2.9.3"
 composeHotReload = "1.0.0-beta06"
-composeMultiplatform = "1.8.2"
+composeMultiplatform = "1.9.0"
 junit = "4.13.2"
 kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.2"
