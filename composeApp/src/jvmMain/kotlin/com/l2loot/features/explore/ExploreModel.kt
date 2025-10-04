@@ -18,7 +18,7 @@ internal data class ExploreScreenState(
             chronicle = "c5",
             minLevel = "",
             maxLevel = "",
-            limit = "",
+            limit = "10",
             showRiftMobs = false,
         )
     }

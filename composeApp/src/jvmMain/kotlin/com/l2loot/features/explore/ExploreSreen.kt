@@ -73,6 +73,7 @@ fun ExploreScreen() {
                     minLevel = state.minLevel,
                     maxLevel = state.maxLevel,
                     limit = state.limit,
+                    limitOptions = viewModel.limitOptions,
                     showRiftMobs = state.showRiftMobs,
                     onChronicleChange = { viewModel.onEvent(ExploreScreenEvent.ChronicleChanged(it)) },
                     onMinLevelChange = { viewModel.onEvent(ExploreScreenEvent.MinLevelChanged(it)) },
