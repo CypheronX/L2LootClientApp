@@ -23,6 +23,10 @@ internal class ExploreViewModel(
         get() {
             return listOf("c5", "interlude")
         }
+    val limitOptions: List<String>
+        get() {
+            return listOf("10", "30", "60", "100")
+        }
 
     init {
         loadMonsters()

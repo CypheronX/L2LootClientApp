@@ -19,12 +19,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -35,16 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.input.pointer.pointerHoverIcon
-import androidx.compose.ui.text.capitalize
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.l2loot.design.LocalSpacing
 import com.l2loot.ui.components.SelectInput
-import org.jetbrains.skiko.Cursor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +44,7 @@ fun ExploreForm(
     minLevel: String,
     maxLevel: String,
     limit: String,
+    limitOptions: List<String>,
     showRiftMobs: Boolean,
     onChronicleChange: (String) -> Unit,
     onMinLevelChange: (String) -> Unit,
@@ -63,7 +54,8 @@ fun ExploreForm(
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by mutableStateOf(false)
+    var expandedChronicles by mutableStateOf(false)
+    var expandedLimit by mutableStateOf(false)
 
     BoxWithConstraints(
         modifier = modifier
@@ -90,8 +82,8 @@ fun ExploreForm(
                     SelectInput(
                         value = chronicle,
                         options = chronicleOptions,
-                        expanded = expanded,
-                        onExpandedChange = { expanded = it },
+                        expanded = expandedChronicles,
+                        onExpandedChange = { expandedChronicles = it },
                         label = {
                             Text(text = "Chronicle", style = MaterialTheme.typography.bodySmall)
                         },
@@ -109,7 +101,7 @@ fun ExploreForm(
 
                     TextField(
                         modifier = Modifier
-                            .width(130.dp)
+                            .width(115.dp)
                             .height(56.dp),
                         value = minLevel,
                         onValueChange = { newValue ->
@@ -140,7 +132,7 @@ fun ExploreForm(
 
                     TextField(
                         modifier = Modifier
-                            .width(130.dp)
+                            .width(115.dp)
                             .height(56.dp),
                         value = maxLevel,
                         onValueChange = { newValue ->
@@ -162,33 +154,16 @@ fun ExploreForm(
 
                     Spacer(modifier = Modifier.size(LocalSpacing.current.space12))
 
-                    val limitInteractionSource = remember { MutableInteractionSource() }
-                    val isLimitFocused by limitInteractionSource.collectIsFocusedAsState()
-                    val limitLabelFontSize by animateDpAsState(
-                        targetValue = if (isLimitFocused || limit.isNotEmpty()) 12.dp else 16.dp,
-                        animationSpec = tween(durationMillis = 150)
-                    )
-
-                    TextField(
-                        modifier = Modifier
-                            .width(145.dp)
-                            .height(56.dp),
+                    SelectInput(
                         value = limit,
-                        onValueChange = { newValue ->
-                            if (newValue.all { it.isDigit() }) {
-                                onLimitChange(newValue)
-                            }
-                        },
-                        singleLine = true,
+                        options = limitOptions,
+                        expanded = expandedLimit,
+                        onExpandedChange = { expandedLimit = it },
                         label = {
-                            Text(
-                                text = "Results Count",
-                                style = MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = limitLabelFontSize.value.sp
-                                )
-                            )
+                            Text(text = "Results Count", style = MaterialTheme.typography.bodySmall)
                         },
-                        interactionSource = limitInteractionSource
+                        onValueChange = { onLimitChange(it) },
+                        width = 150.dp
                     )
 
                     Spacer(modifier = Modifier.size(LocalSpacing.current.space12))
