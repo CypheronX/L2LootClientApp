@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
+import com.l2loot.features.explore.components.MonsterCardShimmer
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -211,8 +212,14 @@ fun ExploreScreen() {
                         modifier = Modifier.fillMaxSize()
                             .padding(end = LocalSpacing.current.space34)
                     ) {
-                        items(state.monsters) { monster ->
-                            MonsterCard(monsterData = monster)
+                        if (state.isRefreshing) {
+                            items(6) {
+                                MonsterCardShimmer()
+                            }
+                        } else {
+                            items(state.monsters) { monster ->
+                                MonsterCard(monsterData = monster)
+                            }
                         }
                     }
 

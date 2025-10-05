@@ -2,6 +2,7 @@ package com.l2loot.features.sellable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.l2loot.data.raw_data.SellableItemJson
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
@@ -66,6 +68,8 @@ internal class SellableViewModel(
             try {
                 _state.update { it.copy(loading = true, error = null) }
                 
+                val startTime = System.currentTimeMillis()
+                
                 val items = sellableRepository.getAllItemsWithPrices()
                 val useAynixPrices = _state.value.pricesByAynix
                 
@@ -84,12 +88,17 @@ internal class SellableViewModel(
                     } else {
                         item.original_price
                     }
-                    com.l2loot.data.raw_data.SellableItemJson(
+                    SellableItemJson(
                         item_id = item.item_id,
                         key = item.key,
                         name = item.name,
                         price = selectedPrice ?: 0
                     )
+                }
+                
+                val elapsed = System.currentTimeMillis() - startTime
+                if (elapsed < 600) {
+                    delay(600 - elapsed)
                 }
                 
                 _state.update { 

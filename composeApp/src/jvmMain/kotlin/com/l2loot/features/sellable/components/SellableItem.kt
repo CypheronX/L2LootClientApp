@@ -3,8 +3,10 @@ package com.l2loot.features.sellable.components
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -62,14 +64,26 @@ fun SellableItem(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
     ) {
-        imageBitmap?.let { image ->
-            Image(
-                bitmap = image,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(MaterialTheme.shapes.extraSmall)
-            )
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(MaterialTheme.shapes.extraSmall)
+                .background(
+                    if (imageBitmap == null) {
+                        MaterialTheme.colorScheme.surfaceContainerHighest
+                    } else {
+                        MaterialTheme.colorScheme.surface
+                    }
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            imageBitmap?.let { image ->
+                Image(
+                    bitmap = image,
+                    contentDescription = null,
+                    modifier = Modifier.size(44.dp)
+                )
+            }
         }
 
         Spacer(modifier = Modifier.size(LocalSpacing.current.space10))

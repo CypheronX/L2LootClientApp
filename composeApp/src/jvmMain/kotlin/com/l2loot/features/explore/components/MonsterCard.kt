@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -95,6 +97,7 @@ fun MonsterCard(
         ),
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(215.dp)
     ) {
         Column(
             modifier = Modifier
@@ -249,7 +252,7 @@ fun MonsterCard(
                     .padding(horizontal = LocalSpacing.current.space12)
             ) {
                 Text(
-                    text = "Materials:",
+                    text = "Spoil Materials:",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                 )
