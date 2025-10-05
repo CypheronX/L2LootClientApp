@@ -2,7 +2,7 @@ package com.l2loot.features.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.data.MonsterRepository
+import com.l2loot.data.monsters.MonsterRepository
 import com.l2loot.Monsters
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

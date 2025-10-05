@@ -1,10 +1,12 @@
+import com.l2loot.data.monsters.strategy.DropCategory;
+
 CREATE TABLE droplist (
     mob_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
     min INTEGER NOT NULL,
     max INTEGER NOT NULL,
     chance INTEGER NOT NULL,
-    category INTEGER NOT NULL,
+    category INTEGER AS DropCategory NOT NULL,
     chronicle TEXT NOT NULL,
     PRIMARY KEY (mob_id, item_id),
     FOREIGN KEY (mob_id) REFERENCES monsters(id) ON DELETE CASCADE,

@@ -1,4 +1,4 @@
-package com.l2loot.data
+package com.l2loot.data.sellable
 
 import com.l2loot.L2LootDatabase
 import com.l2loot.data.raw_data.SellableItemJson
