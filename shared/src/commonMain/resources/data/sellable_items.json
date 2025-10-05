@@ -1,0 +1,260 @@
+[
+    {
+      "item_id" : 1877,
+      "key": "adamantite_nugget",
+      "name" : "Adamantite Nugget",
+      "price" : 7800
+    },
+    {
+      "item_id" : 1872,
+      "key": "animal_bone",
+      "name" : "Animal Bone",
+      "price" : 1300
+    },
+    {
+      "item_id" : 1867,
+      "key": "animal_skin",
+      "name" : "Animal Skin",
+      "price" : 350
+    },
+    {
+      "item_id" : 4043,
+      "key": "asofe",
+      "name" : "Asofe",
+      "price" : 23000
+    },
+    {
+      "item_id" : 1878,
+      "key": "braided_hemp",
+      "name" : "Braided Hemp",
+      "price" : 650
+    },
+    {
+      "item_id" : 1871,
+      "key": "charcoal",
+      "name" : "Charcoal",
+      "price" : 230
+    },
+    {
+      "item_id" : 1870,
+      "key": "coal",
+      "name" : "Coal",
+      "price" : 185
+    },
+    {
+      "item_id" : 1881,
+      "key": "coarse_bone_powder",
+      "name" : "Coarse Bone Powder",
+      "price" : 12600
+    },
+    {
+      "item_id" : 1879,
+      "key": "cokes",
+      "name" : "Cokes",
+      "price" : 1150
+    },
+    {
+      "item_id" : 1884,
+      "key": "cord",
+      "name" : "Cord",
+      "price" : 2000
+    },
+    {
+      "item_id" : 1894,
+      "key": "crafted_leather",
+      "name" : "Crafted Leather",
+      "price" : 11300
+    },
+    {
+      "item_id" : 5550,
+      "key": "durable_metal_plate",
+      "name" : "Durable Metal Plate",
+      "price" : 59000
+    },
+	{
+		"item_id" : 57,
+        "key": "adena",
+		"name" : "Adena",
+		"price" : 1
+	},
+	{
+		"item_id" : 730,
+        "key": "eaa",
+		"name" : "Scroll: EA (Grade A)",
+		"price" : 1250000
+	},
+    {
+      "item_id" : 948,
+      "key": "eab",
+      "name" : "Scroll: EA (Grade B)",
+      "price" : 270000
+    },
+    {
+      "item_id" : 952,
+      "key": "eac",
+      "name" : "Scroll: EA (Grade C)",
+      "price" : 50000
+    },
+    {
+      "item_id" : 956,
+      "key": "ead",
+      "name" : "Scroll: EA (Grade D)",
+      "price" : 35000
+    },
+    {
+      "item_id" : 960,
+      "key": "eas",
+      "name" : "Scroll: EA (Grade S)",
+      "price" : 5300000
+    },
+    {
+      "item_id" : 4042,
+      "key": "enria",
+      "name" : "Enria",
+      "price" : 37000
+    },
+    {
+      "item_id" : 729,
+      "key": "ewa",
+      "name" : "Scroll: EW (Grade A)",
+      "price" : 6800000
+    },
+	{
+		"item_id" : 947,
+        "key": "ewb",
+		"name" : "Scroll: EW (Grade B)",
+		"price" : 2100000
+	},
+	{
+		"item_id" : 951,
+        "key": "ewc",
+		"name" : "Scroll: EW (Grade C)",
+		"price" : 820000
+	},
+	{
+		"item_id" : 955,
+        "key": "ewd",
+		"name" : "Scroll: EW (Grade D)",
+		"price" : 360000
+	},
+	{
+		"item_id" : 959,
+        "key": "ews",
+		"name" : "Scroll: EW (Grade S)",
+		"price" : 40000000
+	},
+    {
+      "item_id" : 1885,
+      "key": "high_grade_suede",
+      "name" : "High Grade Suede",
+      "price" : 2800
+    },
+    {
+      "item_id" : 1869,
+      "key": "iron_ore",
+      "name" : "Iron Ore",
+      "price" : 550
+    },
+    {
+      "item_id" : 1882,
+      "key": "leather",
+      "name" : "Leather",
+      "price" : 1600
+    },
+    {
+      "item_id" : 5220,
+      "key": "metal_hardener",
+      "name" : "Metal Hardener",
+      "price" : 5000
+    },
+    {
+      "item_id" : 1895,
+      "key": "metallic_fiber",
+      "name" : "Metallic Fiber",
+      "price" : 500
+    },
+    {
+      "item_id" : 5549,
+      "key": "metallic_thread",
+      "name" : "Metallic Thread",
+      "price" : 3100
+    },
+    {
+      "item_id" : 1876,
+      "key": "mithril_ore",
+      "name" : "Mithril Ore",
+      "price" : 8100
+    },
+    {
+      "item_id" : 4039,
+      "key": "mold_glue",
+      "name" : "Mold Glue",
+      "price" : 20000
+    },
+    {
+      "item_id" : 4041,
+      "key": "mold_hardener",
+      "name" : "Mold Hardener",
+      "price" : 22000
+    },
+    {
+      "item_id" : 4040,
+      "key": "mold_lubricant",
+      "name" : "Mold Lubricant",
+      "price" : 22000
+    },
+    {
+      "item_id" : 1874,
+      "key": "oriharukon_ore",
+      "name" : "Oriharukon Ore",
+      "price" : 28000
+    },
+    {
+      "item_id" : 1880,
+      "key": "steel",
+      "name" : "Steel",
+      "price" : 11500
+    },
+    {
+      "item_id" : 1875,
+      "key": "stone_of_purity",
+      "name" : "Stone of Purity",
+      "price" : 23200
+    },
+    {
+      "item_id" : 4044,
+      "key": "thons",
+      "name" : "Thons",
+      "price" : 4800
+    },
+    {
+      "item_id" : 1865,
+      "key": "varnish",
+      "name" : "Varnish",
+      "price" : 1750
+    },
+	{
+		"item_id" : 1864,
+      "key": "stem",
+		"name" : "Stem",
+		"price" : 100
+	},
+	{
+		"item_id" : 1866,
+      "key": "suede",
+		"name" : "Suede",
+		"price" : 300
+	},
+	{
+		"item_id" : 1868,
+      "key": "thread",
+		"name" : "Thread",
+		"price" : 100
+	},
+	{
+		"item_id" : 1873,
+      "key": "silver_nugget",
+		"name" : "Silver Nugget",
+		"price" : 500
+	}
+]
