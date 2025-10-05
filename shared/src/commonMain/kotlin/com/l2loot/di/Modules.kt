@@ -4,6 +4,8 @@ import com.l2loot.data.LoadDbDataRepository
 import com.l2loot.data.LoadDbDataRepositoryImpl
 import com.l2loot.data.MonsterRepository
 import com.l2loot.data.MonsterRepositoryImpl
+import com.l2loot.data.SellableRepository
+import com.l2loot.data.SellableRepositoryImpl
 import com.l2loot.data.createDatabase
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -13,4 +15,5 @@ val sharedModule = module {
     single { createDatabase(get()) }
     singleOf(::MonsterRepositoryImpl) bind MonsterRepository::class
     singleOf(::LoadDbDataRepositoryImpl) bind LoadDbDataRepository::class
+    singleOf(::SellableRepositoryImpl) bind SellableRepository::class
 }

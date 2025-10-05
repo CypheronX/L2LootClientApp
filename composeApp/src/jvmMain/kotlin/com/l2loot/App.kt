@@ -41,6 +41,8 @@ import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.PointerIcon
+import androidx.compose.ui.input.pointer.pointerHoverIcon
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
@@ -225,7 +227,9 @@ fun App() {
                                                     MaterialTheme.colorScheme.onSurfaceVariant,
                                                 style = MaterialTheme.typography.labelMedium
                                             )
-                                        }
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
                                     )
                                     Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
                                     NavigationRailItem(
@@ -254,7 +258,9 @@ fun App() {
                                                     MaterialTheme.colorScheme.onSurfaceVariant,
                                                 style = MaterialTheme.typography.labelMedium
                                             )
-                                        }
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
                                     )
                                     }
                                 }

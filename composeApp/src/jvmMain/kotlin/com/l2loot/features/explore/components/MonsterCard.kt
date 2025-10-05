@@ -1,5 +1,6 @@
 package com.l2loot.features.explore.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -119,6 +119,11 @@ fun MonsterCard(
                     animationSpec = tween(durationMillis = 150)
                 )
 
+                val textColor by animateColorAsState(
+                    targetValue = if (isHovered) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onSurface,
+                    animationSpec = tween(durationMillis = 150)
+                )
+
                 Box(
                     modifier = Modifier
                         .wrapContentSize()
@@ -135,7 +140,7 @@ fun MonsterCard(
                             val verticalOffset = size.height - strokeWidth
 
                             drawLine(
-                                color = onSurfaceDark.copy(alpha = underlineOpacity),
+                                color = textColor.copy(alpha = underlineOpacity),
                                 start = Offset(0f, verticalOffset),
                                 end = Offset(size.width, verticalOffset),
                                 strokeWidth = strokeWidth
@@ -152,12 +157,13 @@ fun MonsterCard(
                     Text(
                         text = monsterData.monsterName,
                         style = MaterialTheme.typography.titleMedium,
+                        color = textColor
                     )
                     linkPainter?.let { link ->
                         Image(
                             painter = link,
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                            colorFilter = ColorFilter.tint(textColor),
                             modifier = Modifier
                                 .size((7.5).dp)
                                 .offset(x = (7).dp)
