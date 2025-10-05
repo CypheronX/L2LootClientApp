@@ -43,6 +43,7 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 sql-delight = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight"}
+sql-delight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight"}
 google-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 

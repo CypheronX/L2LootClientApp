@@ -1,6 +1,8 @@
 package com.l2loot.data
 
 import com.l2loot.L2LootDatabase
+import com.l2loot.data.monsters.strategy.DropCategory
+import com.l2loot.data.monsters.strategy.HPMultiplier
 import com.l2loot.data.raw_data.DroplistJson
 import com.l2loot.data.raw_data.MonsterJson
 import com.l2loot.data.raw_data.SellableItemJson
@@ -92,32 +94,47 @@ class LoadDbDataRepositoryImpl(
 
         monsters.forEach { monster ->
             updateProgress()
-            database.monstersQueries.insert(
-                id = monster.id,
-                name = monster.name,
-                level = monster.level,
-                exp = monster.exp,
-                is_rift = monster.is_rift == 1,
-                chronicle = monster.chronicle,
-                hp_multiplier = monster.hp_multiplier
-            )
+            try {
+                database.monstersQueries.insert(
+                    id = monster.id,
+                    name = monster.name,
+                    level = monster.level,
+                    exp = monster.exp,
+                    is_rift = monster.is_rift == 1,
+                    chronicle = monster.chronicle,
+                    hp_multiplier = HPMultiplier.fromValue(monster.hp_multiplier)
+                )
+            } catch (e: IllegalArgumentException) {
+                println("❌ Error loading monster: id=${monster.id}, name=${monster.name}, hp_multiplier=${monster.hp_multiplier} (type: ${monster.hp_multiplier::class.simpleName})")
+                throw e
+            }
         }
     }
 
     private fun loadDroplist(database: L2LootDatabase, drops: List<DroplistJson> = emptyList()) {
         println("📦 Loading droplist...")
+        var skippedCount = 0
 
         drops.forEach { drop ->
             updateProgress()
-            database.droplistQueries.insert(
-                mob_id = drop.mob_id,
-                item_id = drop.item_id,
-                min = drop.min,
-                max = drop.max,
-                chance = drop.chance,
-                category = drop.category,
-                chronicle = drop.chronicle
-            )
+            val category = DropCategory.fromValue(drop.category)
+            if (category != null) {
+                database.droplistQueries.insert(
+                    mob_id = drop.mob_id,
+                    item_id = drop.item_id,
+                    min = drop.min,
+                    max = drop.max,
+                    chance = drop.chance,
+                    category = category,
+                    chronicle = drop.chronicle
+                )
+            } else {
+                skippedCount++
+            }
+        }
+        
+        if (skippedCount > 0) {
+            println("⚠️ Skipped $skippedCount drops with unknown categories")
         }
     }
 

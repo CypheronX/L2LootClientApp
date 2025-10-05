@@ -26,12 +26,13 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.sql.delight)
+            implementation(libs.sql.delight.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-            implementation(libs.sql.delight)
         }
     }
 }
