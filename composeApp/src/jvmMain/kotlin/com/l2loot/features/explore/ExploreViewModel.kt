@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 internal class ExploreViewModel(
     private val monsterRepository: MonsterRepository,
@@ -97,6 +98,8 @@ internal class ExploreViewModel(
     private fun loadMonsters(params: MonsterQueryParams) {
         viewModelScope.launch {
             _state.update { it.copy(isRefreshing = true) }
+            
+            val startTime = System.currentTimeMillis()
 
             monsterRepository.getMonsters(params)
                 .first()
@@ -110,6 +113,11 @@ internal class ExploreViewModel(
                     },
                     onFailure = {}
                 )
+
+            val elapsed = System.currentTimeMillis() - startTime
+            if (elapsed < 800) {
+                delay(800 - elapsed)
+            }
 
             _state.update { it.copy(isRefreshing = false) }
         }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.sellable.components.SellableItem
 import com.l2loot.features.sellable.components.SellableItemData
+import com.l2loot.features.sellable.components.SellableItemShimmer
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -72,17 +72,6 @@ fun SellableScreen() {
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space20))
 
                 when {
-                    state.loading -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    }
-
                     state.error != null -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
@@ -168,18 +157,24 @@ fun SellableScreen() {
                                                 verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
                                                 modifier = Modifier.padding(LocalSpacing.current.space20)
                                             ) {
-                                                firstColumnItems.forEach { sellable ->
-                                                    SellableItem(
-                                                        sellableItem = SellableItemData(
-                                                            key = sellable.key,
-                                                            name = sellable.name
-                                                        ),
-                                                        price = state.prices[sellable.key] ?: "",
-                                                        onPriceChange = { newPrice ->
-                                                            viewModel.updatePrice(sellable.key, newPrice)
-                                                        },
-                                                        enabled = !state.pricesByAynix
-                                                    )
+                                                if (state.loading) {
+                                                    repeat(20) {
+                                                        SellableItemShimmer()
+                                                    }
+                                                } else {
+                                                    firstColumnItems.forEach { sellable ->
+                                                        SellableItem(
+                                                            sellableItem = SellableItemData(
+                                                                key = sellable.key,
+                                                                name = sellable.name
+                                                            ),
+                                                            price = state.prices[sellable.key] ?: "",
+                                                            onPriceChange = { newPrice ->
+                                                                viewModel.updatePrice(sellable.key, newPrice)
+                                                            },
+                                                            enabled = !state.pricesByAynix
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
@@ -196,18 +191,24 @@ fun SellableScreen() {
                                                 verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
                                                 modifier = Modifier.padding(LocalSpacing.current.space20)
                                             ) {
-                                                secondColumnItems.forEach { sellable ->
-                                                    SellableItem(
-                                                        sellableItem = SellableItemData(
-                                                            key = sellable.key,
-                                                            name = sellable.name
-                                                        ),
-                                                        price = state.prices[sellable.key] ?: "",
-                                                        onPriceChange = { newPrice ->
-                                                            viewModel.updatePrice(sellable.key, newPrice)
-                                                        },
-                                                        enabled = !state.pricesByAynix
-                                                    )
+                                                if (state.loading) {
+                                                    repeat(20) {
+                                                        SellableItemShimmer()
+                                                    }
+                                                } else {
+                                                    secondColumnItems.forEach { sellable ->
+                                                        SellableItem(
+                                                            sellableItem = SellableItemData(
+                                                                key = sellable.key,
+                                                                name = sellable.name
+                                                            ),
+                                                            price = state.prices[sellable.key] ?: "",
+                                                            onPriceChange = { newPrice ->
+                                                                viewModel.updatePrice(sellable.key, newPrice)
+                                                            },
+                                                            enabled = !state.pricesByAynix
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
