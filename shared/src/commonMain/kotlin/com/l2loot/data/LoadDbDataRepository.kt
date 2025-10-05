@@ -80,6 +80,7 @@ class LoadDbDataRepositoryImpl(
             updateProgress()
             database.sellableItemQueries.insert(
                 item_id = item.item_id,
+                key = item.key,
                 name = item.name,
                 item_price = item.price
             )

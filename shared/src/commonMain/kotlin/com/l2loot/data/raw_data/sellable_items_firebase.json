@@ -1,4 +1,5 @@
-[
+{
+  "sellable": [
     {
       "item_id" : 1877,
       "key": "adamantite_nugget",
@@ -71,18 +72,18 @@
       "name" : "Durable Metal Plate",
       "price" : 15000
     },
-	{
-		"item_id" : 57,
-        "key": "adena",
-		"name" : "Adena",
-		"price" : 1
-	},
-	{
-		"item_id" : 730,
-        "key": "eaa",
-		"name" : "Scroll: EA (Grade A)",
-		"price" : 240000
-	},
+    {
+      "item_id" : 57,
+      "key": "adena",
+      "name" : "Adena",
+      "price" : 1
+    },
+    {
+      "item_id" : 730,
+      "key": "eaa",
+      "name" : "Scroll: EA (Grade A)",
+      "price" : 240000
+    },
     {
       "item_id" : 948,
       "key": "eab",
@@ -119,30 +120,30 @@
       "name" : "Scroll: EW (Grade A)",
       "price" : 1800000
     },
-	{
-		"item_id" : 947,
-        "key": "ewb",
-		"name" : "Scroll: EW (Grade B)",
-		"price" : 500000
-	},
-	{
-		"item_id" : 951,
-        "key": "ewc",
-		"name" : "Scroll: EW (Grade C)",
-		"price" : 110000
-	},
-	{
-		"item_id" : 955,
-        "key": "ewd",
-		"name" : "Scroll: EW (Grade D)",
-		"price" : 50000
-	},
-	{
-		"item_id" : 959,
-        "key": "ews",
-		"name" : "Scroll: EW (Grade S)",
-		"price" : 5000000
-	},
+    {
+      "item_id" : 947,
+      "key": "ewb",
+      "name" : "Scroll: EW (Grade B)",
+      "price" : 500000
+    },
+    {
+      "item_id" : 951,
+      "key": "ewc",
+      "name" : "Scroll: EW (Grade C)",
+      "price" : 110000
+    },
+    {
+      "item_id" : 955,
+      "key": "ewd",
+      "name" : "Scroll: EW (Grade D)",
+      "price" : 50000
+    },
+    {
+      "item_id" : 959,
+      "key": "ews",
+      "name" : "Scroll: EW (Grade S)",
+      "price" : 5000000
+    },
     {
       "item_id" : 1885,
       "key": "high_grade_suede",
@@ -233,28 +234,29 @@
       "name" : "Varnish",
       "price" : 200
     },
-	{
-		"item_id" : 1864,
+    {
+      "item_id" : 1864,
       "key": "stem",
-		"name" : "Stem",
-		"price" : 100
-	},
-	{
-		"item_id" : 1866,
+      "name" : "Stem",
+      "price" : 100
+    },
+    {
+      "item_id" : 1866,
       "key": "suede",
-		"name" : "Suede",
-		"price" : 300
-	},
-	{
-		"item_id" : 1868,
+      "name" : "Suede",
+      "price" : 300
+    },
+    {
+      "item_id" : 1868,
       "key": "thread",
-		"name" : "Thread",
-		"price" : 100
-	},
-	{
-		"item_id" : 1873,
+      "name" : "Thread",
+      "price" : 100
+    },
+    {
+      "item_id" : 1873,
       "key": "silver_nugget",
-		"name" : "Silver Nugget",
-		"price" : 500
-	}
-]
+      "name" : "Silver Nugget",
+      "price" : 500
+    }
+  ]
+}

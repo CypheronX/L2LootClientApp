@@ -12,8 +12,16 @@ nav-version = "2.9.0"
 koin = "4.1.1"
 lifecycleViewModel = "2.9.4"
 sqlDelight = "2.1.0"
+firebase-bom = "34.3.0"
+firebaseDatabaseKtx = "22.0.1"
+material3Android = "1.4.0"
 
 [libraries]
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-database = { module = "com.google.firebase:firebase-database" }
+firebase-database-ktx = { module = "com.google.firebase:firebase-database-ktx" }
+
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
@@ -35,6 +43,8 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
 sql-delight = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqlDelight"}
+google-firebase-database-ktx = { group = "com.google.firebase", name = "firebase-database-ktx", version.ref = "firebaseDatabaseKtx" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
