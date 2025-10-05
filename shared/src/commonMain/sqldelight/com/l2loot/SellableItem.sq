@@ -1,12 +1,17 @@
 
 CREATE TABLE sellable_item (
     item_id INTEGER PRIMARY KEY NOT NULL,
+    key TEXT NOT NULL,
     name TEXT NOT NULL,
     item_price INTEGER NOT NULL
 );
 
 CREATE INDEX sellable_item_id_idx ON sellable_item(item_id);
 
+selectAll:
+SELECT *
+FROM sellable_item;
+
 insert:
-INSERT INTO sellable_item (item_id, name, item_price)
-VALUES (?, ?, ?);
+INSERT INTO sellable_item (item_id, key, name, item_price)
+VALUES (?, ?, ?, ?);
