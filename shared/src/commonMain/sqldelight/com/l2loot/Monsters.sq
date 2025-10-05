@@ -39,15 +39,16 @@ SELECT
     -- Selected sellable_item columns
     si.key AS item_key,
     si.name AS item_name,
-    si.item_price
+    -- Use Aynix price if available and user setting enabled, otherwise use original price
+    COALESCE(ap.price, si.item_price) AS item_price
 FROM monsters m
-INNER JOIN droplist d ON m.id = d.mob_id
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.is_rift = 0
-  AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle;
+  AND m.chronicle = :chronicle;
 
 getMonstersByLevelRangeAndHP:
 SELECT
@@ -69,16 +70,17 @@ SELECT
     -- Selected sellable_item columns
     si.key AS item_key,
     si.name AS item_name,
-    si.item_price
+    COALESCE(ap.price, si.item_price) AS item_price
 FROM monsters m
-INNER JOIN droplist d ON m.id = d.mob_id
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.hp_multiplier IN :hpMultipliers
   AND m.is_rift = 0
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle;
+;
 
 getMonstersByLevelRangeIncludeRift:
 SELECT
@@ -100,14 +102,15 @@ SELECT
     -- Selected sellable_item columns
     si.key AS item_key,
     si.name AS item_name,
-    si.item_price
+    COALESCE(ap.price, si.item_price) AS item_price
 FROM monsters m
-INNER JOIN droplist d ON m.id = d.mob_id
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle;
+;
 
 getMonstersByLevelRangeAndHPIncludeRift:
 SELECT
@@ -129,15 +132,16 @@ SELECT
     -- Selected sellable_item columns
     si.key AS item_key,
     si.name AS item_name,
-    si.item_price
+    COALESCE(ap.price, si.item_price) AS item_price
 FROM monsters m
-INNER JOIN droplist d ON m.id = d.mob_id
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.hp_multiplier IN :hpMultipliers
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle;
+;
 
 insert:
 INSERT INTO monsters (id, name, level, exp, is_rift, chronicle, hp_multiplier)

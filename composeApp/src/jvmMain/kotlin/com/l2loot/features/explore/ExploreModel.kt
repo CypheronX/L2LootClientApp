@@ -10,6 +10,7 @@ internal data class ExploreScreenState(
     val maxLevel: String,
     val limit: String,
     val showRiftMobs: Boolean,
+    val useAynixPrices: Boolean,
     val isRefreshing: Boolean,
 ) {
     companion object {
@@ -20,17 +21,19 @@ internal data class ExploreScreenState(
             maxLevel = "",
             limit = "10",
             showRiftMobs = false,
+            useAynixPrices = false,
             isRefreshing = false,
         )
     }
 }
 
 internal fun ExploreScreenState.toMonsterQueryParams() = MonsterQueryParams(
-    minLevel = minLevel.toInt(),
-    maxLevel = maxLevel.toInt(),
+    minLevel = minLevel.toIntOrNull() ?: 1,
+    maxLevel = maxLevel.toIntOrNull() ?: 85,
     chronicle = chronicle,
-    limit = limit.toInt(),
-    includeRift = showRiftMobs
+    limit = limit.toIntOrNull() ?: 10,
+    includeRift = showRiftMobs,
+    useAynixPrices = useAynixPrices
 )
 
 internal sealed interface ExploreScreenEvent {

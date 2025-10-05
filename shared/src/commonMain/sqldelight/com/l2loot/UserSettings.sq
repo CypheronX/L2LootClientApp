@@ -1,0 +1,72 @@
+import kotlin.Boolean;
+
+-- Single row settings table (id is always 1)
+CREATE TABLE user_settings (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    chronicle TEXT NOT NULL DEFAULT 'c5',
+    min_level INTEGER NOT NULL DEFAULT 1,
+    max_level INTEGER NOT NULL DEFAULT 85,
+    limit_results INTEGER NOT NULL DEFAULT 10,
+    show_rift_mobs INTEGER AS Boolean NOT NULL DEFAULT 0,
+    is_aynix_prices INTEGER AS Boolean NOT NULL DEFAULT 0,
+    last_updated INTEGER NOT NULL DEFAULT 0
+);
+
+-- Get current settings (will return null if no settings exist)
+getSettings:
+SELECT *
+FROM user_settings
+WHERE id = 1;
+
+-- Insert or update settings (UPSERT)
+upsertSettings:
+INSERT INTO user_settings (id, chronicle, min_level, max_level, limit_results, show_rift_mobs, is_aynix_prices, last_updated)
+VALUES (1, ?, ?, ?, ?, ?, ?, ?)
+ON CONFLICT(id) DO UPDATE SET
+    chronicle = excluded.chronicle,
+    min_level = excluded.min_level,
+    max_level = excluded.max_level,
+    limit_results = excluded.limit_results,
+    show_rift_mobs = excluded.show_rift_mobs,
+    is_aynix_prices = excluded.is_aynix_prices,
+    last_updated = excluded.last_updated;
+
+-- Individual update queries (more granular control)
+updateChronicle:
+UPDATE user_settings
+SET chronicle = ?, last_updated = ?
+WHERE id = 1;
+
+updateLevelRange:
+UPDATE user_settings
+SET min_level = ?, max_level = ?, last_updated = ?
+WHERE id = 1;
+
+updateMinLevel:
+UPDATE user_settings
+SET min_level = ?, last_updated = ?
+WHERE id = 1;
+
+updateMaxLevel:
+UPDATE user_settings
+SET max_level = ?, last_updated = ?
+WHERE id = 1;
+
+updateLimit:
+UPDATE user_settings
+SET limit_results = ?, last_updated = ?
+WHERE id = 1;
+
+updateShowRiftMobs:
+UPDATE user_settings
+SET show_rift_mobs = ?, last_updated = ?
+WHERE id = 1;
+
+updateIsAynixPrices:
+UPDATE user_settings
+SET is_aynix_prices = ?, last_updated = ?
+WHERE id = 1;
+
+-- Initialize with defaults if no settings exist
+initializeDefaults:
+INSERT OR IGNORE INTO user_settings (id) VALUES (1);

@@ -20,11 +20,11 @@ class BasicMonsterQueryStrategy(
 ) : MonsterQueryStrategy {
 
     override fun execute(params: MonsterQueryParams): Flow<Result<List<MonsterResult>>> {
-        println("executing basic query with params: $params")
         return queries.getMonstersByLevelRange(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
-            chronicle = params.chronicle
+            chronicle = params.chronicle,
+            useAynixPrices = if (params.useAynixPrices) 1 else 0
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -86,7 +86,8 @@ class HPFilteredMonsterQueryStrategy(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
             hpMultipliers = params.hpMultipliers,
-            chronicle = params.chronicle
+            chronicle = params.chronicle,
+            useAynixPrices = if (params.useAynixPrices) 1 else 0
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -144,7 +145,8 @@ class RiftIncludedMonsterQueryStrategy(
         return queries.getMonstersByLevelRangeIncludeRift(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
-            chronicle = params.chronicle
+            chronicle = params.chronicle,
+            useAynixPrices = if (params.useAynixPrices) 1 else 0
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -206,7 +208,8 @@ class HPFilteredRiftIncludedMonsterQueryStrategy(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
             hpMultipliers = params.hpMultipliers,
-            chronicle = params.chronicle
+            chronicle = params.chronicle,
+            useAynixPrices = if (params.useAynixPrices) 1 else 0
         )
             .asFlow()
             .mapToList(Dispatchers.IO)

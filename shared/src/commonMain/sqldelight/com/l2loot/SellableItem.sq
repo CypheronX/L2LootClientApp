@@ -15,3 +15,33 @@ FROM sellable_item;
 insert:
 INSERT INTO sellable_item (item_id, key, name, item_price)
 VALUES (?, ?, ?, ?);
+
+updatePrice:
+UPDATE sellable_item
+SET item_price = ?
+WHERE key = ?;
+
+-- Get item with appropriate price based on setting
+-- If useAynixPrices = true and Aynix price exists, use it; otherwise use original
+getItemPrice:
+SELECT
+    si.item_id,
+    si.key,
+    si.name,
+    COALESCE(ap.price, si.item_price) AS effective_price,
+    CASE WHEN ap.price IS NOT NULL THEN 1 ELSE 0 END AS is_aynix_price
+FROM sellable_item si
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id
+WHERE si.item_id = ?;
+
+-- Get all items with prices
+getAllItemsWithPrices:
+SELECT
+    si.item_id,
+    si.key,
+    si.name,
+    si.item_price AS original_price,
+    ap.price AS aynix_price,
+    ap.last_updated AS aynix_last_updated
+FROM sellable_item si
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id;
