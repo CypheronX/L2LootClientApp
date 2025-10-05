@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.rememberScrollState
@@ -44,8 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
-import com.l2loot.features.explore.components.MonsterCardData
-import com.l2loot.features.explore.components.MonsterMaterial
+import com.l2loot.features.explore.components.MonsterCardShimmer
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -212,31 +212,14 @@ fun ExploreScreen() {
                         modifier = Modifier.fillMaxSize()
                             .padding(end = LocalSpacing.current.space34)
                     ) {
-                        items(20) { monster ->
-                            MonsterCard(monsterData = MonsterCardData(
-                                monsterId = 21143,
-                                monsterName = "Catacomb Scavenger Bat",
-                                level = 31,
-                                averageIncome = 7100,
-                                hpMultiplier = 4,
-                                materials = listOf(
-                                    MonsterMaterial(
-                                        materialName = "Stone of Purity",
-                                        materialCountMin = 1,
-                                        materialCountMax = 1
-                                    ),
-                                    MonsterMaterial(
-                                        materialName = "Animal Bone",
-                                        materialCountMin = 1,
-                                        materialCountMax = 3
-                                    ),
-                                    MonsterMaterial(
-                                        materialName = "Scroll: Enchant Weapon (D)",
-                                        materialCountMin = 1,
-                                        materialCountMax = 1
-                                    )
-                                )
-                            ))
+                        if (state.isRefreshing) {
+                            items(6) {
+                                MonsterCardShimmer()
+                            }
+                        } else {
+                            items(state.monsters) { monster ->
+                                MonsterCard(monsterData = monster)
+                            }
                         }
                     }
 

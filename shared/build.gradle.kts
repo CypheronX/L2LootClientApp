@@ -12,6 +12,7 @@ sqldelight {
             deriveSchemaFromMigrations.set(false)
             verifyMigrations.set(true)
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+            dialect("app.cash.sqldelight:sqlite-3-38-dialect:2.0.2")
         }
     }
 }
@@ -26,12 +27,13 @@ kotlin {
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.lifecycle.viewmodel)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.sql.delight)
+            implementation(libs.sql.delight.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-            implementation(libs.sql.delight)
         }
     }
 }
