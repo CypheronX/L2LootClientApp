@@ -16,6 +16,7 @@ data class MonsterJson(
 @Serializable
 data class SellableItemJson(
     val item_id: Long,
+    val key: String,
     val name: String,
     val price: Long
 )
