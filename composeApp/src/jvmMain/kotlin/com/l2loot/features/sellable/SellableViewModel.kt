@@ -2,7 +2,7 @@ package com.l2loot.features.sellable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.data.SellableRepository
+import com.l2loot.data.sellable.SellableRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch

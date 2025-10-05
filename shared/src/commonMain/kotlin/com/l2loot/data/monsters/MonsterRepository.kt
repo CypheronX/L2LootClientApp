@@ -1,4 +1,4 @@
-package com.l2loot.data
+package com.l2loot.data.monsters
 
 import com.l2loot.L2LootDatabase
 import com.l2loot.Monsters
