@@ -16,7 +16,6 @@ fun createDatabase(driverFactory: DriverFactory): L2LootDatabase {
     val hpMultiplierAdapter = object : ColumnAdapter<HPMultiplier, Double> {
         override fun decode(databaseValue: Double): HPMultiplier {
             return HPMultiplier.fromValue(databaseValue)
-                ?: throw IllegalArgumentException("Unknown HP multiplier: $databaseValue")
         }
 
         override fun encode(value: HPMultiplier): Double {
@@ -26,8 +25,8 @@ fun createDatabase(driverFactory: DriverFactory): L2LootDatabase {
 
     val dropCategoryAdapter = object : ColumnAdapter<DropCategory, Long> {
         override fun decode(databaseValue: Long): DropCategory {
-            return DropCategory.fromValue(databaseValue.toInt())
-                ?: throw IllegalArgumentException("Unknown drop category: $databaseValue")
+            return DropCategory.fromValue(databaseValue)
+                ?: throw IllegalArgumentException("Unknown drop category in database: $databaseValue")
         }
 
         override fun encode(value: DropCategory): Long {

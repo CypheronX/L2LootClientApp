@@ -47,8 +47,7 @@ WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.is_rift = 0
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle
-LIMIT :limit;
+  AND d.chronicle = :chronicle;
 
 getMonstersByLevelRangeAndHP:
 SELECT
@@ -76,11 +75,10 @@ INNER JOIN droplist d ON m.id = d.mob_id
 INNER JOIN sellable_item si ON d.item_id = si.item_id
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
-  AND m.hp_multiplier IN (:hpMultipliers)
+  AND m.hp_multiplier IN :hpMultipliers
   AND m.is_rift = 0
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle
-LIMIT :limit;
+  AND d.chronicle = :chronicle;
 
 getMonstersByLevelRangeIncludeRift:
 SELECT
@@ -109,8 +107,7 @@ INNER JOIN sellable_item si ON d.item_id = si.item_id
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle
-LIMIT :limit;
+  AND d.chronicle = :chronicle;
 
 getMonstersByLevelRangeAndHPIncludeRift:
 SELECT
@@ -138,10 +135,9 @@ INNER JOIN droplist d ON m.id = d.mob_id
 INNER JOIN sellable_item si ON d.item_id = si.item_id
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
-  AND m.hp_multiplier IN (:hpMultipliers)
+  AND m.hp_multiplier IN :hpMultipliers
   AND m.chronicle = :chronicle
-  AND d.chronicle = :chronicle
-LIMIT :limit;
+  AND d.chronicle = :chronicle;
 
 insert:
 INSERT INTO monsters (id, name, level, exp, is_rift, chronicle, hp_multiplier)
