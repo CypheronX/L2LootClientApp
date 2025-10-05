@@ -6,19 +6,39 @@ import com.l2loot.data.monsters.MonsterRepository
 import com.l2loot.Monsters
 import com.l2loot.data.monsters.strategy.MonsterQueryParams
 import com.l2loot.data.monsters.strategy.MonsterResult
+import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 internal class ExploreViewModel(
-    private val monsterRepository: MonsterRepository
+    private val monsterRepository: MonsterRepository,
+    private val userSettingsRepository: UserSettingsRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ExploreScreenState.initial())
     val state = _state.asStateFlow()
+    
+    init {
+        viewModelScope.launch {
+            userSettingsRepository.getSettings().collect { settings ->
+                _state.update { 
+                    it.copy(
+                        limit = settings?.limit?.toString() ?: "10",
+                        minLevel = settings?.minLevel?.toString() ?: "",
+                        maxLevel = settings?.maxLevel?.toString() ?: "",
+                        chronicle = settings?.chronicle ?: "c5",
+                        showRiftMobs = settings?.showRiftMobs ?: false,
+                        useAynixPrices = settings?.isAynixPrices ?: false
+                    )
+                }
+            }
+        }
+    }
 
     val chronicleOptions: List<String>
         get() {
@@ -33,18 +53,40 @@ internal class ExploreViewModel(
         when (event) {
             is ExploreScreenEvent.ChronicleChanged -> {
                 _state.update { it.copy(chronicle = event.chronicle) }
+                viewModelScope.launch {
+                    userSettingsRepository.updateChronicle(event.chronicle)
+                }
             }
             is ExploreScreenEvent.MinLevelChanged -> {
                 _state.update { it.copy(minLevel = event.minLevel) }
+                val minLevelValue = event.minLevel.toIntOrNull()
+                if (minLevelValue != null) {
+                    viewModelScope.launch {
+                        userSettingsRepository.updateMinLevel(minLevelValue)
+                    }
+                }
             }
             is ExploreScreenEvent.MaxLevelChanged -> {
                 _state.update { it.copy(maxLevel = event.maxLevel) }
+                val maxLevelValue = event.maxLevel.toIntOrNull()
+                if (maxLevelValue != null) {
+                    viewModelScope.launch {
+                        userSettingsRepository.updateMaxLevel(maxLevelValue)
+                    }
+                }
             }
             is ExploreScreenEvent.LimitChanged -> {
                 _state.update { it.copy(limit = event.limit) }
+                viewModelScope.launch {
+                    val limitInt = event.limit.toIntOrNull() ?: 10
+                    userSettingsRepository.updateLimit(limitInt)
+                }
             }
             is ExploreScreenEvent.ShowRiftMobsChanged -> {
                 _state.update { it.copy(showRiftMobs = event.showRiftMobs) }
+                viewModelScope.launch {
+                    userSettingsRepository.updateShowRiftMobs(event.showRiftMobs)
+                }
             }
             is ExploreScreenEvent.Explore -> {
                 loadMonsters(_state.value.toMonsterQueryParams())

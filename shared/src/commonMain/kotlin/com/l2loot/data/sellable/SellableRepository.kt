@@ -1,5 +1,6 @@
 package com.l2loot.data.sellable
 
+import com.l2loot.GetAllItemsWithPrices
 import com.l2loot.L2LootDatabase
 import com.l2loot.data.raw_data.SellableItemJson
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,10 @@ import java.net.http.HttpResponse
 
 interface SellableRepository {
     fun getSellableItemsFromFirebase(): Flow<List<SellableItemJson>>
+    suspend fun fetchAynixPricesOnce()
     suspend fun getSellableItemsFromDatabase(): List<SellableItemJson>
+    suspend fun getAllItemsWithPrices(): List<GetAllItemsWithPrices>
+    suspend fun updateItemPrice(itemKey: String, newPrice: Long)
 }
 
 class SellableRepositoryImpl(
@@ -32,7 +36,17 @@ class SellableRepositoryImpl(
             try {
                 val items = fetchItemsFromFirebase()
                 emit(items)
+
+                val timestamp = System.currentTimeMillis()
+                for (item in items) {
+                    database.aynixPricesQueries.upsertPrice(
+                        item_id = item.item_id,
+                        price = item.price,
+                        last_updated = timestamp
+                    )
+                }
             } catch (e: Exception) {
+                println("❌ Failed to update Aynix prices: ${e.message}")
                 e.printStackTrace()
                 emit(emptyList())
             }
@@ -48,6 +62,42 @@ class SellableRepositoryImpl(
                 key = item.key,
                 name = item.name,
                 price = item.item_price
+            )
+        }
+    }
+
+    override suspend fun fetchAynixPricesOnce() {
+        withContext(Dispatchers.IO) {
+            try {
+                val items = fetchItemsFromFirebase()
+                val timestamp = System.currentTimeMillis()
+                
+                database.transaction {
+                    for (item in items) {
+                        database.aynixPricesQueries.upsertPrice(
+                            item_id = item.item_id,
+                            price = item.price,
+                            last_updated = timestamp
+                        )
+                    }
+                }
+                println("✅ Fetched ${items.size} Aynix prices from Firebase")
+            } catch (e: Exception) {
+                println("❌ Failed to fetch Aynix prices: ${e.message}")
+                throw e
+            }
+        }
+    }
+
+    override suspend fun getAllItemsWithPrices(): List<GetAllItemsWithPrices> = withContext(Dispatchers.IO) {
+        database.sellableItemQueries.getAllItemsWithPrices().executeAsList()
+    }
+
+    override suspend fun updateItemPrice(itemKey: String, newPrice: Long) {
+        withContext(Dispatchers.IO) {
+            database.sellableItemQueries.updatePrice(
+                item_price = newPrice,
+                key = itemKey
             )
         }
     }

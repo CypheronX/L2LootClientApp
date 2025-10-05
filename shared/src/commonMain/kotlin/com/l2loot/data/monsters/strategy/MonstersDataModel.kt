@@ -62,7 +62,8 @@ data class MonsterQueryParams(
     val chronicle: String,
     val limit: Int,
     val hpMultipliers: List<HPMultiplier>? = null,
-    val includeRift: Boolean = false
+    val includeRift: Boolean = false,
+    val useAynixPrices: Boolean = false
 )
 
 /**

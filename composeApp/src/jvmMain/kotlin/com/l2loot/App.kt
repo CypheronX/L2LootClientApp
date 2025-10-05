@@ -46,7 +46,11 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
+import com.l2loot.data.sellable.SellableRepository
+import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 @Serializable
 object Explore
@@ -66,6 +70,8 @@ fun App() {
     var selectedDestination by remember { mutableStateOf(startDestination.ordinal) }
 
     val loadDbDataRepository: LoadDbDataRepository = koinInject()
+    val sellableRepository: SellableRepository = koinInject()
+    val userSettingsRepository: UserSettingsRepository = koinInject()
     
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
@@ -127,6 +133,20 @@ fun App() {
             isStartupComplete = true
             loadDbDataRepository.load()
         }
+    }
+    
+    // Initialize user settings with defaults if not exists
+    LaunchedEffect(Unit) {
+        userSettingsRepository.initializeDefaults()
+    }
+    
+    LaunchedEffect(Unit) {
+        userSettingsRepository.getSettings()
+            .collectLatest { settings ->
+                if (settings?.isAynixPrices == true) {
+                    sellableRepository.getSellableItemsFromFirebase().collect()
+                }
+            }
     }
 
     AppTheme {
