@@ -46,7 +46,11 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
+import com.l2loot.data.sellable.SellableRepository
+import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 
 @Serializable
 object Explore
@@ -66,9 +70,12 @@ fun App() {
     var selectedDestination by remember { mutableStateOf(startDestination.ordinal) }
 
     val loadDbDataRepository: LoadDbDataRepository = koinInject()
+    val sellableRepository: SellableRepository = koinInject()
+    val userSettingsRepository: UserSettingsRepository = koinInject()
     
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
+    var isLoading = true
     
     var startupProgress by remember { mutableStateOf(0f) }
     var isStartupComplete by remember { mutableStateOf(false) }
@@ -127,16 +134,30 @@ fun App() {
             loadDbDataRepository.load()
         }
     }
+    
+    // Initialize user settings with defaults if not exists
+    LaunchedEffect(Unit) {
+        userSettingsRepository.initializeDefaults()
+    }
+    
+    LaunchedEffect(Unit) {
+        userSettingsRepository.getSettings()
+            .collectLatest { settings ->
+                if (settings?.isAynixPrices == true) {
+                    sellableRepository.getSellableItemsFromFirebase().collect()
+                }
+            }
+    }
 
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
+            isLoading = !isStartupComplete || (isDatabaseEmpty && dbLoadProgress < 1.0f)
+            val currentProgress = if (!isStartupComplete) startupProgress else dbLoadProgress
+            
             Scaffold { contentPadding ->
-                val isLoading = !isStartupComplete || (isDatabaseEmpty && dbLoadProgress < 1.0f)
-                val currentProgress = if (!isStartupComplete) startupProgress else dbLoadProgress
-                
                 if (isLoading) {
                     Column(
                         modifier = Modifier.fillMaxSize().padding(contentPadding),

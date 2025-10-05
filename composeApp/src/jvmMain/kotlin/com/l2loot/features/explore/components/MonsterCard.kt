@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -44,34 +46,21 @@ import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import com.l2loot.data.monsters.strategy.DropItemInfo
+import com.l2loot.data.monsters.strategy.HPMultiplier
+import com.l2loot.data.monsters.strategy.MonsterResult
 import com.l2loot.design.LocalSpacing
-import com.l2loot.ui.theme.onSurfaceDark
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
-
-data class MonsterMaterial(
-    val materialName: String,
-    val materialCountMin: Int,
-    val materialCountMax: Int
-)
-
-data class MonsterCardData(
-    val monsterId: Int,
-    val monsterName: String,
-    val level: Int,
-    val averageIncome: Int,
-    val hpMultiplier: Int,
-    val materials: List<MonsterMaterial>
-)
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MonsterCard(
-    monsterData: MonsterCardData,
+    monsterData: MonsterResult,
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
-    val monsterUrl = "https://lineage2wiki.org/c5/monster/${monsterData.monsterId}"
+    val monsterUrl = "https://lineage2wiki.org/c5/monster/${monsterData.id}"
 
     var isHovered by remember { mutableStateOf(false) }
 
@@ -80,6 +69,12 @@ fun MonsterCard(
     }
 
     val density = LocalDensity.current
+
+    val hpMultiplierValue = if (monsterData.hpMultiplier == HPMultiplier.X05) {
+        "x1/2"
+    } else {
+        "x${ monsterData.hpMultiplier.value.toInt() }"
+    }
 
     LaunchedEffect(Unit) {
         try {
@@ -102,6 +97,7 @@ fun MonsterCard(
         ),
         modifier = modifier
             .fillMaxWidth()
+            .heightIn(215.dp)
     ) {
         Column(
             modifier = Modifier
@@ -155,7 +151,7 @@ fun MonsterCard(
                         .pointerHoverIcon(PointerIcon.Hand)
                 ) {
                     Text(
-                        text = monsterData.monsterName,
+                        text = monsterData.name,
                         style = MaterialTheme.typography.titleMedium,
                         color = textColor
                     )
@@ -220,7 +216,7 @@ fun MonsterCard(
                             .alignBy(FirstBaseline)
                     )
                     Text(
-                        text = "${monsterData.averageIncome} a.",
+                        text = "${monsterData.getAverageIncome()} a.",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
@@ -240,7 +236,7 @@ fun MonsterCard(
                             .alignBy(FirstBaseline)
                     )
                     Text(
-                        text = "x${monsterData.hpMultiplier}",
+                        text = hpMultiplierValue,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
@@ -256,12 +252,12 @@ fun MonsterCard(
                     .padding(horizontal = LocalSpacing.current.space12)
             ) {
                 Text(
-                    text = "Materials:",
+                    text = "Spoil Materials:",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
                 )
                 MonsterMaterialsTable(
-                    monsterMaterials = monsterData.materials
+                    monsterMaterials = monsterData.spoils
                 )
             }
         }
@@ -270,7 +266,7 @@ fun MonsterCard(
 
 @Composable
 fun MonsterMaterialsTable(
-    monsterMaterials: List<MonsterMaterial>,
+    monsterMaterials: List<DropItemInfo>,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -279,10 +275,10 @@ fun MonsterMaterialsTable(
             .fillMaxWidth()
     ) {
         monsterMaterials.forEachIndexed { index, material ->
-            val materialsCount = if (material.materialCountMax != material.materialCountMin) {
-                "${material.materialCountMin} - ${material.materialCountMax}"
+            val materialsCount = if (material.max != material.min) {
+                "${material.min} - ${material.max}"
             } else {
-                "${material.materialCountMax}"
+                "${material.max}"
             }
 
             Row(
@@ -300,7 +296,7 @@ fun MonsterMaterialsTable(
 
             ) {
                 Text(
-                    text = material.materialName,
+                    text = material.itemName,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )

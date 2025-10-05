@@ -1,4 +1,5 @@
 import kotlin.Boolean;
+import com.l2loot.data.monsters.strategy.HPMultiplier;
 
 
 CREATE TABLE monsters (
@@ -8,7 +9,7 @@ CREATE TABLE monsters (
     exp INTEGER NOT NULL,
     is_rift INTEGER AS Boolean DEFAULT 0,
     chronicle TEXT NOT NULL,
-    hp_multiplier REAL NOT NULL,
+    hp_multiplier REAL AS HPMultiplier NOT NULL,
     PRIMARY KEY (id, chronicle)
 );
 
@@ -19,12 +20,128 @@ SELECT *
 FROM monsters;
 
 getMonstersByLevelRange:
-SELECT *
-FROM monsters
-WHERE level >= :minLevel
-  AND level <= :maxLevel
-  AND chronicle = :chronicle
-LIMIT :limit;
+SELECT
+    -- All monster columns
+    m.id,
+    m.name,
+    m.level,
+    m.exp,
+    m.is_rift,
+    m.chronicle,
+    m.hp_multiplier,
+
+    -- Selected droplist columns
+    d.min,
+    d.max,
+    d.chance,
+    d.category,
+
+    -- Selected sellable_item columns
+    si.key AS item_key,
+    si.name AS item_name,
+    -- Use Aynix price if available and user setting enabled, otherwise use original price
+    COALESCE(ap.price, si.item_price) AS item_price
+FROM monsters m
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
+INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+WHERE m.level >= :minLevel
+  AND m.level <= :maxLevel
+  AND m.is_rift = 0
+  AND m.chronicle = :chronicle;
+
+getMonstersByLevelRangeAndHP:
+SELECT
+    -- All monster columns
+    m.id,
+    m.name,
+    m.level,
+    m.exp,
+    m.is_rift,
+    m.chronicle,
+    m.hp_multiplier,
+
+    -- Selected droplist columns
+    d.min,
+    d.max,
+    d.chance,
+    d.category,
+
+    -- Selected sellable_item columns
+    si.key AS item_key,
+    si.name AS item_name,
+    COALESCE(ap.price, si.item_price) AS item_price
+FROM monsters m
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
+INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+WHERE m.level >= :minLevel
+  AND m.level <= :maxLevel
+  AND m.hp_multiplier IN :hpMultipliers
+  AND m.is_rift = 0
+  AND m.chronicle = :chronicle
+;
+
+getMonstersByLevelRangeIncludeRift:
+SELECT
+    -- All monster columns
+    m.id,
+    m.name,
+    m.level,
+    m.exp,
+    m.is_rift,
+    m.chronicle,
+    m.hp_multiplier,
+
+    -- Selected droplist columns
+    d.min,
+    d.max,
+    d.chance,
+    d.category,
+
+    -- Selected sellable_item columns
+    si.key AS item_key,
+    si.name AS item_name,
+    COALESCE(ap.price, si.item_price) AS item_price
+FROM monsters m
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
+INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+WHERE m.level >= :minLevel
+  AND m.level <= :maxLevel
+  AND m.chronicle = :chronicle
+;
+
+getMonstersByLevelRangeAndHPIncludeRift:
+SELECT
+    -- All monster columns
+    m.id,
+    m.name,
+    m.level,
+    m.exp,
+    m.is_rift,
+    m.chronicle,
+    m.hp_multiplier,
+
+    -- Selected droplist columns
+    d.min,
+    d.max,
+    d.chance,
+    d.category,
+
+    -- Selected sellable_item columns
+    si.key AS item_key,
+    si.name AS item_name,
+    COALESCE(ap.price, si.item_price) AS item_price
+FROM monsters m
+INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
+INNER JOIN sellable_item si ON d.item_id = si.item_id
+LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+WHERE m.level >= :minLevel
+  AND m.level <= :maxLevel
+  AND m.hp_multiplier IN :hpMultipliers
+  AND m.chronicle = :chronicle
+;
 
 insert:
 INSERT INTO monsters (id, name, level, exp, is_rift, chronicle, hp_multiplier)
