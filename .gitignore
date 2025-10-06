@@ -20,3 +20,4 @@ composeApp/l2loot
 composeApp/l2loot.db
 debug.log
 tasks.txt
+shared/src/commonMain/resources/data/new_mobs_in_c5.json
