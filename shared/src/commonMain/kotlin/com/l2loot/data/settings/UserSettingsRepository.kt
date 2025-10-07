@@ -10,12 +10,14 @@ import kotlinx.coroutines.flow.map
 
 data class UserSettings(
     val id: Long,
+    val userGuid: String,
     val chronicle: String,
     val minLevel: Long?,
     val maxLevel: Long?,
     val limit: Long,
     val showRiftMobs: Boolean,
     val isAynixPrices: Boolean,
+    val trackEvents: Boolean,
     val lastUpdated: Long?,
 )
 
@@ -36,6 +38,8 @@ interface UserSettingsRepository {
     suspend fun updateLimit(limit: Int)
     suspend fun updateShowRiftMobs(showRiftMobs: Boolean)
     suspend fun updateIsAynixPrices(isAynixPrices: Boolean)
+    suspend fun updateUserGuid(guid: String)
+    suspend fun updateTrackEvents(trackEvents: Boolean)
     suspend fun initializeDefaults()
 }
 
@@ -51,12 +55,14 @@ class UserSettingsRepositoryImpl(
             .map {
                 UserSettings(
                     id = it?.id ?: 1,
+                    userGuid = it?.user_guid ?: "",
                     chronicle = it?.chronicle ?: "c5",
                     minLevel = it?.min_level,
                     maxLevel = it?.max_level,
                     limit = it?.limit_results ?: 10,
                     showRiftMobs = it?.show_rift_mobs ?: false,
                     isAynixPrices = it?.is_aynix_prices ?: false,
+                    trackEvents = it?.track_events ?: true,
                     lastUpdated = it?.last_updated
                 )
             }
@@ -150,6 +156,22 @@ class UserSettingsRepositoryImpl(
             val timestamp = System.currentTimeMillis()
             database.userSettingsQueries.updateIsAynixPrices(
                 is_aynix_prices = isAynixPrices,
+                last_updated = timestamp
+            )
+        }
+    }
+
+    override suspend fun updateUserGuid(guid: String) {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.updateUserGuid(user_guid = guid)
+        }
+    }
+
+    override suspend fun updateTrackEvents(trackEvents: Boolean) {
+        withContext(Dispatchers.IO) {
+            val timestamp = System.currentTimeMillis()
+            database.userSettingsQueries.updateTrackEvents(
+                track_events = trackEvents,
                 last_updated = timestamp
             )
         }

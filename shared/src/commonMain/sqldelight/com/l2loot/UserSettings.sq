@@ -3,12 +3,14 @@ import kotlin.Boolean;
 -- Single row settings table (id is always 1)
 CREATE TABLE user_settings (
     id INTEGER PRIMARY KEY DEFAULT 1,
+    user_guid TEXT NOT NULL DEFAULT '',
     chronicle TEXT NOT NULL DEFAULT 'c5',
     min_level INTEGER NOT NULL DEFAULT 1,
     max_level INTEGER NOT NULL DEFAULT 85,
     limit_results INTEGER NOT NULL DEFAULT 10,
     show_rift_mobs INTEGER AS Boolean NOT NULL DEFAULT 0,
     is_aynix_prices INTEGER AS Boolean NOT NULL DEFAULT 0,
+    track_events INTEGER AS Boolean NOT NULL DEFAULT 1,
     last_updated INTEGER NOT NULL DEFAULT 0
 );
 
@@ -30,6 +32,16 @@ ON CONFLICT(id) DO UPDATE SET
     show_rift_mobs = excluded.show_rift_mobs,
     is_aynix_prices = excluded.is_aynix_prices,
     last_updated = excluded.last_updated;
+
+updateUserGuid:
+UPDATE user_settings
+SET user_guid = ?
+WHERE id = 1;
+
+updateTrackEvents:
+UPDATE user_settings
+SET track_events = ?, last_updated = ?
+WHERE id = 1;
 
 -- Individual update queries (more granular control)
 updateChronicle:
