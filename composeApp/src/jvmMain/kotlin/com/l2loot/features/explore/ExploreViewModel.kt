@@ -26,6 +26,20 @@ internal class ExploreViewModel(
     
     init {
         viewModelScope.launch {
+            val initialSettings = userSettingsRepository.getSettings().first()
+            _state.update { 
+                it.copy(
+                    limit = initialSettings?.limit?.toString() ?: "10",
+                    minLevel = initialSettings?.minLevel?.toString() ?: "",
+                    maxLevel = initialSettings?.maxLevel?.toString() ?: "",
+                    chronicle = initialSettings?.chronicle ?: "c5",
+                    showRiftMobs = initialSettings?.showRiftMobs ?: false,
+                    useAynixPrices = initialSettings?.isAynixPrices ?: false
+                )
+            }
+            
+            loadMonsters(_state.value.toMonsterQueryParams())
+            
             userSettingsRepository.getSettings().collect { settings ->
                 _state.update { 
                     it.copy(
