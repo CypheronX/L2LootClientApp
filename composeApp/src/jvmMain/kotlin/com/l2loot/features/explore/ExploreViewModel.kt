@@ -89,6 +89,16 @@ internal class ExploreViewModel(
                     userSettingsRepository.updateShowRiftMobs(event.showRiftMobs)
                 }
             }
+            is ExploreScreenEvent.HPMultiplierToggled -> {
+                _state.update { currentState ->
+                    val newMultipliers = if (event.multiplier in currentState.selectedHPMultipliers) {
+                        currentState.selectedHPMultipliers - event.multiplier
+                    } else {
+                        currentState.selectedHPMultipliers + event.multiplier
+                    }
+                    currentState.copy(selectedHPMultipliers = newMultipliers)
+                }
+            }
             is ExploreScreenEvent.Explore -> {
                 loadMonsters(_state.value.toMonsterQueryParams())
             }
