@@ -70,12 +70,6 @@ fun MonsterCard(
 
     val density = LocalDensity.current
 
-    val hpMultiplierValue = if (monsterData.hpMultiplier == HPMultiplier.X05) {
-        "x1/2"
-    } else {
-        "x${ monsterData.hpMultiplier.value.toInt() }"
-    }
-
     LaunchedEffect(Unit) {
         try {
             val linkBytes = Res.readBytes("files/svg/link.svg")
@@ -236,7 +230,7 @@ fun MonsterCard(
                             .alignBy(FirstBaseline)
                     )
                     Text(
-                        text = hpMultiplierValue,
+                        text = monsterData.hpMultiplier.getHPMultiplierLabel(),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
