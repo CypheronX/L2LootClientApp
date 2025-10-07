@@ -67,15 +67,23 @@ fun ExploreScreen() {
     var filterPainter by remember {
         mutableStateOf<Painter?>(null)
     }
+    
+    var spoilPainter by remember {
+        mutableStateOf<Painter?>(null)
+    }
 
     val density = LocalDensity.current
 
     LaunchedEffect(Unit) {
         try {
             val filterBytes = Res.readBytes("files/svg/filter.svg")
+            val spoilBytes = Res.readBytes("files/svg/spoil.svg")
 
             if (filterBytes.isNotEmpty()) {
                 filterPainter = filterBytes.decodeToSvgPainter(density)
+            }
+            if (spoilBytes.isNotEmpty()) {
+                spoilPainter = spoilBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
             println("Failed to load svg icons: ${e.message}")
@@ -212,7 +220,7 @@ fun ExploreScreen() {
                                     )
                                     Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
                                     Text(
-                                        text = "x${multiplier.value}",
+                                        text = multiplier.getHPMultiplierLabel(),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
@@ -248,33 +256,64 @@ fun ExploreScreen() {
                         }
                     }
 
-                    VerticalScrollbar(
-                        adapter = rememberScrollbarAdapter(gridState),
-                        style = ScrollbarStyle(
-                            minimalHeight = 48.dp,
-                            thickness = 13.dp,
-                            shape = MaterialTheme.shapes.extraLarge,
-                            hoverDurationMillis = 300,
-                            unhoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                            hoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                        ),
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .align(Alignment.CenterEnd)
-                            .padding(start = LocalSpacing.current.space8)
-                            .offset(x = -LocalSpacing.current.space10)
-                            .background(
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                                shape = MaterialTheme.shapes.extraLarge
+                    if (state.monsters.isEmpty() && !state.isRefreshing) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.Center)
+                        ) {
+                            spoilPainter?.let { painter ->
+                                Image(
+                                    painter = painter,
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(
+                                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+                                    ),
+                                    modifier = Modifier.size(120.dp)
+                                )
+                            }
+                            
+                            Spacer(modifier = Modifier.size(LocalSpacing.current.space24))
+                            
+                            Text(
+                                text = "These lands hold no spoils for ye by yer criteria.",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             )
-                            .pointerHoverIcon(PointerIcon.Hand)
-                    )
+                        }
+                    }
+
+                    if (state.monsters.isNotEmpty()) {
+                        VerticalScrollbar(
+                            adapter = rememberScrollbarAdapter(gridState),
+                            style = ScrollbarStyle(
+                                minimalHeight = 48.dp,
+                                thickness = 13.dp,
+                                shape = MaterialTheme.shapes.extraLarge,
+                                hoverDurationMillis = 300,
+                                unhoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                hoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                            ),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .align(Alignment.CenterEnd)
+                                .padding(start = LocalSpacing.current.space8)
+                                .offset(x = -LocalSpacing.current.space10)
+                                .background(
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                                    shape = MaterialTheme.shapes.extraLarge
+                                )
+                                .pointerHoverIcon(PointerIcon.Hand)
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
 
                 Text(
-                    text = "*Average income = spoil drop income + monster drop income (including adena and other selable materials)",
+                    text = "*Average income = spoil drop income + monster drop income (including adena and other sellable materials)",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )

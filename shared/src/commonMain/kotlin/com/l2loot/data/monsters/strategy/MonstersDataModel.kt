@@ -6,14 +6,23 @@ import kotlinx.coroutines.flow.Flow
  * HP Multiplier tiers for monsters
  */
 enum class HPMultiplier(val value: Double) {
+    X1(1.0),
     X025(0.25),
     X05(0.5),
-    X1(1.0),
     X2(2.0),
     X3(3.0),
     X4(4.0),
     X5(5.0),
-    X6(6.0);
+    X6(6.0),
+    X10(10.0);
+
+    fun getHPMultiplierLabel(): String {
+        return when(this) {
+            X025 -> "x1/4"
+            X05 -> "x1/2"
+            else -> "x${ this.value.toInt() }"
+        }
+    }
 
     companion object {
         private const val EPSILON = 0.0001  // Tolerance for comparison
