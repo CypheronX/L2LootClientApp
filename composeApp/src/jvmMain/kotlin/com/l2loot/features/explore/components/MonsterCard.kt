@@ -70,10 +70,11 @@ fun MonsterCard(
 
     val density = LocalDensity.current
 
-    val hpMultiplierValue = if (monsterData.hpMultiplier == HPMultiplier.X05) {
-        "x1/2"
-    } else {
-        "x${ monsterData.hpMultiplier.value.toInt() }"
+    val hpMultiplierValue = when(monsterData.hpMultiplier) {
+        HPMultiplier.X025 -> "x1/4"
+        HPMultiplier.X05 -> "x1/2"
+        else -> "x${ monsterData.hpMultiplier.value.toInt() }"
+
     }
 
     LaunchedEffect(Unit) {

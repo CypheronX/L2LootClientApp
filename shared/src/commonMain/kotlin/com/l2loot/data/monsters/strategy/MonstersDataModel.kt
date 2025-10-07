@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.Flow
  * HP Multiplier tiers for monsters
  */
 enum class HPMultiplier(val value: Double) {
+    X025(0.25),
     X05(0.5),
     X1(1.0),
     X2(2.0),
     X3(3.0),
     X4(4.0),
     X5(5.0),
-    X6(6.0),
-    X10(10.0);
+    X6(6.0);
 
     companion object {
         private const val EPSILON = 0.0001  // Tolerance for comparison

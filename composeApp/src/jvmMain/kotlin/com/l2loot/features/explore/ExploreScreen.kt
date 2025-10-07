@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollbarStyle
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +28,9 @@ import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Button
 import androidx.compose.material.Text
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -42,6 +47,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.l2loot.data.monsters.strategy.HPMultiplier
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
@@ -56,11 +62,9 @@ fun ExploreScreen() {
     val state by viewModel.state.collectAsState()
     val horizontalScrollState = rememberScrollState()
     val gridState = rememberLazyGridState()
+    var showMenu by remember { mutableStateOf(false) }
 
     var filterPainter by remember {
-        mutableStateOf<Painter?>(null)
-    }
-    var sortPainter by remember {
         mutableStateOf<Painter?>(null)
     }
 
@@ -69,13 +73,9 @@ fun ExploreScreen() {
     LaunchedEffect(Unit) {
         try {
             val filterBytes = Res.readBytes("files/svg/filter.svg")
-            val sortBytes = Res.readBytes("files/svg/sort.svg")
 
             if (filterBytes.isNotEmpty()) {
                 filterPainter = filterBytes.decodeToSvgPainter(density)
-            }
-            if (sortBytes.isNotEmpty()) {
-                sortPainter = sortBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
             println("Failed to load svg icons: ${e.message}")
@@ -138,61 +138,86 @@ fun ExploreScreen() {
                         .fillMaxWidth()
                         .padding(end = LocalSpacing.current.space34)
                 ) {
-                    Button(
-                        onClick = {},
-                        shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier
-                            .pointerHoverIcon(PointerIcon.Hand)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                    Box {
+                        Button(
+                            onClick = {
+                                showMenu = !showMenu
+                            },
+                            shape = MaterialTheme.shapes.medium,
                             modifier = Modifier
+                                .pointerHoverIcon(PointerIcon.Hand)
                         ) {
-                            filterPainter?.let { filter ->
-                                Image(
-                                    painter = filter,
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
-                                    modifier = Modifier
-                                        .size(LocalSpacing.current.space16)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                            ) {
+                                filterPainter?.let { filter ->
+                                    Image(
+                                        painter = filter,
+                                        contentDescription = null,
+                                        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+                                        modifier = Modifier
+                                            .size(LocalSpacing.current.space16)
+                                    )
+                                }
+                                Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
+                                Text(
+                                    text = "Filter",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.onPrimary
                                 )
                             }
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
-                            Text(
-                                text = "Filter",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
                         }
-                    }
-
-                    Spacer(modifier = Modifier.size(LocalSpacing.current.space6))
-
-                    Button(
-                        onClick = {},
-                        shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier
-                            .pointerHoverIcon(PointerIcon.Hand)
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        
+                        DropdownMenu(
+                            expanded = showMenu,
+                            onDismissRequest = { showMenu = false },
                             modifier = Modifier
+                                .width(220.dp)
+                                .heightIn(max = 300.dp)
                         ) {
-                            sortPainter?.let { sort ->
-                                Image(
-                                    painter = sort,
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
-                                    modifier = Modifier
-                                        .size(LocalSpacing.current.space16)
-                                )
-                            }
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
                             Text(
-                                text = "Sort",
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onPrimary
+                                text = "HP Multipliers",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                modifier = Modifier
+                                    .padding(horizontal = LocalSpacing.current.space12)
+                                    .padding(top = LocalSpacing.current.space12)
+                                    .padding(bottom = LocalSpacing.current.space8)
                             )
+
+                            HPMultiplier.entries.forEach { multiplier ->
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            viewModel.onEvent(ExploreScreenEvent.HPMultiplierToggled(multiplier))
+                                        }
+                                        .padding(horizontal = LocalSpacing.current.space12)
+                                        .padding(vertical = LocalSpacing.current.space4)
+                                        .pointerHoverIcon(PointerIcon.Hand)
+                                ) {
+                                    Checkbox(
+                                        checked = multiplier in state.selectedHPMultipliers,
+                                        onCheckedChange = {
+                                            viewModel.onEvent(ExploreScreenEvent.HPMultiplierToggled(multiplier))
+                                        },
+                                        colors = CheckboxDefaults.colors(
+                                            checkedColor = MaterialTheme.colorScheme.primary,
+                                            uncheckedColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            checkmarkColor = MaterialTheme.colorScheme.onPrimary
+                                        ),
+                                        modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+                                    )
+                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
+                                    Text(
+                                        text = "x${multiplier.value}",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
                         }
                     }
                 }
