@@ -1,5 +1,6 @@
 package com.l2loot.features.explore
 
+import com.l2loot.data.monsters.strategy.HPMultiplier
 import com.l2loot.data.monsters.strategy.MonsterQueryParams
 import com.l2loot.data.monsters.strategy.MonsterResult
 
@@ -12,6 +13,7 @@ internal data class ExploreScreenState(
     val showRiftMobs: Boolean,
     val useAynixPrices: Boolean,
     val isRefreshing: Boolean,
+    val selectedHPMultipliers: Set<HPMultiplier>,
 ) {
     companion object {
         fun initial() = ExploreScreenState(
@@ -23,6 +25,7 @@ internal data class ExploreScreenState(
             showRiftMobs = false,
             useAynixPrices = false,
             isRefreshing = false,
+            selectedHPMultipliers = emptySet(),
         )
     }
 }
@@ -32,6 +35,7 @@ internal fun ExploreScreenState.toMonsterQueryParams() = MonsterQueryParams(
     maxLevel = maxLevel.toIntOrNull() ?: 85,
     chronicle = chronicle,
     limit = limit.toIntOrNull() ?: 10,
+    hpMultipliers = if (selectedHPMultipliers.isEmpty()) null else selectedHPMultipliers.toList(),
     includeRift = showRiftMobs,
     useAynixPrices = useAynixPrices
 )
@@ -42,5 +46,6 @@ internal sealed interface ExploreScreenEvent {
     data class MaxLevelChanged(val maxLevel: String) : ExploreScreenEvent
     data class LimitChanged(val limit: String) : ExploreScreenEvent
     data class ShowRiftMobsChanged(val showRiftMobs: Boolean) : ExploreScreenEvent
+    data class HPMultiplierToggled(val multiplier: HPMultiplier) : ExploreScreenEvent
     object Explore : ExploreScreenEvent
 }
