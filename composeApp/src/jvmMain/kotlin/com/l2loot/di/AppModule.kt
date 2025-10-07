@@ -11,4 +11,6 @@ val appModule = module {
     single { DriverFactory() } bind DriverFactory::class
     viewModelOf(::ExploreViewModel)
     viewModelOf(::SellableViewModel)
+    
+    includes(jvmModule)
 }

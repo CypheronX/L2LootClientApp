@@ -46,11 +46,14 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
+import com.l2loot.data.analytics.AnalyticsService
+import com.l2loot.data.analytics.generateUserGuid
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
 
 @Serializable
 object Explore
@@ -72,11 +75,12 @@ fun App() {
     val loadDbDataRepository: LoadDbDataRepository = koinInject()
     val sellableRepository: SellableRepository = koinInject()
     val userSettingsRepository: UserSettingsRepository = koinInject()
+    val analyticsService: AnalyticsService = koinInject()
     
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
-    var isLoading = true
-    
+    var isLoading: Boolean
+
     var startupProgress by remember { mutableStateOf(0f) }
     var isStartupComplete by remember { mutableStateOf(false) }
     
@@ -135,9 +139,28 @@ fun App() {
         }
     }
     
-    // Initialize user settings with defaults if not exists
     LaunchedEffect(Unit) {
         userSettingsRepository.initializeDefaults()
+    }
+    
+    LaunchedEffect(Unit) {
+        val settings = userSettingsRepository.getSettings().firstOrNull()
+        
+        val userGuid = if (settings?.userGuid.isNullOrEmpty()) {
+            val newGuid = generateUserGuid()
+            userSettingsRepository.updateUserGuid(newGuid)
+            newGuid
+        } else {
+            settings!!.userGuid
+        }
+        
+        analyticsService.setUserGuid(userGuid)
+        
+        val isFirstOpen = settings?.userGuid.isNullOrEmpty()
+        
+        analyticsService.setTrackingEnabled(settings?.trackEvents ?: true)
+        
+        analyticsService.trackAppOpen(isFirstOpen)
     }
     
     LaunchedEffect(Unit) {
