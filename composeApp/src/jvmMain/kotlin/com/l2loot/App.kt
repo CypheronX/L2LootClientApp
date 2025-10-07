@@ -50,10 +50,12 @@ import com.l2loot.data.analytics.AnalyticsService
 import com.l2loot.data.analytics.generateUserGuid
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.ui.components.TrackingConsentDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 @Serializable
 object Explore
@@ -77,12 +79,15 @@ fun App() {
     val userSettingsRepository: UserSettingsRepository = koinInject()
     val analyticsService: AnalyticsService = koinInject()
     
+    val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
     var isLoading: Boolean
 
     var startupProgress by remember { mutableStateOf(0f) }
     var isStartupComplete by remember { mutableStateOf(false) }
+    var showConsentDialog by remember { mutableStateOf(false) }
+    var shouldShowConsentAfterLoad by remember { mutableStateOf(false) }
     
     var spoilPainter by remember {
         mutableStateOf<Painter?>(null)
@@ -146,21 +151,20 @@ fun App() {
     LaunchedEffect(Unit) {
         val settings = userSettingsRepository.getSettings().firstOrNull()
         
-        val userGuid = if (settings?.userGuid.isNullOrEmpty()) {
-            val newGuid = generateUserGuid()
-            userSettingsRepository.updateUserGuid(newGuid)
-            newGuid
-        } else {
-            settings!!.userGuid
-        }
-        
-        analyticsService.setUserGuid(userGuid)
-        
         val isFirstOpen = settings?.userGuid.isNullOrEmpty()
         
-        analyticsService.setTrackingEnabled(settings?.trackEvents ?: true)
-        
-        analyticsService.trackAppOpen(isFirstOpen)
+        if (isFirstOpen) {
+            val newGuid = generateUserGuid()
+            analyticsService.setUserGuid(newGuid)
+            analyticsService.setTrackingEnabled(true)
+            analyticsService.trackAppOpen(isFirstOpen = true)
+            
+            shouldShowConsentAfterLoad = true
+        } else {
+            analyticsService.setUserGuid(settings.userGuid)
+            analyticsService.setTrackingEnabled(settings.trackEvents)
+            analyticsService.trackAppOpen(isFirstOpen = false)
+        }
     }
     
     LaunchedEffect(Unit) {
@@ -178,6 +182,37 @@ fun App() {
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
             isLoading = !isStartupComplete || (isDatabaseEmpty && dbLoadProgress < 1.0f)
+            
+            LaunchedEffect(isLoading, shouldShowConsentAfterLoad) {
+                if (!isLoading && shouldShowConsentAfterLoad) {
+                    delay(500)
+                    showConsentDialog = true
+                }
+            }
+            
+            if (showConsentDialog) {
+                TrackingConsentDialog(
+                    onAccept = {
+                        showConsentDialog = false
+                        scope.launch {
+                            val currentGuid = analyticsService.getUserGuid()
+                            userSettingsRepository.updateUserGuid(currentGuid)
+                            userSettingsRepository.updateTrackEvents(trackEvents = true)
+                            analyticsService.setTrackingEnabled(true)
+                        }
+                    },
+                    onDecline = {
+                        showConsentDialog = false
+                        scope.launch {
+                            val currentGuid = analyticsService.getUserGuid()
+                            userSettingsRepository.updateUserGuid(currentGuid)
+                            userSettingsRepository.updateTrackEvents(trackEvents = false)
+                            analyticsService.setTrackingEnabled(false)
+                        }
+                    }
+                )
+            }
+            
             val currentProgress = if (!isStartupComplete) startupProgress else dbLoadProgress
             
             Scaffold { contentPadding ->

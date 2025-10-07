@@ -36,6 +36,11 @@ interface AnalyticsService {
     fun setUserGuid(guid: String)
     
     /**
+     * Get the current user GUID
+     */
+    fun getUserGuid(): String
+    
+    /**
      * Enable or disable event tracking
      */
     fun setTrackingEnabled(enabled: Boolean)
@@ -64,12 +69,15 @@ class AnalyticsServiceImpl(
         this.userGuid = guid
     }
     
+    override fun getUserGuid(): String {
+        return userGuid
+    }
+    
     override fun setTrackingEnabled(enabled: Boolean) {
         this.trackingEnabled = enabled
     }
     
     override fun trackAppOpen(isFirstOpen: Boolean) {
-        // First open is always tracked, regardless of settings
         if (!isFirstOpen && !trackingEnabled) {
             return
         }
