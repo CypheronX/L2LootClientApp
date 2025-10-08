@@ -127,7 +127,8 @@ class AnalyticsServiceImpl(
             client_id = userGuid,
             user_id = userGuid,
             events = listOf(event),
-            timestamp_micros = System.currentTimeMillis() * 1000
+            timestamp_micros = System.currentTimeMillis() * 1000,
+            debug_mode = true
         )
         
         try {
@@ -155,7 +156,8 @@ private data class GA4Payload(
     val client_id: String,
     val user_id: String,
     val events: List<GA4Event>,
-    val timestamp_micros: Long
+    val timestamp_micros: Long,
+    val debug_mode: Boolean
 )
 
 @Serializable

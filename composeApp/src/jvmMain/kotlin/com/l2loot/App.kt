@@ -43,6 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.font.FontVariation
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
@@ -50,6 +51,7 @@ import com.l2loot.data.analytics.AnalyticsService
 import com.l2loot.data.analytics.generateUserGuid
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.features.setting.SettingsScreen
 import com.l2loot.ui.components.TrackingConsentDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -61,9 +63,11 @@ import kotlinx.coroutines.launch
 object Explore
 @Serializable
 object Sellable
+@Serializable
+object Settings
 
 enum class L2LootScreens {
-    Explore, Sellable
+    Explore, Sellable, Settings
 }
 
 
@@ -98,6 +102,9 @@ fun App() {
     var logoPainter by remember {
         mutableStateOf<Painter?>(null)
     }
+    var cogPainter by remember {
+        mutableStateOf<Painter?>(null)
+    }
 
     val density = LocalDensity.current
 
@@ -110,6 +117,7 @@ fun App() {
             val spoilBytes = Res.readBytes("files/svg/spoil.svg")
             val sellableBytes = Res.readBytes("files/svg/sellable.svg")
             val logoBytes = Res.readBytes("files/svg/l2loot_logo.svg")
+            val cogBytes = Res.readBytes("files/svg/cog.svg")
 
             if (spoilBytes.isNotEmpty()) {
                 spoilPainter = spoilBytes.decodeToSvgPainter(density)
@@ -119,6 +127,9 @@ fun App() {
             }
             if (logoBytes.isNotEmpty()) {
                 logoPainter = logoBytes.decodeToSvgPainter(density)
+            }
+            if (cogBytes.isNotEmpty()) {
+                cogPainter = cogBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
             println("Failed to load svg icons: ${e.message}")
@@ -341,6 +352,37 @@ fun App() {
                                         modifier = Modifier
                                             .pointerHoverIcon(PointerIcon.Hand)
                                     )
+                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
+                                    NavigationRailItem(
+                                        selected = isCurrentlyChosen(L2LootScreens.Settings.ordinal),
+                                        onClick = {
+                                            navController.navigate(route = Settings)
+                                            selectedDestination = L2LootScreens.Settings.ordinal
+                                        },
+                                        icon = {
+                                            cogPainter?.let { cog ->
+                                                Image(
+                                                    cog, null,
+                                                    colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                )
+                                            }
+                                        },
+                                        label = {
+                                            Text(
+                                                "Settings",
+                                                color = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                    MaterialTheme.colorScheme.secondary else
+                                                    MaterialTheme.colorScheme.onSurfaceVariant,
+                                                style = MaterialTheme.typography.labelMedium
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
+                                    )
                                     }
                                 }
                                 NavHost(
@@ -350,6 +392,7 @@ fun App() {
                                 ) {
                                     composable<Explore> { ExploreScreen() }
                                     composable<Sellable> { SellableScreen() }
+                                    composable<Settings> { SettingsScreen() }
                                 }
                             }
                         }
