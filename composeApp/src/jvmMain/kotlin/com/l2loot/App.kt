@@ -43,22 +43,31 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.text.font.FontVariation
 import com.l2loot.design.LocalSpacing
 import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
+import com.l2loot.data.analytics.AnalyticsService
+import com.l2loot.data.analytics.generateUserGuid
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.features.setting.SettingsScreen
+import com.l2loot.ui.components.TrackingConsentDialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 
 @Serializable
 object Explore
 @Serializable
 object Sellable
+@Serializable
+object Settings
 
 enum class L2LootScreens {
-    Explore, Sellable
+    Explore, Sellable, Settings
 }
 
 
@@ -72,13 +81,17 @@ fun App() {
     val loadDbDataRepository: LoadDbDataRepository = koinInject()
     val sellableRepository: SellableRepository = koinInject()
     val userSettingsRepository: UserSettingsRepository = koinInject()
+    val analyticsService: AnalyticsService = koinInject()
     
+    val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
-    var isLoading = true
-    
+    var isLoading: Boolean
+
     var startupProgress by remember { mutableStateOf(0f) }
     var isStartupComplete by remember { mutableStateOf(false) }
+    var showConsentDialog by remember { mutableStateOf(false) }
+    var shouldShowConsentAfterLoad by remember { mutableStateOf(false) }
     
     var spoilPainter by remember {
         mutableStateOf<Painter?>(null)
@@ -87,6 +100,9 @@ fun App() {
         mutableStateOf<Painter?>(null)
     }
     var logoPainter by remember {
+        mutableStateOf<Painter?>(null)
+    }
+    var cogPainter by remember {
         mutableStateOf<Painter?>(null)
     }
 
@@ -101,6 +117,7 @@ fun App() {
             val spoilBytes = Res.readBytes("files/svg/spoil.svg")
             val sellableBytes = Res.readBytes("files/svg/sellable.svg")
             val logoBytes = Res.readBytes("files/svg/l2loot_logo.svg")
+            val cogBytes = Res.readBytes("files/svg/cog.svg")
 
             if (spoilBytes.isNotEmpty()) {
                 spoilPainter = spoilBytes.decodeToSvgPainter(density)
@@ -110,6 +127,9 @@ fun App() {
             }
             if (logoBytes.isNotEmpty()) {
                 logoPainter = logoBytes.decodeToSvgPainter(density)
+            }
+            if (cogBytes.isNotEmpty()) {
+                cogPainter = cogBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
             println("Failed to load svg icons: ${e.message}")
@@ -135,9 +155,27 @@ fun App() {
         }
     }
     
-    // Initialize user settings with defaults if not exists
     LaunchedEffect(Unit) {
         userSettingsRepository.initializeDefaults()
+    }
+    
+    LaunchedEffect(Unit) {
+        val settings = userSettingsRepository.getSettings().firstOrNull()
+        
+        val isFirstOpen = settings?.userGuid.isNullOrEmpty()
+        
+        if (isFirstOpen) {
+            val newGuid = generateUserGuid()
+            analyticsService.setUserGuid(newGuid)
+            analyticsService.setTrackingEnabled(true)
+            analyticsService.trackAppOpen(isFirstOpen = true)
+            
+            shouldShowConsentAfterLoad = true
+        } else {
+            analyticsService.setUserGuid(settings.userGuid)
+            analyticsService.setTrackingEnabled(settings.trackEvents)
+            analyticsService.trackAppOpen(isFirstOpen = false)
+        }
     }
     
     LaunchedEffect(Unit) {
@@ -155,6 +193,37 @@ fun App() {
                 .background(color = MaterialTheme.colorScheme.surface)
         ) {
             isLoading = !isStartupComplete || (isDatabaseEmpty && dbLoadProgress < 1.0f)
+            
+            LaunchedEffect(isLoading, shouldShowConsentAfterLoad) {
+                if (!isLoading && shouldShowConsentAfterLoad) {
+                    delay(500)
+                    showConsentDialog = true
+                }
+            }
+            
+            if (showConsentDialog) {
+                TrackingConsentDialog(
+                    onAccept = {
+                        showConsentDialog = false
+                        scope.launch {
+                            val currentGuid = analyticsService.getUserGuid()
+                            userSettingsRepository.updateUserGuid(currentGuid)
+                            userSettingsRepository.updateTrackEvents(trackEvents = true)
+                            analyticsService.setTrackingEnabled(true)
+                        }
+                    },
+                    onDecline = {
+                        showConsentDialog = false
+                        scope.launch {
+                            val currentGuid = analyticsService.getUserGuid()
+                            userSettingsRepository.updateUserGuid(currentGuid)
+                            userSettingsRepository.updateTrackEvents(trackEvents = false)
+                            analyticsService.setTrackingEnabled(false)
+                        }
+                    }
+                )
+            }
+            
             val currentProgress = if (!isStartupComplete) startupProgress else dbLoadProgress
             
             Scaffold { contentPadding ->
@@ -283,6 +352,37 @@ fun App() {
                                         modifier = Modifier
                                             .pointerHoverIcon(PointerIcon.Hand)
                                     )
+                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
+                                    NavigationRailItem(
+                                        selected = isCurrentlyChosen(L2LootScreens.Settings.ordinal),
+                                        onClick = {
+                                            navController.navigate(route = Settings)
+                                            selectedDestination = L2LootScreens.Settings.ordinal
+                                        },
+                                        icon = {
+                                            cogPainter?.let { cog ->
+                                                Image(
+                                                    cog, null,
+                                                    colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                )
+                                            }
+                                        },
+                                        label = {
+                                            Text(
+                                                "Settings",
+                                                color = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                    MaterialTheme.colorScheme.secondary else
+                                                    MaterialTheme.colorScheme.onSurfaceVariant,
+                                                style = MaterialTheme.typography.labelMedium
+                                            )
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
+                                    )
                                     }
                                 }
                                 NavHost(
@@ -292,6 +392,7 @@ fun App() {
                                 ) {
                                     composable<Explore> { ExploreScreen() }
                                     composable<Sellable> { SellableScreen() }
+                                    composable<Settings> { SettingsScreen() }
                                 }
                             }
                         }

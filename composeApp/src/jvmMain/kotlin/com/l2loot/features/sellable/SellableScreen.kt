@@ -71,37 +71,64 @@ fun SellableScreen() {
 
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space20))
 
-                when {
-                    state.error != null -> {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "Error: ${state.error}",
-                                color = MaterialTheme.colorScheme.error,
-                                style = MaterialTheme.typography.bodyLarge
+                val filteredItems = state.items.filter {
+                    it.key.lowercase() != "adena" && it.name.lowercase() != "adena"
+                }
+                val midpoint = (filteredItems.size + 1) / 2
+                val firstColumnItems = filteredItems.take(midpoint)
+                val secondColumnItems = filteredItems.drop(midpoint)
+                val scrollState = rememberScrollState()
+
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.space24),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                    ) {
+                        Card(
+                            colors = CardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                             )
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.Start,
+                                modifier = Modifier
+                                    .width(154.dp)
+                                    .padding(LocalSpacing.current.space16)
+                            ) {
+                                Text(
+                                    "Use prices by AYNIX",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.size(LocalSpacing.current.space6))
+                                Switch(
+                                    checked = state.pricesByAynix,
+                                    onCheckedChange = {
+                                        viewModel.onEvent(SellableScreenEvent.TogglePriceSource(it))
+                                    },
+                                    modifier = Modifier
+                                        .pointerHoverIcon(PointerIcon.Hand)
+                                )
+                            }
                         }
-                    }
 
-                    else -> {
-                        val filteredItems = state.items.filter {
-                            it.key.lowercase() != "adena" && it.name.lowercase() != "adena"
-                        }
-                        val midpoint = (filteredItems.size + 1) / 2
-                        val firstColumnItems = filteredItems.take(midpoint)
-                        val secondColumnItems = filteredItems.drop(midpoint)
-                        val scrollState = rememberScrollState()
-
-                        Column(
-                            modifier = Modifier.fillMaxSize()
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
                         ) {
                             Row(
-                                horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.space24),
+                                horizontalArrangement = Arrangement.SpaceEvenly,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
+                                    .fillMaxSize()
+                                    .verticalScroll(scrollState)
                             ) {
                                 Card(
                                     colors = CardColors(
@@ -112,185 +139,141 @@ fun SellableScreen() {
                                     )
                                 ) {
                                     Column(
-                                        horizontalAlignment = Alignment.Start,
-                                        modifier = Modifier
-                                            .width(154.dp)
-                                            .padding(LocalSpacing.current.space16)
+                                        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
+                                        modifier = Modifier.padding(LocalSpacing.current.space20)
                                     ) {
-                                        Text(
-                                            "Use prices by AYNIX",
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                        Spacer(modifier = Modifier.size(LocalSpacing.current.space6))
-                                        Switch(
-                                            checked = state.pricesByAynix,
-                                            onCheckedChange = {
-                                                viewModel.onEvent(SellableScreenEvent.TogglePriceSource(it))
-                                            },
-                                            modifier = Modifier
-                                                .pointerHoverIcon(PointerIcon.Hand)
-                                        )
-                                    }
-                                }
-
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .weight(1f)
-                                ) {
-                                    Row(
-                                        horizontalArrangement = Arrangement.SpaceEvenly,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .verticalScroll(scrollState)
-                                    ) {
-                                        Card(
-                                            colors = CardColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
-                                                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                                            )
-                                        ) {
-                                            Column(
-                                                verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
-                                                modifier = Modifier.padding(LocalSpacing.current.space20)
-                                            ) {
-                                                if (state.loading) {
-                                                    repeat(20) {
-                                                        SellableItemShimmer()
-                                                    }
-                                                } else {
-                                                    firstColumnItems.forEach { sellable ->
-                                                        SellableItem(
-                                                            sellableItem = SellableItemData(
-                                                                key = sellable.key,
-                                                                name = sellable.name
-                                                            ),
-                                                            price = state.prices[sellable.key] ?: "",
-                                                            onPriceChange = { newPrice ->
-                                                                viewModel.updatePrice(sellable.key, newPrice)
-                                                            },
-                                                            enabled = !state.pricesByAynix
-                                                        )
-                                                    }
-                                                }
+                                        if (state.loading) {
+                                            repeat(20) {
+                                                SellableItemShimmer()
                                             }
-                                        }
-
-                                        Card(
-                                            colors = CardColors(
-                                                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                                contentColor = MaterialTheme.colorScheme.onSurface,
-                                                disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                                disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                                            )
-                                        ) {
-                                            Column(
-                                                verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
-                                                modifier = Modifier.padding(LocalSpacing.current.space20)
-                                            ) {
-                                                if (state.loading) {
-                                                    repeat(20) {
-                                                        SellableItemShimmer()
-                                                    }
-                                                } else {
-                                                    secondColumnItems.forEach { sellable ->
-                                                        SellableItem(
-                                                            sellableItem = SellableItemData(
-                                                                key = sellable.key,
-                                                                name = sellable.name
-                                                            ),
-                                                            price = state.prices[sellable.key] ?: "",
-                                                            onPriceChange = { newPrice ->
-                                                                viewModel.updatePrice(sellable.key, newPrice)
-                                                            },
-                                                            enabled = !state.pricesByAynix
-                                                        )
-                                                    }
-                                                }
+                                        } else {
+                                            firstColumnItems.forEach { sellable ->
+                                                SellableItem(
+                                                    sellableItem = SellableItemData(
+                                                        key = sellable.key,
+                                                        name = sellable.name
+                                                    ),
+                                                    price = state.prices[sellable.key] ?: "",
+                                                    onPriceChange = { newPrice ->
+                                                        viewModel.updatePrice(sellable.key, newPrice)
+                                                    },
+                                                    enabled = !state.pricesByAynix
+                                                )
                                             }
                                         }
                                     }
+                                }
 
-                                    VerticalScrollbar(
-                                        adapter = rememberScrollbarAdapter(scrollState),
-                                        style = ScrollbarStyle(
-                                            minimalHeight = 48.dp,
-                                            thickness = 13.dp,
-                                            shape = MaterialTheme.shapes.extraLarge,
-                                            hoverDurationMillis = 300,
-                                            unhoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
-                                            hoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                                        ),
-                                        modifier = Modifier
-                                            .align(Alignment.CenterEnd)
-                                            .fillMaxHeight()
-                                            .padding(start = LocalSpacing.current.space8)
-                                            .background(
-                                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
-                                                shape = MaterialTheme.shapes.extraLarge
-                                            )
-                                            .pointerHoverIcon(PointerIcon.Hand)
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space34))
-
-                            val uriHandler = LocalUriHandler.current
-                            val annotatedText = buildAnnotatedString {
-                                withStyle(
-                                    style = SpanStyle(
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                                Card(
+                                    colors = CardColors(
+                                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                        contentColor = MaterialTheme.colorScheme.onSurface,
+                                        disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                        disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                                     )
                                 ) {
-                                    append("*Prices by AYNYX - AYNIX is owner of Discord Channel ")
-                                }
-                                
-                                pushStringAnnotation(
-                                    tag = "URL",
-                                    annotation = "https://discord.gg/D75XKfS6"
-                                )
-                                withStyle(
-                                    style = SpanStyle(
-                                        color = MaterialTheme.colorScheme.secondary,
-                                        textDecoration = TextDecoration.Underline,
-                                        fontSize = MaterialTheme.typography.bodySmall.fontSize
-                                    )
-                                ) {
-                                    append("Market Owners")
-                                }
-                                pop()
-                                
-                                withStyle(
-                                    style = SpanStyle(
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        fontSize = MaterialTheme.typography.bodySmall.fontSize
-                                    )
-                                ) {
-                                    append(".  Prices are relevant only for Reborn Signature Server")
-                                }
-                            }
-                            
-                            ClickableText(
-                                text = annotatedText,
-                                onClick = { offset ->
-                                    annotatedText.getStringAnnotations(
-                                        tag = "URL",
-                                        start = offset,
-                                        end = offset
-                                    ).firstOrNull()?.let { annotation ->
-                                        uriHandler.openUri(annotation.item)
+                                    Column(
+                                        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space14),
+                                        modifier = Modifier.padding(LocalSpacing.current.space20)
+                                    ) {
+                                        if (state.loading) {
+                                            repeat(20) {
+                                                SellableItemShimmer()
+                                            }
+                                        } else {
+                                            secondColumnItems.forEach { sellable ->
+                                                SellableItem(
+                                                    sellableItem = SellableItemData(
+                                                        key = sellable.key,
+                                                        name = sellable.name
+                                                    ),
+                                                    price = state.prices[sellable.key] ?: "",
+                                                    onPriceChange = { newPrice ->
+                                                        viewModel.updatePrice(sellable.key, newPrice)
+                                                    },
+                                                    enabled = !state.pricesByAynix
+                                                )
+                                            }
+                                        }
                                     }
-                                },
-                                modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+                                }
+                            }
+
+                            VerticalScrollbar(
+                                adapter = rememberScrollbarAdapter(scrollState),
+                                style = ScrollbarStyle(
+                                    minimalHeight = 48.dp,
+                                    thickness = 13.dp,
+                                    shape = MaterialTheme.shapes.extraLarge,
+                                    hoverDurationMillis = 300,
+                                    unhoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                                    hoverColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                                ),
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                                    .fillMaxHeight()
+                                    .padding(start = LocalSpacing.current.space8)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                                        shape = MaterialTheme.shapes.extraLarge
+                                    )
+                                    .pointerHoverIcon(PointerIcon.Hand)
                             )
-
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
                         }
                     }
+                    Spacer(modifier = Modifier.size(LocalSpacing.current.space34))
+
+                    val uriHandler = LocalUriHandler.current
+                    val annotatedText = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize
+                            )
+                        ) {
+                            append("*Prices by AYNYX - AYNIX is owner of Discord Channel ")
+                        }
+
+                        pushStringAnnotation(
+                            tag = "URL",
+                            annotation = "https://discord.gg/D75XKfS6"
+                        )
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.secondary,
+                                textDecoration = TextDecoration.Underline,
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize
+                            )
+                        ) {
+                            append("Market Owners")
+                        }
+                        pop()
+
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontSize = MaterialTheme.typography.bodySmall.fontSize
+                            )
+                        ) {
+                            append(".  Prices are relevant only for Reborn Signature Server")
+                        }
+                    }
+
+                    ClickableText(
+                        text = annotatedText,
+                        onClick = { offset ->
+                            annotatedText.getStringAnnotations(
+                                tag = "URL",
+                                start = offset,
+                                end = offset
+                            ).firstOrNull()?.let { annotation ->
+                                uriHandler.openUri(annotation.item)
+                            }
+                        },
+                        modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+                    )
+
+                    Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
                 }
             }
         }
