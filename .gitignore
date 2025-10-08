@@ -20,3 +20,6 @@ composeApp/l2loot
 composeApp/l2loot.db
 debug.log
 tasks.txt
+bash.exe.stackdump
+mykeystore.jks
+mykeystore.b64
