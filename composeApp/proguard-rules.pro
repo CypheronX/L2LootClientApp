@@ -134,3 +134,56 @@
 -keep class kotlinx.coroutines.CoroutineScope
 # this is a weird one, but breaks build on some combinations of OS and JDK (reproduced on Windows 10 + Corretto 16)
 -dontwarn org.graalvm.compiler.core.aarch64.AArch64NodeMatchRules_MatchStatementSet*
+
+#################################### KOIN ########################################
+# Koin uses reflection for dependency injection, must keep all modules and definitions
+-keep class org.koin.** { *; }
+-keep class org.koin.core.** { *; }
+-keep class org.koin.dsl.** { *; }
+-keepclassmembers class * {
+    public <init>(...);
+}
+
+# Keep all Koin modules
+-keep class * extends org.koin.core.module.Module { *; }
+-keep class **.*KoinModule* { *; }
+
+# Keep all classes that might be injected by Koin
+-keep class com.l2loot.** { *; }
+
+# Keep ViewModels (used by Koin)
+-keep class * extends androidx.lifecycle.ViewModel { *; }
+-keep class androidx.lifecycle.** { *; }
+
+#################################### KTOR ########################################
+# Keep Ktor CIO engine - it uses native code and reflection
+-keep class io.ktor.** { *; }
+-keep class io.ktor.client.** { *; }
+-keep class io.ktor.client.engine.cio.** { *; }
+-keep class io.ktor.util.** { *; }
+-keepclassmembers class io.ktor.** { *; }
+
+-dontwarn io.ktor.**
+-dontwarn kotlinx.coroutines.debug.**
+
+# Keep Ktor serialization
+-keep class io.ktor.serialization.** { *; }
+-keep class io.ktor.client.plugins.** { *; }
+
+#################################### SQLDelight ##################################
+# Keep all SQLDelight generated code
+-keep class app.cash.sqldelight.** { *; }
+-keep class com.l2loot.L2LootDatabase** { *; }
+-keep class com.l2loot.**Queries { *; }
+
+# Keep database driver
+-keep class app.cash.sqldelight.driver.** { *; }
+
+#################################### Additional ##################################
+# Keep all data classes and models
+-keep @kotlinx.serialization.Serializable class * { *; }
+
+# Keep all resources
+-keepclassmembers class **.R$* {
+    public static <fields>;
+}
