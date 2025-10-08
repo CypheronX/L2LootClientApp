@@ -1,29 +1,63 @@
-# Keep main entry point
--keep class com.l2loot.MainKt { *; }
+-keep class org.sqlite.** { *; }
 
-# Keep Compose runtime
--keep class androidx.compose.** { *; }
--keep class org.jetbrains.compose.** { *; }
+-keepclasseswithmembers public class com.l2loot.MainKt {
+    public static void main(java.lang.String[]);
+}
 
-# Keep Koin
--keep class org.koin.** { *; }
--dontwarn org.koin.**
+-dontwarn kotlinx.coroutines.debug.*
 
-# Keep Kotlin metadata
--keep class kotlin.Metadata { *; }
--keepattributes RuntimeVisibleAnnotations
+-keep class kotlin.** { *; }
+-keep class kotlinx.** { *; }
+-keep class kotlinx.coroutines.** { *; }
 
-# Keep coroutines
--keepnames class kotlinx.coroutines.** { *; }
--dontwarn kotlinx.coroutines.**
+-assumenosideeffects public class androidx.compose.runtime.ComposerKt {
+    void sourceInformation(androidx.compose.runtime.Composer,java.lang.String);
+    void sourceInformationMarkerStart(androidx.compose.runtime.Composer,int,java.lang.String);
+    void sourceInformationMarkerEnd(androidx.compose.runtime.Composer);
+}
 
-# Keep SQLDelight
--keep class app.cash.sqldelight.** { *; }
--keep class com.l2loot.data.** { *; }
+# Keep `Companion` object fields of serializable classes.
+# This avoids serializer lookup through `getDeclaredClasses` as done for named companion objects.
+-if @kotlinx.serialization.Serializable class **
+-keepclassmembers class <1> {
+    static <1>$Companion Companion;
+}
 
-# Keep serialization
+# Keep `serializer()` on companion objects (both default and named) of serializable classes.
+-if @kotlinx.serialization.Serializable class ** {
+    static **$* *;
+}
+-keepclassmembers class <2>$<3> {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# Keep `INSTANCE.serializer()` of serializable objects.
+-if @kotlinx.serialization.Serializable class ** {
+    public static ** INSTANCE;
+}
+-keepclassmembers class <1> {
+    public static <1> INSTANCE;
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# @Serializable and @Polymorphic are used at runtime for polymorphic serialization.
+-keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
 -keepattributes *Annotation*, InnerClasses
--dontnote kotlinx.serialization.AnnotationsKt
+-dontnote kotlinx.serialization.AnnotationsKt # core serialization annotations
+-dontnote kotlinx.serialization.SerializationKt
+
+# Keep Serializers
+
+-keep,includedescriptorclasses class com.l2loot.**$$serializer { *; }
+-keepclassmembers class com.l2loot.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.l2loot.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# When kotlinx.serialization.json.JsonObjectSerializer occurs
 
 -keepclassmembers class kotlinx.serialization.json.** {
     *** Companion;
@@ -32,19 +66,71 @@
     kotlinx.serialization.KSerializer serializer(...);
 }
 
-# Keep data classes
--keepclassmembers class * {
-    *** copy(...);
-    *** component1();
-    *** component2();
-    *** component3();
-    *** component4();
-    *** component5();
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-adaptresourcefilenames okhttp3/internal/publicsuffix/PublicSuffixDatabase.gz
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt and other security providers are available.
+-dontwarn okhttp3.internal.platform.**
+-dontwarn org.conscrypt.**
+-dontwarn org.bouncycastle.**
+-dontwarn org.openjsse.**
+#################################### SLF4J #####################################
+-dontwarn org.slf4j.**
+
+# Prevent runtime crashes from use of class.java.getName()
+-dontwarn javax.naming.**
+
+-keep class kotlin.** { *; }
+-keep class org.jetbrains.skia.** { *; }
+-keep class org.jetbrains.skiko.** { *; }
+
+-assumenosideeffects public class androidx.compose.runtime.ComposerKt {
+    void sourceInformation(androidx.compose.runtime.Composer,java.lang.String);
+    void sourceInformationMarkerStart(androidx.compose.runtime.Composer,int,java.lang.String);
+    void sourceInformationMarkerEnd(androidx.compose.runtime.Composer);
+    boolean isTraceInProgress();
+    void traceEventStart(int, java.lang.String);
+    void traceEventEnd();
 }
 
-# Keep ViewModels
--keep class * extends androidx.lifecycle.ViewModel { *; }
+# Kotlinx Coroutines Rules
+# https://github.com/Kotlin/kotlinx.coroutines/blob/master/kotlinx-coroutines-core/jvm/resources/META-INF/proguard/coroutines.pro
 
-# Suppress warnings
--dontwarn org.slf4j.**
--dontwarn javax.annotation.**
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+-keepclassmembers class kotlin.coroutines.SafeContinuation {
+    volatile <fields>;
+}
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler
+-dontwarn java.lang.instrument.Instrumentation
+-dontwarn sun.misc.Signal
+-dontwarn java.lang.ClassValue
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
+# https://github.com/Kotlin/kotlinx.coroutines/issues/2046
+-dontwarn android.annotation.SuppressLint
+
+# https://github.com/JetBrains/compose-jb/issues/2393
+-dontnote kotlin.coroutines.jvm.internal.**
+-dontnote kotlin.internal.**
+-dontnote kotlin.jvm.internal.**
+-dontnote kotlin.reflect.**
+-dontnote kotlinx.coroutines.debug.internal.**
+-dontnote kotlinx.coroutines.internal.**
+-keep class kotlin.coroutines.Continuation
+-keep class kotlinx.coroutines.CancellableContinuation
+-keep class kotlinx.coroutines.channels.Channel
+-keep class kotlinx.coroutines.CoroutineDispatcher
+-keep class kotlinx.coroutines.CoroutineScope
+# this is a weird one, but breaks build on some combinations of OS and JDK (reproduced on Windows 10 + Corretto 16)
+-dontwarn org.graalvm.compiler.core.aarch64.AArch64NodeMatchRules_MatchStatementSet*
