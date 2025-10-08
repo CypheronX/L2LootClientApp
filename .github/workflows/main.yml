@@ -1,4 +1,4 @@
-name: Build and Create Releases
+name: Build and Release to Public Repo
 
 on:
   push:
@@ -7,55 +7,56 @@ on:
   workflow_dispatch:
 
 jobs:
-  create-release:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.create_release.outputs.upload_url }}
-    steps:
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-
-  build-windows:
-    permissions: write-all
+  build-and-release:
     runs-on: windows-latest
-    needs: create-release
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Checkout private repository
+        uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: '17'
+          distribution: 'temurin'
 
       - name: Change wrapper permission
         run: chmod +x ./gradlew
 
-      - name: Build .msi
+      - name: Get Version Name
+        id: get_version
+        shell: bash
+        run: |
+          source version.properties
+          echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
+
+      - name: Build MSI Installer
         run: ./gradlew composeApp:packageReleaseMsi
 
-      - name: Get Version Name
-        id: get_version_name
-        shell: bash
-        run: echo "version_name=$(./.github/scripts/get_version_name.sh version.properties" >> GITHUB_OUTPUT
 
-      - name: Upload Release MSI Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release to Public Repository
+        uses: softprops/action-gh-release@v2
         with:
-          upload-url: ${{ needs.create-release.outputs.output1 }}
-          asset_path: composeApp/build/compose/binaries/main-release/msi/L2Loot-
-          asset_name: l2loot-${{ github.ref_name }}.msi
-          asset_content_type: application/octet-stream
+          repository: aleksbalev/L2LootClientAppReleases
+          token: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          files: |
+            composeApp/build/compose/binaries/main-release/msi/L2Loot-${{ steps.get_version.outputs.version_name }}.msi
+          body: |
+            ## L2Loot ${{ github.ref_name }}
+            
+            ### Installation
+            
+            **Windows MSI Installer (Recommended):**
+            - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.msi`
+            - Run the installer and follow the setup wizard
+            - The app will be installed and a desktop shortcut will be created
+            
+            **Windows EXE Portable:**
+            - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.exe`
+            - Extract and run the executable
+            
+            ### What's New
+            - Add your release notes here
