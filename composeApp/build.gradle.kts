@@ -1,4 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import java.io.FileInputStream
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +9,16 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinx.serialization)
 }
+
+val versionPropertiesInputStream = FileInputStream("$rootDir/version.properties")
+val versionProperties = Properties().apply {
+    load(versionPropertiesInputStream)
+}
+val versionMajorProperty = versionProperties.getProperty("versionMajor").toInt()
+val versionMinorProperty = versionProperties.getProperty("versionMinor").toInt()
+val versionPatchProperty = versionProperties.getProperty("versionPatch").toInt()
+
+val versionNameProperty = "$versionMajorProperty.$versionMinorProperty.$versionPatchProperty"
 
 kotlin {
     jvm()
@@ -47,10 +59,10 @@ compose.desktop {
         jvmArgs += listOf("--enable-native-access=ALL-UNNAMED")
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb, TargetFormat.Exe)
+            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
             packageName = "L2Loot"
-            packageVersion = "1.0.0"
-            description = "Lineage 2 Spoil and Loot Calculator"
+            packageVersion = versionNameProperty
+            description = "Lineage 2 QoL app for Spoilers"
             copyright = "© 2025 L2Loot. All rights reserved."
             vendor = "L2Loot"
             
@@ -72,19 +84,13 @@ compose.desktop {
                 shortcut = true
                 menu = true
             }
-            
-            macOS {
-                iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.png"))
-                bundleID = "com.l2loot"
-            }
-            
-            linux {
-                iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.png"))
-            }
         }
-        
-        buildTypes.release.proguard {
-            isEnabled.set(false)
+
+        buildTypes.release {
+            proguard {
+                obfuscate.set(true)
+                configurationFiles.from("proguard-rules.pro")
+            }
         }
     }
 }
