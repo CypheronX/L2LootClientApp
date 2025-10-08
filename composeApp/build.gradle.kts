@@ -21,7 +21,7 @@ val versionPatchProperty = versionProperties.getProperty("versionPatch").toInt()
 val versionNameProperty = "$versionMajorProperty.$versionMinorProperty.$versionPatchProperty"
 
 kotlin {
-    jvm("desktop")
+    jvm()
     
     sourceSets {
         commonMain.dependencies {
