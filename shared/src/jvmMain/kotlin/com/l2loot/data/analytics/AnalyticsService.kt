@@ -31,6 +31,13 @@ interface AnalyticsService {
     fun trackAppOpen(isFirstOpen: Boolean)
     
     /**
+     * Track support link clicks
+     * @param platform The support platform (patreon or kofi)
+     * @param source Where the link was clicked (dialog or settings)
+     */
+    fun trackSupportLinkClick(platform: String, source: String)
+    
+    /**
      * Set the user GUID for analytics
      */
     fun setUserGuid(guid: String)
@@ -98,6 +105,26 @@ class AnalyticsServiceImpl(
         }
     }
     
+    override fun trackSupportLinkClick(platform: String, source: String) {
+        if (!trackingEnabled) {
+            return
+        }
+        
+        scope.launch {
+            try {
+                sendEvent(
+                    eventName = "support_link_click",
+                    parameters = mapOf(
+                        "platform" to platform,
+                        "source" to source
+                    )
+                )
+            } catch (e: Exception) {
+                println("Failed to track support link click: ${e.message}")
+            }
+        }
+    }
+    
     private suspend fun sendEvent(
         eventName: String,
         parameters: Map<String, Any> = emptyMap()
@@ -132,17 +159,13 @@ class AnalyticsServiceImpl(
         )
         
         try {
-            println("Sending analytics event: $eventName")
-            println("User GUID: $userGuid")
-            println("Measurement ID: $measurementId")
-            
             val response = client.post("https://www.google-analytics.com/mp/collect") {
                 parameter("measurement_id", measurementId)
                 parameter("api_secret", apiSecret)
                 contentType(ContentType.Application.Json)
                 setBody(payload)
             }
-            
+
             println("✓ Analytics event '$eventName' sent successfully - Status: ${response.status}")
         } catch (e: Exception) {
             println("✗ Failed to send analytics event '$eventName': ${e.message}")

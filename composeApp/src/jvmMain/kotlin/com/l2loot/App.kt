@@ -54,6 +54,7 @@ import com.l2loot.data.settings.UserSettingsRepository
 import com.l2loot.data.update.UpdateChecker
 import com.l2loot.data.update.UpdateInfo
 import com.l2loot.features.setting.SettingsScreen
+import com.l2loot.ui.components.SupportDialog
 import com.l2loot.ui.components.TrackingConsentDialog
 import com.l2loot.ui.components.UpdateNotification
 import kotlinx.coroutines.delay
@@ -90,12 +91,13 @@ fun App() {
     val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
-    var isLoading: Boolean
+    var isLoading: Boolean = true
 
     var startupProgress by remember { mutableStateOf(0f) }
     var isStartupComplete by remember { mutableStateOf(false) }
     var showConsentDialog by remember { mutableStateOf(false) }
     var shouldShowConsentAfterLoad by remember { mutableStateOf(false) }
+    var showSupportDialog by remember { mutableStateOf(false) }
     var availableUpdate by remember { mutableStateOf<UpdateInfo?>(null) }
     var showUpdateNotification by remember { mutableStateOf(false) }
     
@@ -182,6 +184,19 @@ fun App() {
             analyticsService.setTrackingEnabled(settings.trackEvents)
             analyticsService.trackAppOpen(isFirstOpen = false)
         }
+        
+        val appOpenCount = settings?.appOpenCount ?: 0
+        val shouldShowSupport = (appOpenCount == 2L || appOpenCount == 8L)
+        
+        userSettingsRepository.incrementAppOpenCount()
+        
+         if (shouldShowSupport && !isFirstOpen) {
+            while (isLoading || showConsentDialog) {
+                delay(100)
+            }
+            delay(500)
+            showSupportDialog = true
+        }
     }
     
     LaunchedEffect(Unit) {
@@ -241,6 +256,13 @@ fun App() {
                             analyticsService.setTrackingEnabled(false)
                         }
                     }
+                )
+            }
+            
+            if (showSupportDialog) {
+                SupportDialog(
+                    onDismiss = { showSupportDialog = false },
+                    analyticsService = analyticsService
                 )
             }
             
