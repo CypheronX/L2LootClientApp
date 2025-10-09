@@ -54,10 +54,10 @@ fun UpdateNotification(
     }
     
     LaunchedEffect(Unit) {
-        delay(10000) // Auto-dismiss after 10 seconds
-//        visible = false
-        delay(300) // Wait for animation
-//        onDismiss()
+        delay(10000)
+        visible = false
+        delay(300)
+        onDismiss()
     }
     
     if (visible) {
