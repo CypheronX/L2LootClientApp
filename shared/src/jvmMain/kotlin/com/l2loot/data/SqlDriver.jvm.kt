@@ -8,7 +8,13 @@ import java.util.Properties
 
 actual class DriverFactory {
     actual fun createDriver(): SqlDriver {
-        val dbFile = File("l2loot")
+        val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), "L2Loot")
+        if (!appDataDir.exists()) {
+            appDataDir.mkdirs()
+            println("📁 Created app data directory: ${appDataDir.absolutePath}")
+        }
+        
+        val dbFile = File(appDataDir, "l2loot.db")
         val isNewDatabase = !dbFile.exists()
         
         val properties = Properties().apply {
@@ -16,17 +22,18 @@ actual class DriverFactory {
             setProperty("busy_timeout", "5000")
         }
         
-        val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:l2loot", properties)
+        val dbPath = dbFile.absolutePath
+        val driver: SqlDriver = JdbcSqliteDriver("jdbc:sqlite:$dbPath", properties)
         
         driver.execute(null, "PRAGMA journal_mode=WAL", 0)
         driver.execute(null, "PRAGMA busy_timeout=5000", 0)
         driver.execute(null, "PRAGMA synchronous=NORMAL", 0)
         
         if (isNewDatabase) {
-            println("🆕 Creating new database schema...")
+            println("🆕 Creating new database at: $dbPath")
             L2LootDatabase.Schema.create(driver)
         } else {
-            println("✅ Using existing database")
+            println("✅ Using existing database at: $dbPath")
         }
         
         return driver
