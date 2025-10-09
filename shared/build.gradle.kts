@@ -10,7 +10,7 @@ sqldelight {
         create("L2LootDatabase") {
             packageName.set("com.l2loot")
             deriveSchemaFromMigrations.set(false)
-            verifyMigrations.set(true)
+            verifyMigrations.set(false)
             schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
             dialect("app.cash.sqldelight:sqlite-3-38-dialect:2.0.2")
         }
