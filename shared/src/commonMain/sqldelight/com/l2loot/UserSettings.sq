@@ -11,6 +11,7 @@ CREATE TABLE user_settings (
     show_rift_mobs INTEGER AS Boolean NOT NULL DEFAULT 0,
     is_aynix_prices INTEGER AS Boolean NOT NULL DEFAULT 0,
     track_events INTEGER AS Boolean NOT NULL DEFAULT 1,
+    app_open_count INTEGER NOT NULL DEFAULT 0,
     last_updated INTEGER NOT NULL DEFAULT 0
 );
 
@@ -77,6 +78,11 @@ WHERE id = 1;
 updateIsAynixPrices:
 UPDATE user_settings
 SET is_aynix_prices = ?, last_updated = ?
+WHERE id = 1;
+
+incrementAppOpenCount:
+UPDATE user_settings
+SET app_open_count = app_open_count + 1
 WHERE id = 1;
 
 -- Initialize with defaults if no settings exist

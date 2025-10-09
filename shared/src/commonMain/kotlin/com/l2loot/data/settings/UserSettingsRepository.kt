@@ -18,6 +18,7 @@ data class UserSettings(
     val showRiftMobs: Boolean,
     val isAynixPrices: Boolean,
     val trackEvents: Boolean,
+    val appOpenCount: Long,
     val lastUpdated: Long?,
 )
 
@@ -40,6 +41,7 @@ interface UserSettingsRepository {
     suspend fun updateIsAynixPrices(isAynixPrices: Boolean)
     suspend fun updateUserGuid(guid: String)
     suspend fun updateTrackEvents(trackEvents: Boolean)
+    suspend fun incrementAppOpenCount()
     suspend fun initializeDefaults()
 }
 
@@ -63,6 +65,7 @@ class UserSettingsRepositoryImpl(
                     showRiftMobs = it?.show_rift_mobs ?: false,
                     isAynixPrices = it?.is_aynix_prices ?: false,
                     trackEvents = it?.track_events ?: true,
+                    appOpenCount = it?.app_open_count ?: 0,
                     lastUpdated = it?.last_updated
                 )
             }
@@ -174,6 +177,12 @@ class UserSettingsRepositoryImpl(
                 track_events = trackEvents,
                 last_updated = timestamp
             )
+        }
+    }
+
+    override suspend fun incrementAppOpenCount() {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.incrementAppOpenCount()
         }
     }
 
