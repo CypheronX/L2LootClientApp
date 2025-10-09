@@ -187,3 +187,6 @@
 -keepclassmembers class **.R$* {
     public static <fields>;
 }
+
+# Keep BuildConfig
+-keep class com.l2loot.BuildConfig { *; }
