@@ -138,10 +138,9 @@ fun TrackingConsentDialog(
     onDecline: () -> Unit
 ) {
     GlobalDialog(
-        title = "Help Us Improve L2Loot",
-        description = "We'd like to collect anonymous usage data to improve your experience. " +
-                "This includes tracking when the app opens and interactions like button clicks or dialog actions. " +
-                "No personal information is collected, and you can change this setting anytime in preferences.",
+        title = "Help Me Improve L2Loot",
+        description = "I’d like to collect some anonymous usage data to help make the app better. " +
+                "Nothing personal is ever collected, and you can turn this off anytime in preferences. ",
         onPrimaryAction = onAccept,
         onSecondaryAction = onDecline,
         primaryButtonText = "Allow",
