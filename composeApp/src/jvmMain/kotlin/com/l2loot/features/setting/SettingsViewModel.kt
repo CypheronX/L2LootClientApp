@@ -12,7 +12,8 @@ import kotlinx.coroutines.launch
 
 internal class SettingsViewModel(
     val userSettingsRepository: UserSettingsRepository,
-    val analyticsService: AnalyticsService
+    val analyticsService: AnalyticsService,
+    val updateChecker: com.l2loot.data.update.UpdateChecker
 ) : ViewModel() {
     private val _state = MutableStateFlow(SettingsState.initial())
     val state = _state.asStateFlow()
@@ -39,6 +40,20 @@ internal class SettingsViewModel(
                         currentState.copy(
                             trackUserEvents = event.value
                         )
+                    }
+                }
+            }
+            is SettingsEvent.CheckForUpdates -> {
+                viewModelScope.launch {
+                    try {
+                        val updateInfo = updateChecker.checkForUpdate(event.currentVersion)
+                        _state.update { currentState ->
+                            currentState.copy(
+                                availableUpdate = updateInfo
+                            )
+                        }
+                    } catch (e: Exception) {
+                        println("Failed to check for updates: ${e.message}")
                     }
                 }
             }
