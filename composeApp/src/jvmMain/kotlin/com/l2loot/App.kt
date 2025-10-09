@@ -97,6 +97,7 @@ fun App() {
     var showConsentDialog by remember { mutableStateOf(false) }
     var shouldShowConsentAfterLoad by remember { mutableStateOf(false) }
     var availableUpdate by remember { mutableStateOf<UpdateInfo?>(null) }
+    var showUpdateNotification by remember { mutableStateOf(false) }
     
     var spoilPainter by remember {
         mutableStateOf<Painter?>(null)
@@ -199,6 +200,7 @@ fun App() {
             val updateInfo = updateChecker.checkForUpdate(BuildConfig.VERSION_NAME)
             if (updateInfo != null) {
                 availableUpdate = updateInfo
+                showUpdateNotification = true
             }
         } catch (e: Exception) {
             println("Failed to check for updates: ${e.message}")
@@ -242,11 +244,10 @@ fun App() {
                 )
             }
             
-            // Show update notification if available
-            availableUpdate?.let { updateInfo ->
+            if (showUpdateNotification && availableUpdate != null) {
                 UpdateNotification(
-                    updateInfo = updateInfo,
-                    onDismiss = { availableUpdate = null }
+                    updateInfo = availableUpdate!!,
+                    onDismiss = { showUpdateNotification = false }
                 )
             }
             
@@ -386,15 +387,29 @@ fun App() {
                                             selectedDestination = L2LootScreens.Settings.ordinal
                                         },
                                         icon = {
-                                            cogPainter?.let { cog ->
-                                                Image(
-                                                    cog, null,
-                                                    colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-                                                    modifier = Modifier
-                                                        .size(24.dp)
-                                                )
+                                            Box {
+                                                cogPainter?.let { cog ->
+                                                    Image(
+                                                        cog, null,
+                                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                        modifier = Modifier
+                                                            .size(24.dp)
+                                                    )
+                                                }
+                                                if (availableUpdate != null) {
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .size(8.dp)
+                                                            .align(Alignment.TopEnd)
+                                                            .offset(x = 2.dp, y = (-2).dp)
+                                                            .background(
+                                                                color = MaterialTheme.colorScheme.primary,
+                                                                shape = MaterialTheme.shapes.small
+                                                            )
+                                                    )
+                                                }
                                             }
                                         },
                                         label = {
