@@ -13,7 +13,6 @@ actual class DriverFactory {
         val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), "L2Loot")
         if (!appDataDir.exists()) {
             appDataDir.mkdirs()
-            println("📁 Created app data directory: ${appDataDir.absolutePath}")
         }
         
         val dbFile = File(appDataDir, "l2loot.db")
@@ -36,15 +35,13 @@ actual class DriverFactory {
             L2LootDatabase.Schema.create(driver)
         } else {
             println("✅ Using existing database at: $dbPath")
-            
-            // Get current database version
+
             val currentVersion = getCurrentDatabaseVersion(dbPath)
             val latestVersion = L2LootDatabase.Schema.version.toLong()
             
             if (currentVersion < latestVersion) {
                 println("🔄 Running migrations from version $currentVersion to $latestVersion")
                 
-                // Run migrations with optional callbacks for data seeding
                 L2LootDatabase.Schema.migrate(
                     driver = driver,
                     oldVersion = currentVersion,
