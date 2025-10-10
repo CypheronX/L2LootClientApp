@@ -26427,7 +26427,7 @@
 		"id" : 22001,
 		"name" : "Grim Wolf",
 		"level" : 25,
-		"exp" : 1199,
+		"exp" : 877,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26445,7 +26445,7 @@
 		"id" : 22002,
 		"name" : "Grim Grizzly",
 		"level" : 26,
-		"exp" : 879,
+		"exp" : 934,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26463,7 +26463,7 @@
 		"id" : 22003,
 		"name" : "Grave Robber Scout",
 		"level" : 27,
-		"exp" : 1032,
+		"exp" : 1163,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26481,7 +26481,7 @@
 		"id" : 22004,
 		"name" : "Grave Robber Lookout",
 		"level" : 27,
-		"exp" : 1032,
+		"exp" : 1382,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26499,7 +26499,7 @@
 		"id" : 22005,
 		"name" : "Grave Robber Ranger",
 		"level" : 28,
-		"exp" : 1664,
+		"exp" : 1231,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26517,7 +26517,7 @@
 		"id" : 22006,
 		"name" : "Grave Robber Guard",
 		"level" : 29,
-		"exp" : 1340,
+		"exp" : 1299,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26535,7 +26535,7 @@
 		"id" : 22007,
 		"name" : "Ghost of a Soldier",
 		"level" : 29,
-		"exp" : 1340,
+		"exp" : 1416,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26553,7 +26553,7 @@
 		"id" : 22008,
 		"name" : "Grave Robber Fighter",
 		"level" : 30,
-		"exp" : 1281,
+		"exp" : 1367,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26571,7 +26571,7 @@
 		"id" : 22009,
 		"name" : "Ghost of a Loyal Vassal",
 		"level" : 31,
-		"exp" : 1404,
+		"exp" : 1591,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26589,7 +26589,7 @@
 		"id" : 22010,
 		"name" : "Ghost of a General",
 		"level" : 32,
-		"exp" : 1449,
+		"exp" : 1695,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26607,7 +26607,7 @@
 		"id" : 22011,
 		"name" : "Ghost of a Batur Chief",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1947,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26625,7 +26625,7 @@
 		"id" : 22012,
 		"name" : "Ghost of a Batur Chief",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1947,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26643,7 +26643,7 @@
 		"id" : 22013,
 		"name" : "Ghost of a Morek Chief",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1947,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26661,7 +26661,7 @@
 		"id" : 22015,
 		"name" : "Ghost of a Turka Chief",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1947,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26679,7 +26679,7 @@
 		"id" : 22016,
 		"name" : "Ghost of a Turka Chief",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1947,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26697,7 +26697,7 @@
 		"id" : 22017,
 		"name" : "Bandit Sweeper",
 		"level" : 30,
-		"exp" : 1281,
+		"exp" : 1458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26715,7 +26715,7 @@
 		"id" : 22018,
 		"name" : "Bandit Hound",
 		"level" : 31,
-		"exp" : 1404,
+		"exp" : 1251,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26733,7 +26733,7 @@
 		"id" : 22019,
 		"name" : "Bandit Watchman",
 		"level" : 32,
-		"exp" : 1449,
+		"exp" : 1713,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26751,7 +26751,7 @@
 		"id" : 22020,
 		"name" : "Snow Lynx",
 		"level" : 33,
-		"exp" : 1515,
+		"exp" : 1417,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26769,7 +26769,7 @@
 		"id" : 22021,
 		"name" : "Bandit Undertaker",
 		"level" : 34,
-		"exp" : 1593,
+		"exp" : 1504,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26787,7 +26787,7 @@
 		"id" : 22022,
 		"name" : "Bandit Assassin",
 		"level" : 35,
-		"exp" : 1735,
+		"exp" : 2058,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26805,7 +26805,7 @@
 		"id" : 22023,
 		"name" : "Bandit Warrior",
 		"level" : 36,
-		"exp" : 1899,
+		"exp" : 2355,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26823,7 +26823,7 @@
 		"id" : 22024,
 		"name" : "Bandit Inspector",
 		"level" : 37,
-		"exp" : 1855,
+		"exp" : 2218,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26841,7 +26841,7 @@
 		"id" : 22025,
 		"name" : "Frozen Wasteland Werewolf",
 		"level" : 38,
-		"exp" : 3048,
+		"exp" : 2218,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26859,7 +26859,7 @@
 		"id" : 22026,
 		"name" : "Bandit Captain",
 		"level" : 40,
-		"exp" : 2537,
+		"exp" : 2904,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26877,10 +26877,10 @@
 		"id" : 22048,
 		"name" : "Dark Spider",
 		"level" : 42,
-		"exp" : 2615,
+		"exp" : 1195,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22048,
@@ -26889,16 +26889,16 @@
 		"exp" : 2615,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22049,
 		"name" : "Varangka's Succubus",
 		"level" : 49,
-		"exp" : 3659,
+		"exp" : 1626,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22049,
@@ -26907,13 +26907,13 @@
 		"exp" : 3659,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22050,
 		"name" : "Probe Golem Prodigy IV",
 		"level" : 46,
-		"exp" : 3274,
+		"exp" : 3989,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26931,7 +26931,7 @@
 		"id" : 22051,
 		"name" : "Spelunking Spider",
 		"level" : 47,
-		"exp" : 3311,
+		"exp" : 3061,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26949,7 +26949,7 @@
 		"id" : 22052,
 		"name" : "Menacing Jackhammer Golem",
 		"level" : 47,
-		"exp" : 3311,
+		"exp" : 4488,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -26967,7 +26967,7 @@
 		"id" : 22053,
 		"name" : "Horrifying Cannon Golem I",
 		"level" : 48,
-		"exp" : 3423,
+		"exp" : 4405,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27075,10 +27075,10 @@
 		"id" : 22059,
 		"name" : "Bloodthirsty Ginzu Golem VII",
 		"level" : 51,
-		"exp" : 3841,
+		"exp" : 5789,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22059,
@@ -27087,7 +27087,7 @@
 		"exp" : 3841,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22060,
@@ -27096,7 +27096,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 2.0
 	},
 	{
 		"id" : 22060,
@@ -27105,7 +27105,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 2.0
 	},
 	{
 		"id" : 22062,
@@ -27114,7 +27114,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 3.0
 	},
 	{
 		"id" : 22062,
@@ -27123,7 +27123,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 3.0
 	},
 	{
 		"id" : 22063,
@@ -27132,7 +27132,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22063,
@@ -27141,7 +27141,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22064,
@@ -27150,7 +27150,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22064,
@@ -27159,7 +27159,7 @@
 		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22065,
@@ -27168,7 +27168,7 @@
 		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22065,
@@ -27177,7 +27177,7 @@
 		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22079,
@@ -27186,7 +27186,7 @@
 		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22079,
@@ -27195,7 +27195,7 @@
 		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22080,
@@ -27204,7 +27204,7 @@
 		"exp" : 4370,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22080,
@@ -27213,7 +27213,7 @@
 		"exp" : 4370,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22081,
@@ -27258,7 +27258,7 @@
 		"exp" : 4519,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22083,
@@ -27267,7 +27267,7 @@
 		"exp" : 4519,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22084,
@@ -27276,7 +27276,7 @@
 		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22084,
@@ -27285,7 +27285,7 @@
 		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22085,
@@ -27402,7 +27402,7 @@
 		"exp" : 5053,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22091,
@@ -27411,7 +27411,7 @@
 		"exp" : 5053,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22092,
@@ -27420,7 +27420,7 @@
 		"exp" : 6134,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22092,
@@ -27429,13 +27429,13 @@
 		"exp" : 6134,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22093,
 		"name" : "Lost Buffalo",
 		"level" : 60,
-		"exp" : 5522,
+		"exp" : 7407,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27453,7 +27453,7 @@
 		"id" : 22094,
 		"name" : "Frost Buffalo",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 4486,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27471,43 +27471,43 @@
 		"id" : 22095,
 		"name" : "Ursus Cub",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 4741,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22095,
 		"name" : "Ursus Cub",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 2627,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22096,
 		"name" : "Ursus",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 4898,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22096,
 		"name" : "Ursus",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 3152,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22097,
 		"name" : "Lost Yeti",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 5607,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27525,7 +27525,7 @@
 		"id" : 22098,
 		"name" : "Frost Yeti",
 		"level" : 63,
-		"exp" : 6277,
+		"exp" : 5789,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27543,349 +27543,349 @@
 		"id" : 22105,
 		"name" : "Spiked Stakato",
 		"level" : 72,
-		"exp" : 8759,
+		"exp" : 25713,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22105,
 		"name" : "Spiked Stakato",
 		"level" : 72,
-		"exp" : 8759,
+		"exp" : 35036,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22106,
 		"name" : "Spiked Stakato Worker",
 		"level" : 73,
-		"exp" : 8561,
+		"exp" : 26433,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22106,
 		"name" : "Spiked Stakato Worker",
 		"level" : 73,
-		"exp" : 8561,
+		"exp" : 34244,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22107,
 		"name" : "Spiked Stakato Guard",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 27162,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22107,
 		"name" : "Spiked Stakato Guard",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22108,
 		"name" : "Female Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 37673,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22108,
 		"name" : "Female Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22109,
 		"name" : "Male Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 37168,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22109,
 		"name" : "Male Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22111,
 		"name" : "Spiked Stakato Sorcerer",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 27219,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22111,
 		"name" : "Spiked Stakato Sorcerer",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 34083,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22112,
 		"name" : "Cannibalistic Stakato Follower",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 34390,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22112,
 		"name" : "Cannibalistic Stakato Follower",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22113,
 		"name" : "Cannibalistic Stakato Leader",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 43109,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22113,
 		"name" : "Cannibalistic Stakato Leader",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 34083,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22115,
 		"name" : "Spiked Stakato Soldier",
 		"level" : 76,
-		"exp" : 8875,
+		"exp" : 28650,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22115,
 		"name" : "Spiked Stakato Soldier",
 		"level" : 76,
-		"exp" : 8875,
+		"exp" : 35499,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22116,
 		"name" : "Spiked Stakato Drone",
 		"level" : 77,
-		"exp" : 9190,
+		"exp" : 29409,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22116,
 		"name" : "Spiked Stakato Drone",
 		"level" : 77,
-		"exp" : 9190,
+		"exp" : 36760,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22117,
 		"name" : "Spiked Stakato Captain",
 		"level" : 78,
-		"exp" : 8687,
+		"exp" : 30177,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22117,
 		"name" : "Spiked Stakato Captain",
 		"level" : 78,
-		"exp" : 8687,
+		"exp" : 34747,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22118,
 		"name" : "Spiked Stakato Nurse",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 42973,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22118,
 		"name" : "Spiked Stakato Nurse",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 34997,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22120,
 		"name" : "Spiked Stakato Baby",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 40744,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22120,
 		"name" : "Spiked Stakato Baby",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 34997,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22121,
 		"name" : "Spiked Stakato Shaman",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 32577,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22121,
 		"name" : "Spiked Stakato Shaman",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22122,
 		"name" : "Monastic Pilgrim",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22122,
 		"name" : "Monastic Pilgrim",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22123,
 		"name" : "Monastic Crusader",
 		"level" : 81,
-		"exp" : 10198,
+		"exp" : 41817,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22123,
 		"name" : "Monastic Crusader",
 		"level" : 80,
-		"exp" : 10198,
+		"exp" : 40791,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22124,
 		"name" : "Solina Brother",
 		"level" : 81,
-		"exp" : 10198,
+		"exp" : 35873,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22124,
 		"name" : "Solina Brother",
 		"level" : 80,
-		"exp" : 10198,
+		"exp" : 40791,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22125,
 		"name" : "Solina Lay Brother",
 		"level" : 82,
-		"exp" : 9577,
+		"exp" : 35916,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22125,
 		"name" : "Solina Lay Brother",
 		"level" : 80,
-		"exp" : 9577,
+		"exp" : 38308,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22126,
 		"name" : "Silent Seeker",
 		"level" : 82,
-		"exp" : 9577,
+		"exp" : 36765,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22126,
 		"name" : "Silent Seeker",
 		"level" : 80,
-		"exp" : 9577,
+		"exp" : 38308,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22128,
 		"name" : "Monastery Guardian",
 		"level" : 83,
-		"exp" : 9821,
+		"exp" : 10765,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27903,79 +27903,79 @@
 		"id" : 22129,
 		"name" : "Warrior Monk",
 		"level" : 84,
-		"exp" : 11138,
+		"exp" : 39538,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22129,
 		"name" : "Warrior Monk",
 		"level" : 80,
-		"exp" : 11138,
+		"exp" : 44552,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22130,
 		"name" : "Divine Advocate",
 		"level" : 85,
-		"exp" : 10931,
+		"exp" : 59137,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22130,
 		"name" : "Divine Advocate",
 		"level" : 80,
-		"exp" : 10931,
+		"exp" : 43725,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22131,
 		"name" : "Pilgrim of Light",
 		"level" : 85,
-		"exp" : 10931,
+		"exp" : 64087,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22131,
 		"name" : "Pilgrim of Light",
 		"level" : 80,
-		"exp" : 10931,
+		"exp" : 54656,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22132,
 		"name" : "Judge of Light",
 		"level" : 86,
-		"exp" : 11031,
+		"exp" : 42080,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22132,
 		"name" : "Judge of Light",
 		"level" : 80,
-		"exp" : 11031,
+		"exp" : 55155,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22133,
 		"name" : "Guardian of the Grail",
 		"level" : 86,
-		"exp" : 11031,
+		"exp" : 15727,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27993,46 +27993,64 @@
 		"id" : 22134,
 		"name" : "Guardian of the Holy Land",
 		"level" : 87,
-		"exp" : 11131,
+		"exp" : 43480,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22134,
 		"name" : "Guardian of the Holy Land",
 		"level" : 80,
-		"exp" : 11131,
+		"exp" : 44524,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22135,
 		"name" : "Beholder of Light",
 		"level" : 87,
-		"exp" : 11131,
+		"exp" : 70702,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 6.0
 	},
 	{
 		"id" : 22135,
 		"name" : "Beholder of Light",
 		"level" : 80,
-		"exp" : 11131,
+		"exp" : 66785,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 6.0
 	},
 	{
 		"id" : 22137,
 		"name" : "Penance Guard",
 		"level" : 81,
-		"exp" : 6912,
+		"exp" : 3970,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.5
+	},
+	{
+		"id" : 22137,
+		"name" : "Penance Guard",
+		"level" : 80,
+		"exp" : 6912,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.5
+	},
+	{
+		"id" : 22138,
+		"name" : "Chapel Guard",
+		"level" : 85,
+		"exp" : 4590,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22138,
@@ -28040,242 +28058,278 @@
 		"level" : 85,
 		"exp" : 7218,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22139,
 		"name" : "Old Aristocrat's Soldier",
 		"level" : 81,
-		"exp" : 55302,
+		"exp" : 35729,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22139,
 		"name" : "Old Aristocrat's Soldier",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 55304,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22140,
 		"name" : "Zombie Worker",
 		"level" : 80,
-		"exp" : 54609,
+		"exp" : 33997,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22140,
 		"name" : "Zombie Worker",
 		"level" : 80,
-		"exp" : 13652,
+		"exp" : 54607,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22141,
 		"name" : "Forgotten Victim",
 		"level" : 80,
-		"exp" : 54609,
+		"exp" : 35128,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22141,
 		"name" : "Forgotten Victim",
 		"level" : 80,
-		"exp" : 13652,
+		"exp" : 54607,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22142,
 		"name" : "Triol's Layperson",
 		"level" : 81,
-		"exp" : 69129,
+		"exp" : 36509,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22142,
 		"name" : "Triol's Layperson",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 69130,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22143,
 		"name" : "Triol's Believer",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 42202,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22143,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 11193,
+		"exp" : 55965,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22144,
 		"name" : "Resurrected Temple Knight",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 36617,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22144,
 		"name" : "Resurrected Temple Knight",
 		"level" : 80,
-		"exp" : 13991,
+		"exp" : 55964,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22145,
 		"name" : "Ritual Sacrifice",
 		"level" : 81,
-		"exp" : 55302,
+		"exp" : 35193,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22145,
 		"name" : "Ritual Sacrifice",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 55304,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22146,
 		"name" : "Triol's Priest",
 		"level" : 84,
-		"exp" : 71496,
+		"exp" : 40239,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
+	},
+    {
+		"id" : 22146,
+		"name" : "Triol's Priest",
+		"level" : 80,
+		"exp" : 71494,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22147,
 		"name" : "Ritual Offering",
 		"level" : 83,
-		"exp" : 56598,
+		"exp" : 39726,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22147,
 		"name" : "Ritual Offering",
 		"level" : 80,
-		"exp" : 14150,
+		"exp" : 56599,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22148,
 		"name" : "Triol's Believer",
 		"level" : 82,
-		"exp" : 69957,
+		"exp" : 30542,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
+    {
+      "id" : 22148,
+      "name" : "Triol's Believer",
+      "level" : 80,
+      "exp" : 69957,
+      "is_rift" : 0,
+      "chronicle" : "interlude",
+      "hp_multiplier" : 4.0
+    },
 	{
 		"id" : 22149,
 		"name" : "Ritual Offering",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 36617,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22149,
 		"name" : "Ritual Offering",
 		"level" : 80,
-		"exp" : 13991,
+		"exp" : 55964,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22150,
 		"name" : "Triol's Believer",
 		"level" : 83,
-		"exp" : 56598,
+		"exp" : 32891,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
+	},
+    {
+		"id" : 22150,
+		"name" : "Triol's Believer",
+		"level" : 80,
+		"exp" : 56599,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22151,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 72207,
+		"exp" : 34495,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22151,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 72205,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22152,
 		"name" : "Temple Guard",
 		"level" : 84,
-		"exp" : 57198,
+		"exp" : 40689,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22152,
 		"name" : "Temple Guard",
 		"level" : 80,
-		"exp" : 14300,
+		"exp" : 57201,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22153,
 		"name" : "Temple Guard Captain",
 		"level" : 84,
-		"exp" : 57198,
+		"exp" : 39379,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22154,
+		"name" : "Ritual Sacrifice",
+		"level" : 85,
+		"exp" : 40692,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22154,
@@ -28283,368 +28337,377 @@
 		"level" : 85,
 		"exp" : 57765,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22154,
-		"name" : "Ritual Sacrifice",
-		"level" : 85,
-		"exp" : 14441,
-		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22155,
 		"name" : "Triol's High Priest",
 		"level" : 85,
-		"exp" : 72207,
+		"exp" : 58019,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22155,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 72205,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22156,
 		"name" : "Triol's Priest",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 52458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22156,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22157,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 50264,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22157,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57564,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22158,
 		"name" : "Triol's Believer",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 51246,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22158,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57564,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22159,
 		"name" : "Triol's High Priest",
 		"level" : 86,
-		"exp" : 72870,
+		"exp" : 59393,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22159,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14574,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22160,
-		"name" : "Triol's Priest",
-		"level" : 86,
-		"exp" : 58296,
-		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22160,
-		"name" : "Triol's Priest",
-		"level" : 80,
-		"exp" : 14574,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22161,
-		"name" : "Ritual Sacrifice",
-		"level" : 86,
-		"exp" : 57765,
-		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22161,
-		"name" : "Ritual Sacrifice",
-		"level" : 80,
-		"exp" : 14441,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22162,
-		"name" : "Triol's Believer",
-		"level" : 85,
-		"exp" : 57765,
-		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22162,
-		"name" : "Triol's Believer",
-		"level" : 80,
-		"exp" : 14441,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22163,
-		"name" : "Triol's High Priest",
-		"level" : 86,
 		"exp" : 72870,
 		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 5.0
+	},
+	{
+		"id" : 22160,
+		"name" : "Triol's Priest",
+		"level" : 86,
+		"exp" : 52458,
+		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22160,
+		"name" : "Triol's Priest",
+		"level" : 80,
+		"exp" : 58296,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22161,
+		"name" : "Ritual Sacrifice",
+		"level" : 86,
+		"exp" : 59443,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22161,
+		"name" : "Ritual Sacrifice",
+		"level" : 80,
+		"exp" : 57764,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22162,
+		"name" : "Triol's Believer",
+		"level" : 85,
+		"exp" : 51246,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22162,
+		"name" : "Triol's Believer",
+		"level" : 80,
+		"exp" : 57564,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22163,
+		"name" : "Triol's High Priest",
+		"level" : 86,
+		"exp" : 68899,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22163,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 72870,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22164,
 		"name" : "Triol's Believer",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 52458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22164,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22165,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 50264,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22165,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57764,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22166,
 		"name" : "Triol's Believer",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 50264,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22166,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57764,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22167,
 		"name" : "Triol's High Priest",
 		"level" : 87,
-		"exp" : 73494,
+		"exp" : 62255,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22167,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14699,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22168,
-		"name" : "Triol's Priest",
-		"level" : 87,
-		"exp" : 58794,
-		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22168,
-		"name" : "Triol's Priest",
-		"level" : 80,
-		"exp" : 14699,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22169,
-		"name" : "Ritual Sacrifice",
-		"level" : 86,
-		"exp" : 58296,
-		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22169,
-		"name" : "Ritual Sacrifice",
-		"level" : 80,
-		"exp" : 14574,
-		"is_rift" : 0,
-		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
-	},
-	{
-		"id" : 22171,
-		"name" : "Triol's High Priest",
-		"level" : 87,
 		"exp" : 73494,
 		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 5.0
+	},
+	{
+		"id" : 22168,
+		"name" : "Triol's Priest",
+		"level" : 87,
+		"exp" : 53934,
+		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22168,
+		"name" : "Triol's Priest",
+		"level" : 80,
+		"exp" : 58796,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22169,
+		"name" : "Ritual Sacrifice",
+		"level" : 86,
+		"exp" : 60850,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22169,
+		"name" : "Ritual Sacrifice",
+		"level" : 80,
+		"exp" : 58296,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22171,
+		"name" : "Triol's High Priest",
+		"level" : 87,
+		"exp" : 72220,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22171,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14699,
+		"exp" : 73494,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 5.0
 	},
 	{
 		"id" : 22172,
 		"name" : "Ritual Sacrifice",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 60850,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22172,
 		"name" : "Ritual Sacrifice",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22173,
 		"name" : "Triol's Priest",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 60850,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22173,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22174,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 50264,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22174,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57765,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 4.0
 	},
 	{
 		"id" : 22175,
 		"name" : "Andreas' Captain of the Royal Guard",
 		"level" : 85,
-		"exp" : 3609,
+		"exp" : 2119,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 0.25
+	},
+	{
+		"id" : 22175,
+		"name" : "Andreas' Captain of the Royal Guard",
+		"level" : 80,
+		"exp" : 3609,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.25
+	},
+	{
+		"id" : 22176,
+		"name" : "Andreas' Royal Guards",
+		"level" : 85,
+		"exp" : 2119,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 0.25
 	},
 	{
 		"id" : 22176,
@@ -28652,41 +28715,68 @@
 		"level" : 85,
 		"exp" : 3609,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.25
 	},
 	{
 		"id" : 22188,
 		"name" : "Andreas' Captain of the Royal Guard",
 		"level" : 87,
-		"exp" : 44094,
+		"exp" : 42873,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 3.0
+	},
+    {
+		"id" : 22188,
+		"name" : "Andreas' Captain of the Royal Guard",
+		"level" : 80,
+		"exp" : 44095,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 3.0
 	},
 	{
 		"id" : 22189,
 		"name" : "Andreas' Royal Guards",
 		"level" : 86,
-		"exp" : 29148,
+		"exp" : 33465,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 2.0
 	},
+    {
+      "id" : 22189,
+      "name" : "Andreas' Royal Guards",
+      "level" : 80,
+      "exp" : 29148,
+      "is_rift" : 0,
+      "chronicle" : "interlude",
+      "hp_multiplier" : 2.0
+    },
 	{
 		"id" : 22190,
 		"name" : "Ritual Sacrifice",
 		"level" : 86,
-		"exp" : 29148,
+		"exp" : 38857,
 		"is_rift" : 0,
 		"chronicle" : "c5",
-		"hp_multiplier" : 10.0
+		"hp_multiplier" : 2.0
+	},
+    {
+		"id" : 22190,
+		"name" : "Ritual Sacrifice",
+		"level" : 80,
+		"exp" : 29148,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 2.0
 	},
 	{
 		"id" : 22197,
 		"name" : "Velociraptor",
 		"level" : 86,
-		"exp" : 11031,
+		"exp" : 57274,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28694,8 +28784,8 @@
 	{
 		"id" : 22200,
 		"name" : "Ornithomimus",
-		"level" : 84,
-		"exp" : 11138,
+		"level" : 80,
+		"exp" : 60614,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28703,8 +28793,8 @@
 	{
 		"id" : 22201,
 		"name" : "Ornithomimus",
-		"level" : 84,
-		"exp" : 11138,
+		"level" : 80,
+		"exp" : 60614,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28712,8 +28802,8 @@
 	{
 		"id" : 22203,
 		"name" : "Deinonychus",
-		"level" : 83,
-		"exp" : 9821,
+		"level" : 80,
+		"exp" : 54743,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28721,8 +28811,8 @@
 	{
 		"id" : 22204,
 		"name" : "Deinonychus",
-		"level" : 83,
-		"exp" : 9821,
+		"level" : 80,
+		"exp" : 54743,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28730,8 +28820,8 @@
 	{
 		"id" : 22205,
 		"name" : "Deinonychus",
-		"level" : 83,
-		"exp" : 9821,
+		"level" : 80,
+		"exp" : 54743,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28739,8 +28829,8 @@
 	{
 		"id" : 22208,
 		"name" : "Pachycephalosaurus",
-		"level" : 85,
-		"exp" : 10931,
+		"level" : 80,
+		"exp" : 58095,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28748,8 +28838,8 @@
 	{
 		"id" : 22213,
 		"name" : "Wild Strider",
-		"level" : 85,
-		"exp" : 10931,
+		"level" : 80,
+		"exp" : 58095,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28757,8 +28847,8 @@
 	{
 		"id" : 22214,
 		"name" : "Elroki",
-		"level" : 85,
-		"exp" : 10931,
+		"level" : 80,
+		"exp" : 58095,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28766,8 +28856,8 @@
 	{
 		"id" : 22217,
 		"name" : "Tyrannosaurus",
-		"level" : 87,
-		"exp" : 11131,
+		"level" : 80,
+		"exp" : 120471,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28775,8 +28865,8 @@
 	{
 		"id" : 22219,
 		"name" : "Ornithomimus",
-		"level" : 84,
-		"exp" : 11138,
+		"level" : 80,
+		"exp" : 60614,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28784,8 +28874,8 @@
 	{
 		"id" : 22220,
 		"name" : "Deinonychus",
-		"level" : 83,
-		"exp" : 9821,
+		"level" : 80,
+		"exp" : 54743,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0
@@ -28793,8 +28883,8 @@
 	{
 		"id" : 22222,
 		"name" : "Wild Strider",
-		"level" : 85,
-		"exp" : 10931,
+		"level" : 80,
+		"exp" : 58095,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 1.0

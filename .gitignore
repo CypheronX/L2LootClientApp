@@ -23,3 +23,5 @@ tasks.txt
 bash.exe.stackdump
 mykeystore.jks
 mykeystore.b64
+shared/src/commonMain/resources/data/new_mobs_in_c5.json
+mykeystore.b64
