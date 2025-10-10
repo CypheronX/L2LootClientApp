@@ -27075,7 +27075,7 @@
 		"id" : 22059,
 		"name" : "Bloodthirsty Ginzu Golem VII",
 		"level" : 51,
-		"exp" : 3841,
+		"exp" : 5789,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27435,7 +27435,7 @@
 		"id" : 22093,
 		"name" : "Lost Buffalo",
 		"level" : 60,
-		"exp" : 5522,
+		"exp" : 7407,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27453,7 +27453,7 @@
 		"id" : 22094,
 		"name" : "Frost Buffalo",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 4486,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27471,7 +27471,7 @@
 		"id" : 22095,
 		"name" : "Ursus Cub",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 4741,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27480,7 +27480,7 @@
 		"id" : 22095,
 		"name" : "Ursus Cub",
 		"level" : 61,
-		"exp" : 5254,
+		"exp" : 2627,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27489,7 +27489,7 @@
 		"id" : 22096,
 		"name" : "Ursus",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 4898,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27498,7 +27498,7 @@
 		"id" : 22096,
 		"name" : "Ursus",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 3152,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27507,7 +27507,7 @@
 		"id" : 22097,
 		"name" : "Lost Yeti",
 		"level" : 62,
-		"exp" : 6303,
+		"exp" : 5607,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27525,7 +27525,7 @@
 		"id" : 22098,
 		"name" : "Frost Yeti",
 		"level" : 63,
-		"exp" : 6277,
+		"exp" : 5789,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27543,7 +27543,7 @@
 		"id" : 22105,
 		"name" : "Spiked Stakato",
 		"level" : 72,
-		"exp" : 8759,
+		"exp" : 25713,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27552,7 +27552,7 @@
 		"id" : 22105,
 		"name" : "Spiked Stakato",
 		"level" : 72,
-		"exp" : 8759,
+		"exp" : 35036,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27561,7 +27561,7 @@
 		"id" : 22106,
 		"name" : "Spiked Stakato Worker",
 		"level" : 73,
-		"exp" : 8561,
+		"exp" : 26433,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27570,7 +27570,7 @@
 		"id" : 22106,
 		"name" : "Spiked Stakato Worker",
 		"level" : 73,
-		"exp" : 8561,
+		"exp" : 34244,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27579,7 +27579,7 @@
 		"id" : 22107,
 		"name" : "Spiked Stakato Guard",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 27162,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27588,7 +27588,7 @@
 		"id" : 22107,
 		"name" : "Spiked Stakato Guard",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27597,7 +27597,7 @@
 		"id" : 22108,
 		"name" : "Female Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 37673,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27606,7 +27606,7 @@
 		"id" : 22108,
 		"name" : "Female Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27615,7 +27615,7 @@
 		"id" : 22109,
 		"name" : "Male Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 37168,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27624,7 +27624,7 @@
 		"id" : 22109,
 		"name" : "Male Spiked Stakato",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27633,7 +27633,7 @@
 		"id" : 22111,
 		"name" : "Spiked Stakato Sorcerer",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 27219,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27642,7 +27642,7 @@
 		"id" : 22111,
 		"name" : "Spiked Stakato Sorcerer",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 34083,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27651,7 +27651,7 @@
 		"id" : 22112,
 		"name" : "Cannibalistic Stakato Follower",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 34390,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27660,7 +27660,7 @@
 		"id" : 22112,
 		"name" : "Cannibalistic Stakato Follower",
 		"level" : 74,
-		"exp" : 9177,
+		"exp" : 36709,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27669,7 +27669,7 @@
 		"id" : 22113,
 		"name" : "Cannibalistic Stakato Leader",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 43109,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27678,7 +27678,7 @@
 		"id" : 22113,
 		"name" : "Cannibalistic Stakato Leader",
 		"level" : 75,
-		"exp" : 8521,
+		"exp" : 34083,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27687,7 +27687,7 @@
 		"id" : 22115,
 		"name" : "Spiked Stakato Soldier",
 		"level" : 76,
-		"exp" : 8875,
+		"exp" : 28650,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27696,7 +27696,7 @@
 		"id" : 22115,
 		"name" : "Spiked Stakato Soldier",
 		"level" : 76,
-		"exp" : 8875,
+		"exp" : 35499,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27705,7 +27705,7 @@
 		"id" : 22116,
 		"name" : "Spiked Stakato Drone",
 		"level" : 77,
-		"exp" : 9190,
+		"exp" : 29409,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27714,7 +27714,7 @@
 		"id" : 22116,
 		"name" : "Spiked Stakato Drone",
 		"level" : 77,
-		"exp" : 9190,
+		"exp" : 36760,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27723,7 +27723,7 @@
 		"id" : 22117,
 		"name" : "Spiked Stakato Captain",
 		"level" : 78,
-		"exp" : 8687,
+		"exp" : 30177,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27732,7 +27732,7 @@
 		"id" : 22117,
 		"name" : "Spiked Stakato Captain",
 		"level" : 78,
-		"exp" : 8687,
+		"exp" : 34747,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27741,7 +27741,7 @@
 		"id" : 22118,
 		"name" : "Spiked Stakato Nurse",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 42973,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27750,7 +27750,7 @@
 		"id" : 22118,
 		"name" : "Spiked Stakato Nurse",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 34997,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27759,7 +27759,7 @@
 		"id" : 22120,
 		"name" : "Spiked Stakato Baby",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 40744,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27768,7 +27768,7 @@
 		"id" : 22120,
 		"name" : "Spiked Stakato Baby",
 		"level" : 79,
-		"exp" : 8749,
+		"exp" : 34997,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27777,7 +27777,7 @@
 		"id" : 22121,
 		"name" : "Spiked Stakato Shaman",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 32577,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27786,7 +27786,7 @@
 		"id" : 22121,
 		"name" : "Spiked Stakato Shaman",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27795,7 +27795,7 @@
 		"id" : 22122,
 		"name" : "Monastic Pilgrim",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27804,7 +27804,7 @@
 		"id" : 22122,
 		"name" : "Monastic Pilgrim",
 		"level" : 80,
-		"exp" : 9431,
+		"exp" : 37724,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27813,7 +27813,7 @@
 		"id" : 22123,
 		"name" : "Monastic Crusader",
 		"level" : 81,
-		"exp" : 10198,
+		"exp" : 41817,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27822,7 +27822,7 @@
 		"id" : 22123,
 		"name" : "Monastic Crusader",
 		"level" : 80,
-		"exp" : 10198,
+		"exp" : 40791,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27831,7 +27831,7 @@
 		"id" : 22124,
 		"name" : "Solina Brother",
 		"level" : 81,
-		"exp" : 10198,
+		"exp" : 35873,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27840,7 +27840,7 @@
 		"id" : 22124,
 		"name" : "Solina Brother",
 		"level" : 80,
-		"exp" : 10198,
+		"exp" : 40791,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27849,7 +27849,7 @@
 		"id" : 22125,
 		"name" : "Solina Lay Brother",
 		"level" : 82,
-		"exp" : 9577,
+		"exp" : 35916,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27858,7 +27858,7 @@
 		"id" : 22125,
 		"name" : "Solina Lay Brother",
 		"level" : 80,
-		"exp" : 9577,
+		"exp" : 38308,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27867,7 +27867,7 @@
 		"id" : 22126,
 		"name" : "Silent Seeker",
 		"level" : 82,
-		"exp" : 9577,
+		"exp" : 36765,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27876,7 +27876,7 @@
 		"id" : 22126,
 		"name" : "Silent Seeker",
 		"level" : 80,
-		"exp" : 9577,
+		"exp" : 38308,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27885,7 +27885,7 @@
 		"id" : 22128,
 		"name" : "Monastery Guardian",
 		"level" : 83,
-		"exp" : 9821,
+		"exp" : 10765,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27903,7 +27903,7 @@
 		"id" : 22129,
 		"name" : "Warrior Monk",
 		"level" : 84,
-		"exp" : 11138,
+		"exp" : 39538,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27912,7 +27912,7 @@
 		"id" : 22129,
 		"name" : "Warrior Monk",
 		"level" : 80,
-		"exp" : 11138,
+		"exp" : 44552,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27921,7 +27921,7 @@
 		"id" : 22130,
 		"name" : "Divine Advocate",
 		"level" : 85,
-		"exp" : 10931,
+		"exp" : 59137,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27930,7 +27930,7 @@
 		"id" : 22130,
 		"name" : "Divine Advocate",
 		"level" : 80,
-		"exp" : 10931,
+		"exp" : 43725,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27939,7 +27939,7 @@
 		"id" : 22131,
 		"name" : "Pilgrim of Light",
 		"level" : 85,
-		"exp" : 10931,
+		"exp" : 64087,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -27948,7 +27948,7 @@
 		"id" : 22131,
 		"name" : "Pilgrim of Light",
 		"level" : 80,
-		"exp" : 10931,
+		"exp" : 54656,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -27957,7 +27957,7 @@
 		"id" : 22132,
 		"name" : "Judge of Light",
 		"level" : 86,
-		"exp" : 11031,
+		"exp" : 42080,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -27966,7 +27966,7 @@
 		"id" : 22132,
 		"name" : "Judge of Light",
 		"level" : 80,
-		"exp" : 11031,
+		"exp" : 55155,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -27975,7 +27975,7 @@
 		"id" : 22133,
 		"name" : "Guardian of the Grail",
 		"level" : 86,
-		"exp" : 11031,
+		"exp" : 15727,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27993,7 +27993,7 @@
 		"id" : 22134,
 		"name" : "Guardian of the Holy Land",
 		"level" : 87,
-		"exp" : 11131,
+		"exp" : 43480,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28002,7 +28002,7 @@
 		"id" : 22134,
 		"name" : "Guardian of the Holy Land",
 		"level" : 80,
-		"exp" : 11131,
+		"exp" : 44524,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28011,7 +28011,7 @@
 		"id" : 22135,
 		"name" : "Beholder of Light",
 		"level" : 87,
-		"exp" : 11131,
+		"exp" : 70702,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 6.0
@@ -28020,7 +28020,7 @@
 		"id" : 22135,
 		"name" : "Beholder of Light",
 		"level" : 80,
-		"exp" : 11131,
+		"exp" : 66785,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 6.0
@@ -28029,7 +28029,25 @@
 		"id" : 22137,
 		"name" : "Penance Guard",
 		"level" : 81,
+		"exp" : 3970,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 0.5
+	},
+	{
+		"id" : 22137,
+		"name" : "Penance Guard",
+		"level" : 80,
 		"exp" : 6912,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.5
+	},
+	{
+		"id" : 22138,
+		"name" : "Chapel Guard",
+		"level" : 85,
+		"exp" : 4590,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -28040,14 +28058,14 @@
 		"level" : 85,
 		"exp" : 7218,
 		"is_rift" : 0,
-		"chronicle" : "c5",
+		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
 	},
 	{
 		"id" : 22139,
 		"name" : "Old Aristocrat's Soldier",
 		"level" : 81,
-		"exp" : 55302,
+		"exp" : 35729,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28056,7 +28074,7 @@
 		"id" : 22139,
 		"name" : "Old Aristocrat's Soldier",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 55304,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28065,7 +28083,7 @@
 		"id" : 22140,
 		"name" : "Zombie Worker",
 		"level" : 80,
-		"exp" : 54609,
+		"exp" : 33997,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28074,7 +28092,7 @@
 		"id" : 22140,
 		"name" : "Zombie Worker",
 		"level" : 80,
-		"exp" : 13652,
+		"exp" : 54607,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28083,7 +28101,7 @@
 		"id" : 22141,
 		"name" : "Forgotten Victim",
 		"level" : 80,
-		"exp" : 54609,
+		"exp" : 35128,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28092,7 +28110,7 @@
 		"id" : 22141,
 		"name" : "Forgotten Victim",
 		"level" : 80,
-		"exp" : 13652,
+		"exp" : 54607,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28101,7 +28119,7 @@
 		"id" : 22142,
 		"name" : "Triol's Layperson",
 		"level" : 81,
-		"exp" : 69129,
+		"exp" : 36509,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -28110,7 +28128,7 @@
 		"id" : 22142,
 		"name" : "Triol's Layperson",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 69130,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -28119,7 +28137,7 @@
 		"id" : 22143,
 		"name" : "Triol's Believer",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 42202,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -28128,7 +28146,7 @@
 		"id" : 22143,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 11193,
+		"exp" : 55965,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
