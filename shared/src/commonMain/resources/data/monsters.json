@@ -28155,7 +28155,7 @@
 		"id" : 22144,
 		"name" : "Resurrected Temple Knight",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 36617,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28164,7 +28164,7 @@
 		"id" : 22144,
 		"name" : "Resurrected Temple Knight",
 		"level" : 80,
-		"exp" : 13991,
+		"exp" : 55964,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28173,7 +28173,7 @@
 		"id" : 22145,
 		"name" : "Ritual Sacrifice",
 		"level" : 81,
-		"exp" : 55302,
+		"exp" : 35193,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28182,7 +28182,7 @@
 		"id" : 22145,
 		"name" : "Ritual Sacrifice",
 		"level" : 80,
-		"exp" : 13826,
+		"exp" : 55304,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28191,7 +28191,7 @@
 		"id" : 22146,
 		"name" : "Triol's Priest",
 		"level" : 84,
-		"exp" : 71496,
+		"exp" : 40239,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -28200,7 +28200,7 @@
 		"id" : 22146,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 71496,
+		"exp" : 71494,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -28209,7 +28209,7 @@
 		"id" : 22147,
 		"name" : "Ritual Offering",
 		"level" : 83,
-		"exp" : 56598,
+		"exp" : 39726,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28218,7 +28218,7 @@
 		"id" : 22147,
 		"name" : "Ritual Offering",
 		"level" : 80,
-		"exp" : 14150,
+		"exp" : 56599,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28227,7 +28227,7 @@
 		"id" : 22148,
 		"name" : "Triol's Believer",
 		"level" : 82,
-		"exp" : 69957,
+		"exp" : 30542,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28245,7 +28245,7 @@
 		"id" : 22149,
 		"name" : "Ritual Offering",
 		"level" : 82,
-		"exp" : 55965,
+		"exp" : 36617,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28254,7 +28254,7 @@
 		"id" : 22149,
 		"name" : "Ritual Offering",
 		"level" : 80,
-		"exp" : 13991,
+		"exp" : 55964,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28263,7 +28263,7 @@
 		"id" : 22150,
 		"name" : "Triol's Believer",
 		"level" : 83,
-		"exp" : 56598,
+		"exp" : 32891,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28272,7 +28272,7 @@
 		"id" : 22150,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 56598,
+		"exp" : 56599,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28281,7 +28281,7 @@
 		"id" : 22151,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 72207,
+		"exp" : 34495,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -28290,7 +28290,7 @@
 		"id" : 22151,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 72205,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -28299,7 +28299,7 @@
 		"id" : 22152,
 		"name" : "Temple Guard",
 		"level" : 84,
-		"exp" : 57198,
+		"exp" : 40689,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28308,7 +28308,7 @@
 		"id" : 22152,
 		"name" : "Temple Guard",
 		"level" : 80,
-		"exp" : 14300,
+		"exp" : 57201,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28317,7 +28317,16 @@
 		"id" : 22153,
 		"name" : "Temple Guard Captain",
 		"level" : 84,
-		"exp" : 57198,
+		"exp" : 39379,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 4.0
+	},
+	{
+		"id" : 22154,
+		"name" : "Ritual Sacrifice",
+		"level" : 85,
+		"exp" : 40692,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28328,15 +28337,6 @@
 		"level" : 85,
 		"exp" : 57765,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 4.0
-	},
-	{
-		"id" : 22154,
-		"name" : "Ritual Sacrifice",
-		"level" : 85,
-		"exp" : 14441,
-		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
 	},
@@ -28344,7 +28344,7 @@
 		"id" : 22155,
 		"name" : "Triol's High Priest",
 		"level" : 85,
-		"exp" : 72207,
+		"exp" : 58019,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 5.0
@@ -28353,7 +28353,7 @@
 		"id" : 22155,
 		"name" : "Triol's High Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 72205,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
@@ -28362,7 +28362,7 @@
 		"id" : 22156,
 		"name" : "Triol's Priest",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 52458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28371,7 +28371,7 @@
 		"id" : 22156,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28380,7 +28380,7 @@
 		"id" : 22157,
 		"name" : "Triol's Priest",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 50264,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28389,7 +28389,7 @@
 		"id" : 22157,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57564,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28398,7 +28398,7 @@
 		"id" : 22158,
 		"name" : "Triol's Believer",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 51246,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28407,7 +28407,7 @@
 		"id" : 22158,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57564,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28416,17 +28416,17 @@
 		"id" : 22159,
 		"name" : "Triol's High Priest",
 		"level" : 86,
+		"exp" : 59393,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 5.0
+	},
+	{
+		"id" : 22159,
+		"name" : "Triol's High Priest",
+		"level" : 80,
 		"exp" : 72870,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 4.0
-	},
-	{
-		"id" : 22159,
-		"name" : "Triol's High Priest",
-		"level" : 80,
-		"exp" : 14574,
-		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
 	},
@@ -28434,7 +28434,7 @@
 		"id" : 22160,
 		"name" : "Triol's Priest",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 52458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28443,7 +28443,7 @@
 		"id" : 22160,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28452,7 +28452,7 @@
 		"id" : 22161,
 		"name" : "Ritual Sacrifice",
 		"level" : 86,
-		"exp" : 57765,
+		"exp" : 59443,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28461,7 +28461,7 @@
 		"id" : 22161,
 		"name" : "Ritual Sacrifice",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57764,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
