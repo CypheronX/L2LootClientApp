@@ -20,6 +20,9 @@ data class UserSettings(
     val trackEvents: Boolean,
     val appOpenCount: Long,
     val lastUpdated: Long?,
+    val lastPromptDate: Long,
+    val sessionCountSincePrompt: Long,
+    val lastSupportClickDate: Long
 )
 
 interface UserSettingsRepository {
@@ -43,6 +46,9 @@ interface UserSettingsRepository {
     suspend fun updateTrackEvents(trackEvents: Boolean)
     suspend fun incrementAppOpenCount()
     suspend fun initializeDefaults()
+    suspend fun updateLastPromptDate(timestamp: Long)
+    suspend fun incrementSessionCountSincePrompt()
+    suspend fun updateLastSupportClickDate(timestamp: Long)
 }
 
 class UserSettingsRepositoryImpl(
@@ -66,7 +72,10 @@ class UserSettingsRepositoryImpl(
                     isAynixPrices = it?.is_aynix_prices ?: false,
                     trackEvents = it?.track_events ?: true,
                     appOpenCount = it?.app_open_count ?: 0,
-                    lastUpdated = it?.last_updated
+                    lastUpdated = it?.last_updated,
+                    lastPromptDate = it?.last_prompt_date ?: 0,
+                    sessionCountSincePrompt = it?.session_count_since_prompt ?: 0,
+                    lastSupportClickDate = it?.last_support_click_date ?: 0
                 )
             }
     }
@@ -189,6 +198,24 @@ class UserSettingsRepositoryImpl(
     override suspend fun initializeDefaults() {
         withContext(Dispatchers.IO) {
             database.userSettingsQueries.initializeDefaults()
+        }
+    }
+
+    override suspend fun updateLastPromptDate(timestamp: Long) {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.updateLastPromptDate(last_prompt_date = timestamp)
+        }
+    }
+
+    override suspend fun incrementSessionCountSincePrompt() {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.incrementSessionCountSincePrompt()
+        }
+    }
+
+    override suspend fun updateLastSupportClickDate(timestamp: Long) {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.updateLastSupportClickDate(last_support_click_date = timestamp)
         }
     }
 }
