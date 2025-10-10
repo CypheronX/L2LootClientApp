@@ -30,6 +30,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +41,10 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.l2loot.BuildConfig
+import com.l2loot.data.settings.UserSettingsRepository
 import com.l2loot.data.update.UpdateInfo
 import com.l2loot.design.LocalSpacing
+import kotlinx.coroutines.launch
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -106,7 +109,8 @@ fun SettingsScreen() {
                     Spacer(modifier = Modifier.size(LocalSpacing.current.space34))
 
                     SupportSection(
-                        viewModel = viewModel
+                        viewModel = viewModel,
+                        userSettingsRepository = viewModel.userSettingsRepository
                     )
                 }
 
@@ -225,11 +229,13 @@ private fun UpdateSection(
 
 @Composable
 private fun SupportSection(
-    viewModel: SettingsViewModel
+    viewModel: SettingsViewModel,
+    userSettingsRepository: UserSettingsRepository
 ) {
     var patreonPainter by remember { mutableStateOf<Painter?>(null) }
     var kofiPainter by remember { mutableStateOf<Painter?>(null) }
     val density = LocalDensity.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         try {
@@ -281,6 +287,9 @@ private fun SupportSection(
                         .pointerHoverIcon(PointerIcon.Hand),
                     onClick = {
                         viewModel.analyticsService.trackSupportLinkClick("patreon", "settings")
+                        scope.launch {
+                            userSettingsRepository.updateLastSupportClickDate(System.currentTimeMillis())
+                        }
                         try {
                             Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                         } catch (e: Exception) {
@@ -305,6 +314,9 @@ private fun SupportSection(
                         .pointerHoverIcon(PointerIcon.Hand),
                     onClick = {
                         viewModel.analyticsService.trackSupportLinkClick("kofi", "settings")
+                        scope.launch {
+                            userSettingsRepository.updateLastSupportClickDate(System.currentTimeMillis())
+                        }
                         try {
                             Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                         } catch (e: Exception) {
