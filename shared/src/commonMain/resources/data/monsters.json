@@ -28470,7 +28470,7 @@
 		"id" : 22162,
 		"name" : "Triol's Believer",
 		"level" : 85,
-		"exp" : 57765,
+		"exp" : 51246,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28479,7 +28479,7 @@
 		"id" : 22162,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14441,
+		"exp" : 57564,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28488,17 +28488,17 @@
 		"id" : 22163,
 		"name" : "Triol's High Priest",
 		"level" : 86,
+		"exp" : 68899,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 5.0
+	},
+	{
+		"id" : 22163,
+		"name" : "Triol's High Priest",
+		"level" : 80,
 		"exp" : 72870,
 		"is_rift" : 0,
-		"chronicle" : "c5",
-		"hp_multiplier" : 5.0
-	},
-	{
-		"id" : 22163,
-		"name" : "Triol's High Priest",
-		"level" : 80,
-		"exp" : 14574,
-		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 5.0
 	},
@@ -28506,7 +28506,7 @@
 		"id" : 22164,
 		"name" : "Triol's Believer",
 		"level" : 86,
-		"exp" : 58296,
+		"exp" : 52458,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -28515,7 +28515,7 @@
 		"id" : 22164,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 14574,
+		"exp" : 58296,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28533,7 +28533,7 @@
 		"id" : 22165,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 57754,
+		"exp" : 57764,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28551,7 +28551,7 @@
 		"id" : 22166,
 		"name" : "Triol's Believer",
 		"level" : 80,
-		"exp" : 57754,
+		"exp" : 57764,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28587,7 +28587,7 @@
 		"id" : 22168,
 		"name" : "Triol's Priest",
 		"level" : 80,
-		"exp" : 58794,
+		"exp" : 58796,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -28692,12 +28692,30 @@
 		"hp_multiplier" : 0.25
 	},
 	{
+		"id" : 22175,
+		"name" : "Andreas' Captain of the Royal Guard",
+		"level" : 80,
+		"exp" : 3609,
+		"is_rift" : 0,
+		"chronicle" : "interlude",
+		"hp_multiplier" : 0.25
+	},
+	{
+		"id" : 22176,
+		"name" : "Andreas' Royal Guards",
+		"level" : 85,
+		"exp" : 2119,
+		"is_rift" : 0,
+		"chronicle" : "c5",
+		"hp_multiplier" : 0.25
+	},
+	{
 		"id" : 22176,
 		"name" : "Andreas' Royal Guards",
 		"level" : 85,
 		"exp" : 3609,
 		"is_rift" : 0,
-		"chronicle" : "c5",
+		"chronicle" : "interlude",
 		"hp_multiplier" : 0.25
 	},
 	{
@@ -28718,15 +28736,6 @@
 		"chronicle" : "interlude",
 		"hp_multiplier" : 3.0
 	},
-    {
-      "id" : 22188,
-      "name" : "Andreas' Captain of the Royal Guard",
-      "level" : 80,
-      "exp" : 44094,
-      "is_rift" : 0,
-      "chronicle" : "interlude",
-      "hp_multiplier" : 3.0
-    },
 	{
 		"id" : 22189,
 		"name" : "Andreas' Royal Guards",
@@ -28749,7 +28758,7 @@
 		"id" : 22190,
 		"name" : "Ritual Sacrifice",
 		"level" : 86,
-		"exp" : 29148,
+		"exp" : 38857,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 2.0

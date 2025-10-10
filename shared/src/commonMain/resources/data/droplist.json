@@ -85394,7 +85394,7 @@
 	{
 		"mob_id" : 22162,
 		"item_id" : 57,
-		"min" : 6285,
+		"min" : 6280,
 		"max" : 12821,
 		"chance" : 700000,
 		"category" : 0,
@@ -85402,7 +85402,7 @@
 	},
 	{
 		"mob_id" : 22162,
-		"item_id" : 959,
+		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
 		"chance" : 6245,
@@ -85467,7 +85467,7 @@
 		"mob_id" : 22163,
 		"item_id" : 57,
 		"min" : 8351,
-		"max" : 17090,
+		"max" : 17094,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -85477,7 +85477,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 180,
+		"chance" : 359,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85486,7 +85486,7 @@
 		"item_id" : 1866,
 		"min" : 1,
 		"max" : 3,
-		"chance" : 200000,
+		"chance" : 198900,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85495,7 +85495,7 @@
 		"item_id" : 1871,
 		"min" : 4,
 		"max" : 12,
-		"chance" : 111111,
+		"chance" : 111900,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85504,7 +85504,7 @@
 		"item_id" : 1877,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 31250,
+		"chance" : 35540,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85513,7 +85513,7 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 19505,
+		"chance" : 17900,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85522,15 +85522,15 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 6493,
+		"chance" : 7783,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22164,
 		"item_id" : 57,
-		"min" : 6419,
-		"max" : 13140,
+		"min" : 6418,
+		"max" : 13138,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -85540,16 +85540,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 5000,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22164,
-		"item_id" : 960,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 394,
+		"chance" : 275,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85558,7 +85549,7 @@
 		"item_id" : 1865,
 		"min" : 4,
 		"max" : 12,
-		"chance" : 83333,
+		"chance" : 85900,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85567,7 +85558,7 @@
 		"item_id" : 1870,
 		"min" : 7,
 		"max" : 21,
-		"chance" : 47619,
+		"chance" : 45860,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85576,7 +85567,7 @@
 		"item_id" : 1875,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 41606,
+		"chance" : 45860,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85585,7 +85576,7 @@
 		"item_id" : 1879,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 125000,
+		"chance" : 114700,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85594,14 +85585,14 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 12820,
+		"chance" : 13760,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22165,
 		"item_id" : 57,
-		"min" : 6171,
+		"min" : 6157,
 		"max" : 12570,
 		"chance" : 700000,
 		"category" : 0,
@@ -85612,53 +85603,53 @@
 		"item_id" : 1866,
 		"min" : 1,
 		"max" : 3,
-		"chance" : 142857,
+		"chance" : 146400,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22165,
 		"item_id" : 1871,
-		"min" : 4,
-		"max" : 12,
-		"chance" : 90909,
+		"min" : 1,
+		"max" : 3,
+		"chance" : 329400,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22165,
-		"item_id" : 1885,
+		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 613,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
-	{
-		"mob_id" : 22165,
-		"item_id" : 1885,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 50000,
-		"category" : 2,
-		"chronicle" : "c5"
-	},
-	{
+    {
 		"mob_id" : 22165,
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 537100,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
-	{
+      {
 		"mob_id" : 22165,
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 510200,
 		"category" : -1,
+		"chronicle" : "c5"
+	},
+	{
+		"mob_id" : 22165,
+		"item_id" : 1885,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 54900,
+		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
@@ -85666,16 +85657,7 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22165,
-		"item_id" : 4041,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 4255,
+		"chance" : 5729,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85684,14 +85666,14 @@
 		"item_id" : 5220,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 23255,
+		"chance" : 26350,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22166,
 		"item_id" : 57,
-		"min" : 6161,
+		"min" : 6157,
 		"max" : 12570,
 		"chance" : 700000,
 		"category" : 0,
@@ -85702,8 +85684,17 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 180,
+		"chance" : 262,
 		"category" : 2,
+		"chronicle" : "c5"
+	},
+    {
+		"mob_id" : 22166,
+		"item_id" : 960,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 6123,
+		"category" : -1,
 		"chronicle" : "c5"
 	},
 	{
@@ -85711,16 +85702,16 @@
 		"item_id" : 1864,
 		"min" : 4,
 		"max" : 12,
-		"chance" : 16606,
+		"chance" : 164700,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22166,
 		"item_id" : 1869,
-		"min" : 1,
-		"max" : 3,
-		"chance" : 200000,
+		"min" : 7,
+		"max" : 21,
+		"chance" : 43920,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85729,7 +85720,7 @@
 		"item_id" : 1877,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 612300,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -85738,7 +85729,7 @@
 		"item_id" : 1880,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 58823,
+		"chance" : 65880,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85747,7 +85738,7 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 306100,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -85756,7 +85747,7 @@
 		"item_id" : 4043,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 22727,
+		"chance" : 21960,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85765,26 +85756,17 @@
 		"item_id" : 5550,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 8928,
+		"chance" : 8784,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22167,
 		"item_id" : 57,
-		"min" : 7376,
-		"max" : 15110,
+		"min" : 7370,
+		"max" : 151108,
 		"chance" : 700000,
 		"category" : 0,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22167,
-		"item_id" : 959,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 2000,
-		"category" : -1,
 		"chronicle" : "c5"
 	},
 	{
@@ -85792,7 +85774,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 623,
+		"chance" : 369,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85801,16 +85783,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 32108,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22167,
-		"item_id" : 1894,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 34482,
+		"chance" : 32370,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85819,7 +85792,7 @@
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 34482,
+		"chance" : 30750,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85828,7 +85801,7 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 3745,
+		"chance" : 8021,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85837,15 +85810,15 @@
 		"item_id" : 4044,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 32108,
+		"chance" : 30750,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22168,
 		"item_id" : 57,
-		"min" : 6437,
-		"max" : 13190,
+		"min" : 6433,
+		"max" : 13186,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -85855,16 +85828,16 @@
 		"item_id" : 1867,
 		"min" : 12,
 		"max" : 36,
-		"chance" : 33333,
+		"chance" : 38340,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22168,
 		"item_id" : 1869,
-		"min" : 19,
-		"max" : 53,
-		"chance" : 20408,
+		"min" : 18,
+		"max" : 54,
+		"chance" : 19170,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85873,7 +85846,7 @@
 		"item_id" : 1870,
 		"min" : 2,
 		"max" : 6,
-		"chance" : 142855,
+		"chance" : 138000,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85882,7 +85855,7 @@
 		"item_id" : 1871,
 		"min" : 3,
 		"max" : 9,
-		"chance" : 111111,
+		"chance" : 115000,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85891,7 +85864,7 @@
 		"item_id" : 1872,
 		"min" : 7,
 		"max" : 21,
-		"chance" : 58823,
+		"chance" : 65720,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85899,7 +85872,7 @@
 		"mob_id" : 22169,
 		"item_id" : 57,
 		"min" : 7442,
-		"max" : 15230,
+		"max" : 15233,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -85909,7 +85882,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 180,
+		"chance" : 317,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85918,7 +85891,7 @@
 		"item_id" : 1864,
 		"min" : 5,
 		"max" : 15,
-		"chance" : 166066,
+		"chance" : 159500,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85927,7 +85900,7 @@
 		"item_id" : 1865,
 		"min" : 3,
 		"max" : 9,
-		"chance" : 125000,
+		"chance" : 132900,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85936,7 +85909,7 @@
 		"item_id" : 1866,
 		"min" : 3,
 		"max" : 9,
-		"chance" : 83333,
+		"chance" : 75970,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85945,7 +85918,7 @@
 		"item_id" : 1868,
 		"min" : 12,
 		"max" : 36,
-		"chance" : 55555,
+		"chance" : 66470,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85954,7 +85927,7 @@
 		"item_id" : 1873,
 		"min" : 4,
 		"max" : 12,
-		"chance" : 27027,
+		"chance" : 35450,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -85963,7 +85936,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 650300,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -85972,15 +85945,24 @@
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 617700,
+		"category" : -1,
+		"chronicle" : "c5"
+	},
+    {
+		"mob_id" : 22169,
+		"item_id" : 959,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 741,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22171,
 		"item_id" : 57,
-		"min" : 8543,
-		"max" : 17500,
+		"min" : 8537,
+		"max" : 17499,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -85990,16 +85972,16 @@
 		"item_id" : 1868,
 		"min" : 15,
 		"max" : 45,
-		"chance" : 55555,
+		"chance" : 61050,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22171,
 		"item_id" : 1873,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 100000,
+		"min" : 2,
+		"max" : 6,
+		"chance" : 91580,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86008,7 +85990,7 @@
 		"item_id" : 1876,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 166066,
+		"chance" : 183200,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86017,7 +85999,7 @@
 		"item_id" : 1895,
 		"min" : 3,
 		"max" : 9,
-		"chance" : 45454,
+		"chance" : 43610,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86026,15 +86008,15 @@
 		"item_id" : 4042,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 11764,
+		"chance" : 15260,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22172,
 		"item_id" : 57,
-		"min" : 7450,
-		"max" : 15230,
+		"min" : 7442,
+		"max" : 15233,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86044,7 +86026,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 2000,
+		"chance" : 741,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86053,7 +86035,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 341,
+		"chance" : 320,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86062,7 +86044,7 @@
 		"item_id" : 1872,
 		"min" : 5,
 		"max" : 15,
-		"chance" : 100000,
+		"chance" : 106400,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86071,16 +86053,25 @@
 		"item_id" : 1875,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 58823,
+		"chance" : 53180,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22172,
 		"item_id" : 1881,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 106400,
+		"category" : 2,
+		"chronicle" : "c5"
+	},
+    {
+		"mob_id" : 22172,
+		"item_id" : 1867,
 		"min" : 9,
 		"max" : 27,
-		"chance" : 50000,
+		"chance" : 59090,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86089,15 +86080,15 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 9433,
+		"chance" : 6936,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22173,
 		"item_id" : 57,
-		"min" : 6297,
-		"max" : 12880,
+		"min" : 6293,
+		"max" : 12881,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86107,7 +86098,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 227,
+		"chance" : 270,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86116,7 +86107,7 @@
 		"item_id" : 1868,
 		"min" : 3,
 		"max" : 9,
-		"chance" : 200000,
+		"chance" : 224800,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86125,7 +86116,7 @@
 		"item_id" : 1873,
 		"min" : 2,
 		"max" : 6,
-		"chance" : 66066,
+		"chance" : 67450,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86134,7 +86125,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 549800,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86143,7 +86134,16 @@
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 522300,
+		"category" : -1,
+		"chronicle" : "c5"
+	},
+	{
+		"mob_id" : 22173,
+		"item_id" : 959,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 626,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86152,16 +86152,7 @@
 		"item_id" : 4044,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22173,
-		"item_id" : 4044,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 18518,
+		"chance" : 22480,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86170,16 +86161,7 @@
 		"item_id" : 5549,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22173,
-		"item_id" : 5549,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 66066,
+		"chance" : 67450,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86195,9 +86177,9 @@
 	{
 		"mob_id" : 22174,
 		"item_id" : 1867,
-		"min" : 9,
+		"min" : 11,
 		"max" : 27,
-		"chance" : 45454,
+		"chance" : 45450,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86206,7 +86188,7 @@
 		"item_id" : 1872,
 		"min" : 5,
 		"max" : 15,
-		"chance" : 76923,
+		"chance" : 76920,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86215,7 +86197,7 @@
 		"item_id" : 1875,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 37037,
+		"chance" : 37040,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86224,7 +86206,7 @@
 		"item_id" : 1877,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 624500,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86242,7 +86224,16 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 312200,
+		"category" : -1,
+		"chronicle" : "c5"
+	},
+    {
+		"mob_id" : 22174,
+		"item_id" : 960,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 6245,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86251,15 +86242,15 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 4739,
+		"chance" : 1428,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22175,
 		"item_id" : 57,
-		"min" : 215,
-		"max" : 508,
+		"min" : 250,
+		"max" : 511,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86269,7 +86260,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 180,
+		"chance" : 1,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86278,7 +86269,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 5000,
+		"chance" : 249,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86287,7 +86278,7 @@
 		"item_id" : 1868,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 43478,
+		"chance" : 62540,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86296,7 +86287,7 @@
 		"item_id" : 1873,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 11111,
+		"chance" : 12510,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86305,7 +86296,7 @@
 		"item_id" : 1876,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 11111,
+		"chance" : 6254,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86314,7 +86305,7 @@
 		"item_id" : 1895,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 5555,
+		"chance" : 8934,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86323,7 +86314,7 @@
 		"item_id" : 4042,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 10380,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86332,15 +86323,15 @@
 		"item_id" : 4042,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 15000,
+		"chance" : 521,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22176,
 		"item_id" : 57,
-		"min" : 1500,
-		"max" : 2200,
+		"min" : 250,
+		"max" : 511,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86350,7 +86341,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 227,
+		"chance" : 107,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86359,7 +86350,7 @@
 		"item_id" : 1866,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 21276,
+		"chance" : 17870,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86368,7 +86359,7 @@
 		"item_id" : 1871,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 22727,
+		"chance" : 26800,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86377,7 +86368,7 @@
 		"item_id" : 1877,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 24910,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86386,7 +86377,7 @@
 		"item_id" : 1877,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 1620,
+		"chance" : 10720,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86395,7 +86386,7 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 1620,
+		"chance" : 536,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86404,15 +86395,15 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 1620,
+		"chance" : 233,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22188,
 		"item_id" : 57,
-		"min" : 6232,
-		"max" : 7692,
+		"min" : 5136,
+		"max" : 10528,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86422,7 +86413,7 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 335,
+		"chance" : 309,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86431,7 +86422,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 449200,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86440,7 +86431,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 55555,
+		"chance" : 27070,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86449,7 +86440,7 @@
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 100000,
+		"chance" : 25710,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86458,7 +86449,7 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 62500,
+		"chance" : 6708,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86467,15 +86458,15 @@
 		"item_id" : 4044,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 166066,
+		"chance" : 25710,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22189,
 		"item_id" : 57,
-		"min" : 4456,
-		"max" : 7385,
+		"min" : 4145,
+		"max" : 8484,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86485,7 +86476,7 @@
 		"item_id" : 960,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 394,
+		"chance" : 249,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86494,7 +86485,7 @@
 		"item_id" : 1894,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 55555,
+		"chance" : 21820,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86503,7 +86494,7 @@
 		"item_id" : 4039,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 100000,
+		"chance" : 20730,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86512,7 +86503,7 @@
 		"item_id" : 4041,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 62500,
+		"chance" : 5408,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86521,15 +86512,15 @@
 		"item_id" : 4044,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 166066,
+		"chance" : 20730,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
 	{
 		"mob_id" : 22190,
 		"item_id" : 57,
-		"min" : 7411,
-		"max" : 7610,
+		"min" : 4812,
+		"max" : 9850,
 		"chance" : 700000,
 		"category" : 0,
 		"chronicle" : "c5"
@@ -86539,7 +86530,16 @@
 		"item_id" : 959,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 2000,
+		"chance" : 479,
+		"category" : -1,
+		"chronicle" : "c5"
+	},
+	{
+		"mob_id" : 22190,
+		"item_id" : 1895,
+		"min" : 1,
+		"max" : 7,
+		"chance" : 855800,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86548,16 +86548,7 @@
 		"item_id" : 1895,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 25000,
-		"category" : -1,
-		"chronicle" : "c5"
-	},
-	{
-		"mob_id" : 22190,
-		"item_id" : 1895,
-		"min" : 1,
-		"max" : 1,
-		"chance" : 278888,
+		"chance" : 206300,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86566,7 +86557,7 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 50000,
+		"chance" : 239700,
 		"category" : -1,
 		"chronicle" : "c5"
 	},
@@ -86575,7 +86566,7 @@
 		"item_id" : 4040,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 111111,
+		"chance" : 14440,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86584,7 +86575,7 @@
 		"item_id" : 4042,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 88888,
+		"chance" : 12030,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
@@ -86593,7 +86584,7 @@
 		"item_id" : 4043,
 		"min" : 1,
 		"max" : 1,
-		"chance" : 55555,
+		"chance" : 24070,
 		"category" : 2,
 		"chronicle" : "c5"
 	},
