@@ -49,7 +49,9 @@ import org.koin.compose.koinInject
 import com.l2loot.data.LoadDbDataRepository
 import com.l2loot.data.analytics.AnalyticsService
 import com.l2loot.data.analytics.generateUserGuid
+import com.l2loot.data.firebase.FirebaseAuthService
 import com.l2loot.data.sellable.SellableRepository
+import com.l2loot.data.settings.UserSettings
 import com.l2loot.data.settings.UserSettingsRepository
 import com.l2loot.data.update.UpdateChecker
 import com.l2loot.data.update.UpdateInfo
@@ -87,6 +89,7 @@ fun App() {
     val userSettingsRepository: UserSettingsRepository = koinInject()
     val analyticsService: AnalyticsService = koinInject()
     val updateChecker: UpdateChecker = koinInject()
+    val firebaseAuthService: FirebaseAuthService = koinInject()
     
     val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
@@ -98,6 +101,7 @@ fun App() {
     var showConsentDialog by remember { mutableStateOf(false) }
     var shouldShowConsentAfterLoad by remember { mutableStateOf(false) }
     var showSupportDialog by remember { mutableStateOf(false) }
+    var isSupportDialogReminder by remember { mutableStateOf(false) }
     var availableUpdate by remember { mutableStateOf<UpdateInfo?>(null) }
     var showUpdateNotification by remember { mutableStateOf(false) }
     
@@ -118,6 +122,45 @@ fun App() {
 
     fun isCurrentlyChosen(currentDestination: Int): Boolean {
         return selectedDestination == currentDestination
+    }
+
+    fun shouldShowSupportDialog(settings: UserSettings?): Pair<Boolean, Boolean> {
+        if (settings == null) return Pair(false, false)
+
+        val currentTime = System.currentTimeMillis()
+        val sessionCount = settings.sessionCountSincePrompt
+        val lastPromptDate = settings.lastPromptDate
+        val lastSupportClickDate = settings.lastSupportClickDate
+
+        val dayInMillis = 24 * 60 * 60 * 1000L
+        val weekInMillis = 7 * dayInMillis
+        val twoWeeksInMillis = 14 * dayInMillis
+        val threeMonthsInMillis = 90 * dayInMillis
+ 
+        if (lastPromptDate > 0 && (currentTime - lastPromptDate) < weekInMillis) {
+            return Pair(false, false)
+        }
+
+        if (lastSupportClickDate > 0) {
+            val timeSinceClick = currentTime - lastSupportClickDate
+
+            if (timeSinceClick < threeMonthsInMillis) {
+                return Pair(false, false)
+            }
+
+            if (lastPromptDate <= lastSupportClickDate) {
+                return Pair(true, true)
+            }
+
+            return Pair(false, false)
+        }
+
+        if (lastPromptDate == 0L) {
+            return Pair(sessionCount >= 3, false)
+        }
+
+        val timeSinceLastPrompt = currentTime - lastPromptDate
+        return Pair(timeSinceLastPrompt >= twoWeeksInMillis, false)
     }
 
     LaunchedEffect(Unit) {
@@ -168,6 +211,11 @@ fun App() {
     }
     
     LaunchedEffect(Unit) {
+        firebaseAuthService.signInAnonymously()
+        sellableRepository.setFirebaseAuthService(firebaseAuthService)
+    }
+    
+    LaunchedEffect(Unit) {
         val settings = userSettingsRepository.getSettings().firstOrNull()
         
         val isFirstOpen = settings?.userGuid.isNullOrEmpty()
@@ -185,17 +233,20 @@ fun App() {
             analyticsService.trackAppOpen(isFirstOpen = false)
         }
         
-        val appOpenCount = settings?.appOpenCount ?: 0
-        val shouldShowSupport = (appOpenCount == 2L || appOpenCount == 8L)
-        
         userSettingsRepository.incrementAppOpenCount()
+        userSettingsRepository.incrementSessionCountSincePrompt()
         
-         if (shouldShowSupport && !isFirstOpen) {
+        val (shouldShowSupport, isReminder) = shouldShowSupportDialog(settings)
+        
+        if (shouldShowSupport && !isFirstOpen) {
             while (isLoading || showConsentDialog) {
                 delay(100)
             }
             delay(500)
             showSupportDialog = true
+            isSupportDialogReminder = isReminder
+            
+            userSettingsRepository.updateLastPromptDate(System.currentTimeMillis())
         }
     }
     
@@ -262,7 +313,10 @@ fun App() {
             if (showSupportDialog) {
                 SupportDialog(
                     onDismiss = { showSupportDialog = false },
-                    analyticsService = analyticsService
+                    analyticsService = analyticsService,
+                    userSettingsRepository = userSettingsRepository,
+                    scope = scope,
+                    isReminderAfterSupport = isSupportDialogReminder
                 )
             }
             
