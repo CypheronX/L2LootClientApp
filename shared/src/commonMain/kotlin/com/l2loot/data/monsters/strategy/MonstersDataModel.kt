@@ -13,8 +13,7 @@ enum class HPMultiplier(val value: Double) {
     X3(3.0),
     X4(4.0),
     X5(5.0),
-    X6(6.0),
-    X10(10.0);
+    X6(6.0);
 
     fun getHPMultiplierLabel(): String {
         return when(this) {

@@ -26,7 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.l2loot.data.analytics.AnalyticsService
+import com.l2loot.data.settings.UserSettingsRepository
 import com.l2loot.design.LocalSpacing
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import java.awt.Desktop
@@ -170,7 +173,10 @@ fun TrackingConsentDialog(
 @Composable
 fun SupportDialog(
     onDismiss: () -> Unit,
-    analyticsService: AnalyticsService
+    analyticsService: AnalyticsService,
+    userSettingsRepository: UserSettingsRepository,
+    scope: CoroutineScope,
+    isReminderAfterSupport: Boolean = false
 ) {
     var patreonPainter by remember { mutableStateOf<Painter?>(null) }
     var kofiPainter by remember { mutableStateOf<Painter?>(null) }
@@ -227,8 +233,12 @@ fun SupportDialog(
                 Spacer(modifier = Modifier.height(LocalSpacing.current.space16))
 
                 Text(
-                    text = "Hey, I’m glad you’re enjoying L2 Loot! ❤\uFE0F\n " +
-                            "Your support keeps the project alive and helps me keep improving it with new features and updates. If you like what I’m building, consider supporting me — it really makes a difference!",
+                    text = if (isReminderAfterSupport) {
+                        "Hey, just a reminder — your support keeps L2 Loot alive and improving ❤️"
+                    } else {
+                        "Hey, I'm glad you're enjoying L2 Loot! ❤\uFE0F\n " +
+                                "Your support keeps the project alive and helps me keep improving it with new features and updates. If you like what I'm building, consider supporting me — it really makes a difference!"
+                    },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -245,6 +255,9 @@ fun SupportDialog(
                             .pointerHoverIcon(PointerIcon.Hand),
                         onClick = {
                             analyticsService.trackSupportLinkClick("patreon", "dialog")
+                            scope.launch {
+                                userSettingsRepository.updateLastSupportClickDate(System.currentTimeMillis())
+                            }
                             try {
                                 Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                             } catch (e: Exception) {
@@ -270,6 +283,9 @@ fun SupportDialog(
                             .pointerHoverIcon(PointerIcon.Hand),
                         onClick = {
                             analyticsService.trackSupportLinkClick("kofi", "dialog")
+                            scope.launch {
+                                userSettingsRepository.updateLastSupportClickDate(System.currentTimeMillis())
+                            }
                             try {
                                 Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                             } catch (e: Exception) {
