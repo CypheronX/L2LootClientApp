@@ -34,7 +34,8 @@ internal class ExploreViewModel(
                     maxLevel = initialSettings?.maxLevel?.toString() ?: "",
                     chronicle = initialSettings?.chronicle ?: "c5",
                     showRiftMobs = initialSettings?.showRiftMobs ?: false,
-                    useAynixPrices = initialSettings?.isAynixPrices ?: false
+                    useAynixPrices = initialSettings?.isAynixPrices ?: false,
+                    selectedHPMultipliers = initialSettings?.hpMultipliers ?: emptySet()
                 )
             }
             
@@ -48,7 +49,8 @@ internal class ExploreViewModel(
                         maxLevel = settings?.maxLevel?.toString() ?: "",
                         chronicle = settings?.chronicle ?: "c5",
                         showRiftMobs = settings?.showRiftMobs ?: false,
-                        useAynixPrices = settings?.isAynixPrices ?: false
+                        useAynixPrices = settings?.isAynixPrices ?: false,
+                        selectedHPMultipliers = settings?.hpMultipliers ?: emptySet()
                     )
                 }
             }
@@ -112,6 +114,10 @@ internal class ExploreViewModel(
                     }
                     currentState.copy(selectedHPMultipliers = newMultipliers)
                 }
+                viewModelScope.launch {
+                    userSettingsRepository.updateHPMultipliers(_state.value.selectedHPMultipliers)
+                }
+                loadMonsters(_state.value.toMonsterQueryParams())
             }
             is ExploreScreenEvent.Explore -> {
                 loadMonsters(_state.value.toMonsterQueryParams())

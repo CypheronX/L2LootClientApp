@@ -26,6 +26,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material.Text
 import androidx.compose.material3.Checkbox
@@ -72,18 +74,26 @@ fun ExploreScreen() {
         mutableStateOf<Painter?>(null)
     }
 
+    var chevronPainter by remember {
+        mutableStateOf<Painter?>(null)
+    }
+
     val density = LocalDensity.current
 
     LaunchedEffect(Unit) {
         try {
             val filterBytes = Res.readBytes("files/svg/filter.svg")
             val spoilBytes = Res.readBytes("files/svg/spoil.svg")
+            val chevronBytes = Res.readBytes("files/svg/chevron.svg")
 
             if (filterBytes.isNotEmpty()) {
                 filterPainter = filterBytes.decodeToSvgPainter(density)
             }
             if (spoilBytes.isNotEmpty()) {
                 spoilPainter = spoilBytes.decodeToSvgPainter(density)
+            }
+            if (chevronBytes.isNotEmpty()) {
+                chevronPainter = chevronBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
             println("Failed to load svg icons: ${e.message}")
@@ -140,12 +150,58 @@ fun ExploreScreen() {
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space1))
 
                 Row(
-                    horizontalArrangement = Arrangement.End,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = LocalSpacing.current.space34)
                 ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.space8),
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .weight(1f)
+                            .horizontalScroll(rememberScrollState())
+                    ) {
+                        state.selectedHPMultipliers.forEach { multiplier ->
+                            AssistChip(
+                                onClick = {
+                                    viewModel.onEvent(ExploreScreenEvent.HPMultiplierToggled(multiplier))
+                                },
+                                label = {
+                                    Text(
+                                        text = "HP ${multiplier.getHPMultiplierLabel()}",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                trailingIcon = {
+                                    chevronPainter?.let { chevron ->
+                                        Image(
+                                            painter = chevron,
+                                            contentDescription = "Remove filter",
+                                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                            modifier = Modifier
+                                                .size((10.5).dp)
+                                        )
+                                    }
+                                },
+                                colors = AssistChipDefaults.assistChipColors(
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0F),
+                                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    trailingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                                ),
+                                border = AssistChipDefaults.assistChipBorder(
+                                    enabled = true,
+                                    borderColor = MaterialTheme.colorScheme.outlineVariant
+                                ),
+                                modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
+                    
                     Box {
                         Button(
                             onClick = {
