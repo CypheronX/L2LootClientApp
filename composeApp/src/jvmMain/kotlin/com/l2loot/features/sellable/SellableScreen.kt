@@ -231,7 +231,7 @@ fun SellableScreen() {
                                 fontSize = MaterialTheme.typography.bodySmall.fontSize
                             )
                         ) {
-                            append("*Prices by AYNYX - AYNIX is owner of Discord Channel ")
+                            append("*Prices by AYNIX - AYNIX is owner of Discord Channel ")
                         }
 
                         pushStringAnnotation(
