@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -39,6 +40,11 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.l2loot.BuildConfig
 import com.l2loot.data.settings.UserSettingsRepository
@@ -93,11 +99,11 @@ fun SettingsScreen() {
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space20))
 
                 Row {
-                    Box {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space16)
+                    ) {
                         state.availableUpdate?.let { updateInfo ->
                             UpdateSection(updateInfo)
-
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
                         }
 
                         SettingsSection(
@@ -108,16 +114,22 @@ fun SettingsScreen() {
 
                     Spacer(modifier = Modifier.size(LocalSpacing.current.space34))
 
-                    SupportSection(
-                        viewModel = viewModel,
-                        userSettingsRepository = viewModel.userSettingsRepository
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space16)
+                    ) {
+                        SupportSection(
+                            viewModel = viewModel,
+                            userSettingsRepository = viewModel.userSettingsRepository
+                        )
+
+                        ReportBugSection()
+                    }
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = "Special thanks to Tab1 and AYNIX for consultation, testing and help during development.",
+                    text = "Special thanks to Tabi and AYNIX for consultation, testing and help during development.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
@@ -335,6 +347,137 @@ private fun SupportSection(
                     Text("Ko-fi")
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun ReportBugSection() {
+    val uriHandler = LocalUriHandler.current
+
+    Card(
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(LocalSpacing.current.space16),
+            verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space12)
+        ) {
+            Text(
+                text = "Report a Bug",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            Text(
+                text = "Found an issue? Let me know!",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+
+            // Email
+            Text(
+                text = "Email: l2lootapp@gmail.com",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+
+            // Discord link
+            val discordText = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                ) {
+                    append("Discord: ")
+                }
+
+                pushStringAnnotation(
+                    tag = "URL",
+                    annotation = "https://discord.com/users/217003038022434816"
+                )
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.secondary,
+                        textDecoration = TextDecoration.Underline,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                ) {
+                    append("cypheron discord")
+                }
+                pop()
+            }
+
+            ClickableText(
+                text = discordText,
+                onClick = { offset ->
+                    discordText.getStringAnnotations(
+                        tag = "URL",
+                        start = offset,
+                        end = offset
+                    ).firstOrNull()?.let { annotation ->
+                        uriHandler.openUri(annotation.item)
+                    }
+                },
+                modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+            )
+
+            // GitHub Issues link
+            val githubText = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                ) {
+                    append("GitHub Issues: ")
+                }
+
+                pushStringAnnotation(
+                    tag = "URL",
+                    annotation = "https://github.com/aleksbalev/L2LootClientAppReleases/issues"
+                )
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.secondary,
+                        textDecoration = TextDecoration.Underline,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                ) {
+                    append("Report here")
+                }
+                pop()
+
+                withStyle(
+                    style = SpanStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = MaterialTheme.typography.bodySmall.fontSize
+                    )
+                ) {
+                    append(" (preferred)")
+                }
+            }
+
+            ClickableText(
+                text = githubText,
+                onClick = { offset ->
+                    githubText.getStringAnnotations(
+                        tag = "URL",
+                        start = offset,
+                        end = offset
+                    ).firstOrNull()?.let { annotation ->
+                        uriHandler.openUri(annotation.item)
+                    }
+                },
+                modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+            )
         }
     }
 }
