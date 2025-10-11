@@ -15,7 +15,8 @@ CREATE TABLE user_settings (
     last_updated INTEGER NOT NULL DEFAULT 0,
     last_prompt_date INTEGER NOT NULL DEFAULT 0,
     session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
-    last_support_click_date INTEGER NOT NULL DEFAULT 0
+    last_support_click_date INTEGER NOT NULL DEFAULT 0,
+    hp_multipliers TEXT NOT NULL DEFAULT ''
 );
 
 -- Get current settings (will return null if no settings exist)
@@ -101,6 +102,11 @@ WHERE id = 1;
 updateLastSupportClickDate:
 UPDATE user_settings
 SET last_support_click_date = ?
+WHERE id = 1;
+
+updateHPMultipliers:
+UPDATE user_settings
+SET hp_multipliers = ?, last_updated = ?
 WHERE id = 1;
 
 -- Initialize with defaults if no settings exist

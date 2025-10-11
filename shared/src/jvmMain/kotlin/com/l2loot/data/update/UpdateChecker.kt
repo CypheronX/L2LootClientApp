@@ -72,30 +72,68 @@ class UpdateCheckerImpl(
     }
     
     /**
-     * Compare semantic versions (e.g., "1.2.3" vs "1.2.0")
+     * Compare semantic versions with pre-release support (e.g., "1.2.3-test" vs "1.2.0")
      * Returns true if newVersion > currentVersion
+     * 
+     * Supports formats like:
+     * - 1.0.0
+     * - 1.0.0-test
+     * - 1.0.0-alpha.1
+     * - 1.0.0-beta.2
+     * 
+     * According to semver: 1.0.0-alpha < 1.0.0-beta < 1.0.0
      */
     private fun isNewerVersion(newVersion: String, currentVersion: String): Boolean {
         try {
-            val newParts = newVersion.split(".").map { it.toIntOrNull() ?: 0 }
-            val currentParts = currentVersion.split(".").map { it.toIntOrNull() ?: 0 }
+            val newSemVer = parseVersion(newVersion)
+            val currentSemVer = parseVersion(currentVersion)
             
-            val maxLength = maxOf(newParts.size, currentParts.size)
-            
-            for (i in 0 until maxLength) {
-                val newPart = newParts.getOrNull(i) ?: 0
-                val currentPart = currentParts.getOrNull(i) ?: 0
-                
-                if (newPart > currentPart) return true
-                if (newPart < currentPart) return false
+            if (newSemVer.major != currentSemVer.major) {
+                return newSemVer.major > currentSemVer.major
+            }
+            if (newSemVer.minor != currentSemVer.minor) {
+                return newSemVer.minor > currentSemVer.minor
+            }
+            if (newSemVer.patch != currentSemVer.patch) {
+                return newSemVer.patch > currentSemVer.patch
             }
             
-            return false // Versions are equal
+            // If versions are equal, compare pre-release
+            // Per semver: version without pre-release > version with pre-release
+            // e.g., 1.0.0 > 1.0.0-alpha
+            return when {
+                newSemVer.preRelease == null && currentSemVer.preRelease != null -> true
+                newSemVer.preRelease != null && currentSemVer.preRelease == null -> false
+                newSemVer.preRelease != null && currentSemVer.preRelease != null -> {
+                    newSemVer.preRelease > currentSemVer.preRelease
+                }
+                else -> false
+            }
         } catch (e: Exception) {
             println("Error comparing versions: ${e.message}")
             return false
         }
     }
+    
+    private fun parseVersion(version: String): SemanticVersion {
+        val parts = version.split("-", limit = 2)
+        val versionPart = parts[0]
+        val preRelease = parts.getOrNull(1)
+        
+        val versionNumbers = versionPart.split(".")
+        val major = versionNumbers.getOrNull(0)?.toIntOrNull() ?: 0
+        val minor = versionNumbers.getOrNull(1)?.toIntOrNull() ?: 0
+        val patch = versionNumbers.getOrNull(2)?.toIntOrNull() ?: 0
+        
+        return SemanticVersion(major, minor, patch, preRelease)
+    }
+    
+    private data class SemanticVersion(
+        val major: Int,
+        val minor: Int,
+        val patch: Int,
+        val preRelease: String?
+    )
 }
 
 @Serializable
