@@ -27039,7 +27039,7 @@
 		"id" : 22057,
 		"name" : "Spelunking Ant",
 		"level" : 50,
-		"exp" : 3464,
+		"exp" : 3629,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27057,7 +27057,7 @@
 		"id" : 22058,
 		"name" : "Horrifying Excavator Golem III",
 		"level" : 51,
-		"exp" : 5285,
+		"exp" : 3841,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27075,7 +27075,7 @@
 		"id" : 22059,
 		"name" : "Bloodthirsty Ginzu Golem VII",
 		"level" : 51,
-		"exp" : 14248,
+		"exp" : 5789,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27084,7 +27084,7 @@
 		"id" : 22059,
 		"name" : "Bloodthirsty Ginzu Golem VII",
 		"level" : 51,
-		"exp" : 15364,
+		"exp" : 3841,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27093,7 +27093,7 @@
 		"id" : 22060,
 		"name" : "Horrifying Cannon Golem",
 		"level" : 52,
-		"exp" : 12384,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 2.0
@@ -27102,7 +27102,7 @@
 		"id" : 22060,
 		"name" : "Horrifying Cannon Golem",
 		"level" : 52,
-		"exp" : 4396,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 2.0
@@ -27111,7 +27111,7 @@
 		"id" : 22062,
 		"name" : "Horrifying Jackhammer Golem",
 		"level" : 52,
-		"exp" : 11644,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 3.0
@@ -27120,7 +27120,7 @@
 		"id" : 22062,
 		"name" : "Horrifying Jackhammer Golem",
 		"level" : 52,
-		"exp" : 6594,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 3.0
@@ -27129,7 +27129,7 @@
 		"id" : 22063,
 		"name" : "Ginzu Golem Prodigy X",
 		"level" : 52,
-		"exp" : 15778,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27138,7 +27138,7 @@
 		"id" : 22063,
 		"name" : "Ginzu Golem Prodigy X",
 		"level" : 52,
-		"exp" : 8792,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27147,7 +27147,7 @@
 		"id" : 22064,
 		"name" : "Bloodthirsty Ginzu Golem II",
 		"level" : 52,
-		"exp" : 15778,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27156,7 +27156,7 @@
 		"id" : 22064,
 		"name" : "Bloodthirsty Ginzu Golem II",
 		"level" : 52,
-		"exp" : 8792,
+		"exp" : 2198,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27165,7 +27165,7 @@
 		"id" : 22065,
 		"name" : "Horrifying Ginzu Golem V",
 		"level" : 53,
-		"exp" : 15388,
+		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 4.0
@@ -27174,7 +27174,7 @@
 		"id" : 22065,
 		"name" : "Horrifying Ginzu Golem V",
 		"level" : 53,
-		"exp" : 17592,
+		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 4.0
@@ -27183,7 +27183,7 @@
 		"id" : 22079,
 		"name" : "Lost Bandersnatch",
 		"level" : 53,
-		"exp" : 3579,
+		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27192,7 +27192,7 @@
 		"id" : 22079,
 		"name" : "Lost Bandersnatch",
 		"level" : 53,
-		"exp" : 2199,
+		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27201,7 +27201,7 @@
 		"id" : 22080,
 		"name" : "Massive Maze Bandersnatch",
 		"level" : 54,
-		"exp" : 3925,
+		"exp" : 4370,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27210,7 +27210,7 @@
 		"id" : 22080,
 		"name" : "Massive Maze Bandersnatch",
 		"level" : 54,
-		"exp" : 2185,
+		"exp" : 4370,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27219,7 +27219,7 @@
 		"id" : 22081,
 		"name" : "Lost Watcher",
 		"level" : 53,
-		"exp" : 3661,
+		"exp" : 4398,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27237,7 +27237,7 @@
 		"id" : 22082,
 		"name" : "Elder Lost Watcher",
 		"level" : 54,
-		"exp" : 4199,
+		"exp" : 4370,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27255,7 +27255,7 @@
 		"id" : 22083,
 		"name" : "Baby Panthera",
 		"level" : 55,
-		"exp" : 3854,
+		"exp" : 4519,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27264,7 +27264,7 @@
 		"id" : 22083,
 		"name" : "Baby Panthera",
 		"level" : 55,
-		"exp" : 2260,
+		"exp" : 4519,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27273,7 +27273,7 @@
 		"id" : 22084,
 		"name" : "Panthera",
 		"level" : 56,
-		"exp" : 3996,
+		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27282,7 +27282,7 @@
 		"id" : 22084,
 		"name" : "Panthera",
 		"level" : 56,
-		"exp" : 2448,
+		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27291,7 +27291,7 @@
 		"id" : 22085,
 		"name" : "Lost Gargoyle",
 		"level" : 55,
-		"exp" : 3464,
+		"exp" : 4519,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27309,7 +27309,7 @@
 		"id" : 22086,
 		"name" : "Lost Gargoyle Youngling",
 		"level" : 56,
-		"exp" : 4020,
+		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27327,7 +27327,7 @@
 		"id" : 22087,
 		"name" : "Pronghorn Spirit",
 		"level" : 56,
-		"exp" : 6452,
+		"exp" : 4896,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27345,7 +27345,7 @@
 		"id" : 22088,
 		"name" : "Pronghorn",
 		"level" : 57,
-		"exp" : 3917,
+		"exp" : 4087,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27363,7 +27363,7 @@
 		"id" : 22089,
 		"name" : "Ice Tarantula",
 		"level" : 57,
-		"exp" : 4502,
+		"exp" : 4087,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27381,7 +27381,7 @@
 		"id" : 22090,
 		"name" : "Frost Tarantula",
 		"level" : 58,
-		"exp" : 4661,
+		"exp" : 5053,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 1.0
@@ -27399,7 +27399,7 @@
 		"id" : 22091,
 		"name" : "Lost Iron Golem",
 		"level" : 58,
-		"exp" : 5024,
+		"exp" : 5053,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27408,7 +27408,7 @@
 		"id" : 22091,
 		"name" : "Lost Iron Golem",
 		"level" : 58,
-		"exp" : 2527,
+		"exp" : 5053,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
@@ -27417,7 +27417,7 @@
 		"id" : 22092,
 		"name" : "Frost Iron Golem",
 		"level" : 59,
-		"exp" : 5199,
+		"exp" : 6134,
 		"is_rift" : 0,
 		"chronicle" : "c5",
 		"hp_multiplier" : 0.5
@@ -27426,7 +27426,7 @@
 		"id" : 22092,
 		"name" : "Frost Iron Golem",
 		"level" : 59,
-		"exp" : 3067,
+		"exp" : 6134,
 		"is_rift" : 0,
 		"chronicle" : "interlude",
 		"hp_multiplier" : 0.5
