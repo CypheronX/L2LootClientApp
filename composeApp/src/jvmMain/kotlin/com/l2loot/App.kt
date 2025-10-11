@@ -388,120 +388,133 @@ fun App() {
                                 }
                             ) {
                                 Column(
-                                    verticalArrangement = Arrangement.Center,
+                                    verticalArrangement = Arrangement.SpaceBetween,
+                                    horizontalAlignment = Alignment.CenterHorizontally,
                                     modifier = Modifier
                                         .fillMaxHeight()
-                                        .offset(y = -(LocalSpacing.current.space36))
 
                                 ) {
-                                    NavigationRailItem(
-                                        selected = isCurrentlyChosen(L2LootScreens.Explore.ordinal),
-                                        onClick = {
-                                            navController.navigate(route = Explore)
-                                            selectedDestination = L2LootScreens.Explore.ordinal
-                                        },
-                                        icon = {
-                                            spoilPainter?.let { spoil ->
-                                                Image(
-                                                    painter = spoil, null,
-                                                    colorFilter = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-                                                    modifier = Modifier
-                                                        .size(24.dp)
-                                                )
-                                            }
-                                        },
-                                        label = {
-                                            Text(
-                                                "Explore Spoil",
-                                                color = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
-                                                    MaterialTheme.colorScheme.secondary else
-                                                    MaterialTheme.colorScheme.onSurfaceVariant,
-                                                style = MaterialTheme.typography.labelMedium
-                                            )
-                                        },
-                                        modifier = Modifier
-                                            .pointerHoverIcon(PointerIcon.Hand)
-                                    )
-                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
-                                    NavigationRailItem(
-                                        selected = isCurrentlyChosen(L2LootScreens.Sellable.ordinal),
-                                        onClick = {
-                                            navController.navigate(route = Sellable)
-                                            selectedDestination = L2LootScreens.Sellable.ordinal
-                                        },
-                                        icon = {
-                                            sellablePainter?.let { sellable ->
-                                                Image(
-                                                    sellable, null,
-                                                    colorFilter = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
-                                                        ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
-                                                    modifier = Modifier
-                                                        .size(24.dp)
-                                                )
-                                            }
-                                        },
-                                        label = {
-                                            Text(
-                                                "Sellable",
-                                                color = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
-                                                    MaterialTheme.colorScheme.secondary else
-                                                    MaterialTheme.colorScheme.onSurfaceVariant,
-                                                style = MaterialTheme.typography.labelMedium
-                                            )
-                                        },
-                                        modifier = Modifier
-                                            .pointerHoverIcon(PointerIcon.Hand)
-                                    )
-                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
-                                    NavigationRailItem(
-                                        selected = isCurrentlyChosen(L2LootScreens.Settings.ordinal),
-                                        onClick = {
-                                            navController.navigate(route = Settings)
-                                            selectedDestination = L2LootScreens.Settings.ordinal
-                                        },
-                                        icon = {
-                                            Box {
-                                                cogPainter?.let { cog ->
+                                    Spacer(modifier = Modifier.height(LocalSpacing.current.space36))
+                                    
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        NavigationRailItem(
+                                            selected = isCurrentlyChosen(L2LootScreens.Explore.ordinal),
+                                            onClick = {
+                                                navController.navigate(route = Explore)
+                                                selectedDestination = L2LootScreens.Explore.ordinal
+                                            },
+                                            icon = {
+                                                spoilPainter?.let { spoil ->
                                                     Image(
-                                                        cog, null,
-                                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                        painter = spoil, null,
+                                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
                                                             ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
                                                             ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                                                         modifier = Modifier
                                                             .size(24.dp)
                                                     )
                                                 }
-                                                if (availableUpdate != null) {
-                                                    Box(
+                                            },
+                                            label = {
+                                                Text(
+                                                    "Explore Spoil",
+                                                    color = if (isCurrentlyChosen(L2LootScreens.Explore.ordinal))
+                                                        MaterialTheme.colorScheme.secondary else
+                                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                                    style = MaterialTheme.typography.labelMedium
+                                                )
+                                            },
+                                            modifier = Modifier
+                                                .pointerHoverIcon(PointerIcon.Hand)
+                                        )
+                                        Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
+                                        NavigationRailItem(
+                                            selected = isCurrentlyChosen(L2LootScreens.Sellable.ordinal),
+                                            onClick = {
+                                                navController.navigate(route = Sellable)
+                                                selectedDestination = L2LootScreens.Sellable.ordinal
+                                            },
+                                            icon = {
+                                                sellablePainter?.let { sellable ->
+                                                    Image(
+                                                        sellable, null,
+                                                        colorFilter = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                                            ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                            ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
                                                         modifier = Modifier
-                                                            .size(8.dp)
-                                                            .align(Alignment.TopEnd)
-                                                            .offset(x = 2.dp, y = (-2).dp)
-                                                            .background(
-                                                                color = MaterialTheme.colorScheme.primary,
-                                                                shape = MaterialTheme.shapes.small
-                                                            )
+                                                            .size(24.dp)
                                                     )
                                                 }
-                                            }
-                                        },
-                                        label = {
-                                            Text(
-                                                "Settings",
-                                                color = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
-                                                    MaterialTheme.colorScheme.secondary else
-                                                    MaterialTheme.colorScheme.onSurfaceVariant,
-                                                style = MaterialTheme.typography.labelMedium
-                                            )
-                                        },
-                                        modifier = Modifier
-                                            .pointerHoverIcon(PointerIcon.Hand)
-                                    )
+                                            },
+                                            label = {
+                                                Text(
+                                                    "Sellable",
+                                                    color = if (isCurrentlyChosen(L2LootScreens.Sellable.ordinal))
+                                                        MaterialTheme.colorScheme.secondary else
+                                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                                    style = MaterialTheme.typography.labelMedium
+                                                )
+                                            },
+                                            modifier = Modifier
+                                                .pointerHoverIcon(PointerIcon.Hand)
+                                        )
+                                        Spacer(modifier = Modifier.size(LocalSpacing.current.space10))
+                                        NavigationRailItem(
+                                            selected = isCurrentlyChosen(L2LootScreens.Settings.ordinal),
+                                            onClick = {
+                                                navController.navigate(route = Settings)
+                                                selectedDestination = L2LootScreens.Settings.ordinal
+                                            },
+                                            icon = {
+                                                Box {
+                                                    cogPainter?.let { cog ->
+                                                        Image(
+                                                            cog, null,
+                                                            colorFilter = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                                ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer) else
+                                                                ColorFilter.tint(MaterialTheme.colorScheme.onSurfaceVariant),
+                                                            modifier = Modifier
+                                                                .size(24.dp)
+                                                        )
+                                                    }
+                                                    if (availableUpdate != null) {
+                                                        Box(
+                                                            modifier = Modifier
+                                                                .size(8.dp)
+                                                                .align(Alignment.TopEnd)
+                                                                .offset(x = 2.dp, y = (-2).dp)
+                                                                .background(
+                                                                    color = MaterialTheme.colorScheme.primary,
+                                                                    shape = MaterialTheme.shapes.small
+                                                                )
+                                                        )
+                                                    }
+                                                }
+                                            },
+                                            label = {
+                                                Text(
+                                                    "Settings",
+                                                    color = if (isCurrentlyChosen(L2LootScreens.Settings.ordinal))
+                                                        MaterialTheme.colorScheme.secondary else
+                                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                                    style = MaterialTheme.typography.labelMedium
+                                                )
+                                            },
+                                            modifier = Modifier
+                                                .pointerHoverIcon(PointerIcon.Hand)
+                                        )
                                     }
+                                    
+                                    Text(
+                                        text = "v${BuildConfig.VERSION_NAME}",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                                        modifier = Modifier.padding(bottom = LocalSpacing.current.space16)
+                                    )
                                 }
+                            }
                                 NavHost(
                                     navController = navController,
                                     startDestination = Explore,
