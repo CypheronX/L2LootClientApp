@@ -50,6 +50,12 @@ class UpdateCheckerImpl(
             // Remove 'v' prefix from tag if present (v1.0.0 -> 1.0.0)
             val latestVersion = release.tag_name.removePrefix("v")
             
+            // Skip pre-release versions (alpha, beta, test, etc.)
+            if (latestVersion.contains("-")) {
+                println("Skipping pre-release version: $latestVersion")
+                return@withContext null
+            }
+            
             // Compare versions
             if (isNewerVersion(latestVersion, currentVersion)) {
                 // Find the MSI asset
@@ -98,17 +104,7 @@ class UpdateCheckerImpl(
                 return newSemVer.patch > currentSemVer.patch
             }
             
-            // If versions are equal, compare pre-release
-            // Per semver: version without pre-release > version with pre-release
-            // e.g., 1.0.0 > 1.0.0-alpha
-            return when {
-                newSemVer.preRelease == null && currentSemVer.preRelease != null -> true
-                newSemVer.preRelease != null && currentSemVer.preRelease == null -> false
-                newSemVer.preRelease != null && currentSemVer.preRelease != null -> {
-                    newSemVer.preRelease > currentSemVer.preRelease
-                }
-                else -> false
-            }
+            return currentSemVer.preRelease != null
         } catch (e: Exception) {
             println("Error comparing versions: ${e.message}")
             return false
