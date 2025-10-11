@@ -1,6 +1,7 @@
 package com.l2loot.data.settings
 
 import com.l2loot.L2LootDatabase
+import com.l2loot.data.monsters.strategy.HPMultiplier
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -22,7 +23,8 @@ data class UserSettings(
     val lastUpdated: Long?,
     val lastPromptDate: Long,
     val sessionCountSincePrompt: Long,
-    val lastSupportClickDate: Long
+    val lastSupportClickDate: Long,
+    val hpMultipliers: Set<HPMultiplier>
 )
 
 interface UserSettingsRepository {
@@ -49,6 +51,7 @@ interface UserSettingsRepository {
     suspend fun updateLastPromptDate(timestamp: Long)
     suspend fun incrementSessionCountSincePrompt()
     suspend fun updateLastSupportClickDate(timestamp: Long)
+    suspend fun updateHPMultipliers(multipliers: Set<HPMultiplier>)
 }
 
 class UserSettingsRepositoryImpl(
@@ -61,6 +64,21 @@ class UserSettingsRepositoryImpl(
             .asFlow()
             .mapToOneOrNull(Dispatchers.IO)
             .map {
+                val hpMultipliersString = it?.hp_multipliers ?: ""
+                val hpMultipliers = if (hpMultipliersString.isNotEmpty()) {
+                    hpMultipliersString.split(",")
+                        .mapNotNull { name ->
+                            try {
+                                HPMultiplier.valueOf(name)
+                            } catch (e: IllegalArgumentException) {
+                                null
+                            }
+                        }
+                        .toSet()
+                } else {
+                    emptySet()
+                }
+                
                 UserSettings(
                     id = it?.id ?: 1,
                     userGuid = it?.user_guid ?: "",
@@ -75,7 +93,8 @@ class UserSettingsRepositoryImpl(
                     lastUpdated = it?.last_updated,
                     lastPromptDate = it?.last_prompt_date ?: 0,
                     sessionCountSincePrompt = it?.session_count_since_prompt ?: 0,
-                    lastSupportClickDate = it?.last_support_click_date ?: 0
+                    lastSupportClickDate = it?.last_support_click_date ?: 0,
+                    hpMultipliers = hpMultipliers
                 )
             }
     }
@@ -216,6 +235,17 @@ class UserSettingsRepositoryImpl(
     override suspend fun updateLastSupportClickDate(timestamp: Long) {
         withContext(Dispatchers.IO) {
             database.userSettingsQueries.updateLastSupportClickDate(last_support_click_date = timestamp)
+        }
+    }
+
+    override suspend fun updateHPMultipliers(multipliers: Set<HPMultiplier>) {
+        withContext(Dispatchers.IO) {
+            val timestamp = System.currentTimeMillis()
+            val multipliersString = multipliers.joinToString(",") { it.name }
+            database.userSettingsQueries.updateHPMultipliers(
+                hp_multipliers = multipliersString,
+                last_updated = timestamp
+            )
         }
     }
 }

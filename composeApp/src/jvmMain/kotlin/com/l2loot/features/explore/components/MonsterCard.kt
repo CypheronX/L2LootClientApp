@@ -60,7 +60,7 @@ fun MonsterCard(
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
-    val monsterUrl = "https://lineage2wiki.org/c5/monster/${monsterData.id}"
+    val monsterUrl = "https://lineage2wiki.org/${monsterData.chronicle}/monster/${monsterData.id}"
 
     var isHovered by remember { mutableStateOf(false) }
 
