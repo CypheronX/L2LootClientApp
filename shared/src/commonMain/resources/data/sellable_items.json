@@ -241,7 +241,7 @@
 	},
 	{
 		"item_id" : 1866,
-      "key": "suede",
+        "key": "suede",
 		"name" : "Suede",
 		"price" : 300
 	},
@@ -253,7 +253,7 @@
 	},
 	{
 		"item_id" : 1873,
-      "key": "silver_nugget",
+        "key": "silver_nugget",
 		"name" : "Silver Nugget",
 		"price" : 500
 	}
