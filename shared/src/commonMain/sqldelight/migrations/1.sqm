@@ -50,3 +50,103 @@ INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
 SELECT 21746, 947, 1, 1, 3721, -1, 'c5'
 WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 21746 AND item_id = 947 AND category = -1 AND chronicle = 'c5') = 1;
 
+-- Add second drop for mob 20319 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20319, 1865, 1, 1, 56617, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20319 AND item_id = 1865 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20508 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20508, 1866, 1, 1, 167333, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20508 AND item_id = 1866 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20014 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20014, 1867, 1, 1, 328104, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20014 AND item_id = 1867 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20317 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20317, 1867, 1, 1, 51475, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20317 AND item_id = 1867 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20483 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20483, 1868, 1, 1, 490926, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20483 AND item_id = 1868 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20534 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20534, 1868, 1, 1, 35831, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20534 AND item_id = 1868 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20211 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20211, 1869, 1, 1, 839475, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20211 AND item_id = 1869 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20104 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20104, 1869, 1, 1, 193011, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20104 AND item_id = 1869 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20147 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20147, 1870, 1, 1, 284768, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20147 AND item_id = 1870 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20372 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20372, 1870, 1, 1, 151631, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20372 AND item_id = 1870 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20432 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20432, 1871, 1, 1, 15920, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20432 AND item_id = 1871 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20249 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20249, 1873, 1, 1, 400557, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20249 AND item_id = 1873 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20836 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20836, 1875, 1, 1, 113820, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20836 AND item_id = 1875 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20268 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20268, 1878, 1, 1, 256688, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20268 AND item_id = 1878 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20352 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20352, 1878, 1, 1, 112862, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20352 AND item_id = 1878 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20203 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20203, 1882, 1, 1, 59453, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20203 AND item_id = 1882 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 21792 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 21792, 1894, 1, 1, 611196, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 21792 AND item_id = 1894 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 21770 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 21770, 1894, 1, 1, 500270, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 21770 AND item_id = 1894 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20656 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20656, 4040, 1, 1, 93328, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20656 AND item_id = 4040 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20979 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20979, 5550, 1, 1, 59281, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20979 AND item_id = 5550 AND category = -1 AND chronicle = 'c5') = 1;
+
