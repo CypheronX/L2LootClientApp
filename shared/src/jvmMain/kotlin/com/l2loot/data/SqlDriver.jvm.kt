@@ -42,22 +42,37 @@ actual class DriverFactory {
             if (currentVersion < latestVersion) {
                 println("🔄 Running migrations from version $currentVersion to $latestVersion")
                 
-                L2LootDatabase.Schema.migrate(
-                    driver = driver,
-                    oldVersion = currentVersion,
-                    newVersion = latestVersion,
-                    // Example: Seed data after a specific migration version
-                    // AfterVersion(1) { driver ->
-                    //     println("  📝 Seeding data after migration to version 1...")
-                    //     driver.execute(null, "INSERT INTO sellable_item (item_id, key, name, item_price) VALUES (99999, 'new_item', 'New Item', 1000)", 0)
-                    // },
-                    // AfterVersion(2) { driver ->
-                    //     println("  📝 Updating existing data after migration to version 2...")
-                    //     driver.execute(null, "UPDATE user_settings SET new_feature_enabled = 1 WHERE id = 1", 0)
-                    // }
-                )
-                
-                println("🎉 Migrations completed successfully!")
+                try {
+                    L2LootDatabase.Schema.migrate(
+                        driver = driver,
+                        oldVersion = currentVersion,
+                        newVersion = latestVersion,
+                        AfterVersion(1) { driver ->
+                            println("  📝 Rebuilt droplist table to support duplicate drops (double spoils)")
+                        }
+                        // Add more migrations here as needed:
+                        // AfterVersion(2) { driver ->
+                        //     println("  📝 Description of migration 2...")
+                        // }
+                    )
+                    
+                    // Manually set the database version (SQLDelight doesn't always do this correctly)
+                    driver.execute(null, "PRAGMA user_version = $latestVersion", 0)
+                    
+                    println("🎉 Migrations completed successfully!")
+                    
+                    // Verify version was updated
+                    val newVersion = getCurrentDatabaseVersion(dbPath)
+                    println("✅ Database version is now: $newVersion")
+                    
+                    if (newVersion != latestVersion) {
+                        println("⚠️ Warning: Version mismatch! Expected $latestVersion but got $newVersion")
+                    }
+                } catch (e: Exception) {
+                    println("❌ Migration failed: ${e.message}")
+                    e.printStackTrace()
+                    throw e
+                }
             } else if (currentVersion == latestVersion) {
                 println("✅ Database is up to date (version $currentVersion)")
             } else {

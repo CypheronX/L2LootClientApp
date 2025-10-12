@@ -1,6 +1,7 @@
 import com.l2loot.data.monsters.strategy.DropCategory;
 
 CREATE TABLE droplist (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     mob_id INTEGER NOT NULL,
     item_id INTEGER NOT NULL,
     min INTEGER NOT NULL,
@@ -8,7 +9,6 @@ CREATE TABLE droplist (
     chance INTEGER NOT NULL,
     category INTEGER AS DropCategory NOT NULL,
     chronicle TEXT NOT NULL,
-    PRIMARY KEY (mob_id, item_id, category, chronicle),
     FOREIGN KEY (mob_id) REFERENCES monsters(id) ON DELETE CASCADE,
     FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
 );
@@ -33,6 +33,6 @@ WHERE d.mob_id IN :mobIds
   AND d.chronicle = :chronicle;
 
 insert:
-INSERT OR REPLACE INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
 VALUES (?, ?, ?, ?, ?, ?, ?);
 
