@@ -1,0 +1,52 @@
+-- Migration 1: Rebuild droplist table to allow duplicate drops
+-- Some mobs have intentional double spoils with same item/chance
+-- We need to add an auto-increment ID as primary key instead of composite key
+
+-- Step 1: Create new table with auto-increment ID
+CREATE TABLE droplist_new (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    mob_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    min INTEGER NOT NULL,
+    max INTEGER NOT NULL,
+    chance INTEGER NOT NULL,
+    category INTEGER NOT NULL,
+    chronicle TEXT NOT NULL,
+    FOREIGN KEY (mob_id) REFERENCES monsters(id) ON DELETE CASCADE,
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+-- Step 2: Copy all existing data
+INSERT INTO droplist_new (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT mob_id, item_id, min, max, chance, category, chronicle FROM droplist;
+
+-- Step 3: Drop old table
+DROP TABLE droplist;
+
+-- Step 4: Rename new table
+ALTER TABLE droplist_new RENAME TO droplist;
+
+-- Step 5: Recreate indexes
+CREATE INDEX droplist_mob_id_idx ON droplist(mob_id);
+CREATE INDEX droplist_item_id_idx ON droplist(item_id);
+CREATE INDEX droplist_category_idx ON droplist(category);
+
+-- Step 6: Add the duplicate drops that were missing due to old primary key constraint
+-- These mobs should have these drops twice (double spoil)
+-- Note: We check if the count is exactly 1 before inserting to avoid duplicates from re-running migration
+
+-- Add second drop for mob 20514 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20514, 1872, 1, 1, 308818, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20514 AND item_id = 1872 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 20533 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 20533, 1872, 1, 1, 23887, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 20533 AND item_id = 1872 AND category = -1 AND chronicle = 'c5') = 1;
+
+-- Add second drop for mob 21746 if it only has one
+INSERT INTO droplist (mob_id, item_id, min, max, chance, category, chronicle)
+SELECT 21746, 947, 1, 1, 3721, -1, 'c5'
+WHERE (SELECT COUNT(*) FROM droplist WHERE mob_id = 21746 AND item_id = 947 AND category = -1 AND chronicle = 'c5') = 1;
+

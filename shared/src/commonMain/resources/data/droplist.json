@@ -17243,6 +17243,15 @@
 		"category" : -1,
 		"chronicle" : "c5"
 	},
+    {
+		"mob_id" : 20514,
+		"item_id" : 1872,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 308818,
+		"category" : -1,
+		"chronicle" : "c5"
+	},
 	{
 		"mob_id" : 20515,
 		"item_id" : 57,
@@ -17673,6 +17682,15 @@
 		"max" : 1,
 		"chance" : 9262,
 		"category" : 2,
+		"chronicle" : "c5"
+	},
+	{
+		"mob_id" : 20533,
+		"item_id" : 1872,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 23887,
+		"category" : -1,
 		"chronicle" : "c5"
 	},
 	{
@@ -73878,6 +73896,15 @@
 		"max" : 7629,
 		"chance" : 700000,
 		"category" : 0,
+		"chronicle" : "c5"
+	},
+	{
+		"mob_id" : 21746,
+		"item_id" : 947,
+		"min" : 1,
+		"max" : 1,
+		"chance" : 3721,
+		"category" : -1,
 		"chronicle" : "c5"
 	},
 	{
