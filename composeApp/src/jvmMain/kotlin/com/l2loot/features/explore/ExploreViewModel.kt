@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 
 internal class ExploreViewModel(
     private val monsterRepository: MonsterRepository,
@@ -23,6 +24,10 @@ internal class ExploreViewModel(
 
     private val _state = MutableStateFlow(ExploreScreenState.initial())
     val state = _state.asStateFlow()
+    
+    private var minLevelUpdateJob: Job? = null
+    private var maxLevelUpdateJob: Job? = null
+    private val inputDebounceMs = 500L
     
     init {
         viewModelScope.launch {
@@ -76,18 +81,24 @@ internal class ExploreViewModel(
             }
             is ExploreScreenEvent.MinLevelChanged -> {
                 _state.update { it.copy(minLevel = event.minLevel) }
+                
+                minLevelUpdateJob?.cancel()
                 val minLevelValue = event.minLevel.toIntOrNull()
                 if (minLevelValue != null) {
-                    viewModelScope.launch {
+                    minLevelUpdateJob = viewModelScope.launch {
+                        delay(inputDebounceMs)
                         userSettingsRepository.updateMinLevel(minLevelValue)
                     }
                 }
             }
             is ExploreScreenEvent.MaxLevelChanged -> {
                 _state.update { it.copy(maxLevel = event.maxLevel) }
+                
+                maxLevelUpdateJob?.cancel()
                 val maxLevelValue = event.maxLevel.toIntOrNull()
                 if (maxLevelValue != null) {
-                    viewModelScope.launch {
+                    maxLevelUpdateJob = viewModelScope.launch {
+                        delay(inputDebounceMs)
                         userSettingsRepository.updateMaxLevel(maxLevelValue)
                     }
                 }

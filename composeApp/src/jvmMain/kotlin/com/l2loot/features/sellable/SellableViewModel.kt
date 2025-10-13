@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
@@ -20,6 +21,9 @@ internal class SellableViewModel(
 
     private val _state = MutableStateFlow(SellableScreenState.initial())
     val state = _state.asStateFlow()
+    
+    private var priceUpdateJob: Job? = null
+    private val priceUpdateDebounceMs = 500L
 
     init {
         loadSellableItems()
@@ -133,8 +137,9 @@ internal class SellableViewModel(
                 )
             }
             
-            // Persist to database
-            viewModelScope.launch {
+            priceUpdateJob?.cancel()
+            priceUpdateJob = viewModelScope.launch {
+                delay(priceUpdateDebounceMs)
                 try {
                     val priceValue = newPrice.toLongOrNull() ?: 0
                     sellableRepository.updateItemPrice(itemKey, priceValue)
