@@ -2,6 +2,7 @@ package com.l2loot.features.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.l2loot.BuildConfig
 import com.l2loot.data.analytics.AnalyticsService
 import com.l2loot.data.settings.UserSettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,7 +54,9 @@ internal class SettingsViewModel(
                             )
                         }
                     } catch (e: Exception) {
-                        println("Failed to check for updates: ${e.message}")
+                        if (BuildConfig.DEBUG) {
+                            println("Failed to check for updates: ${e.message}")
+                        }
                     }
                 }
             }

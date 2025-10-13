@@ -3,6 +3,7 @@ package com.l2loot.data
 import app.cash.sqldelight.db.AfterVersion
 import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
+import com.l2loot.BuildConfig
 import com.l2loot.L2LootDatabase
 import java.io.File
 import java.sql.DriverManager
@@ -31,16 +32,22 @@ actual class DriverFactory {
         driver.execute(null, "PRAGMA synchronous=NORMAL", 0)
         
         if (isNewDatabase) {
-            println("🆕 Creating new database at: $dbPath")
+            if (BuildConfig.DEBUG) {
+                println("🆕 Creating new database at: $dbPath")
+            }
             L2LootDatabase.Schema.create(driver)
         } else {
-            println("✅ Using existing database at: $dbPath")
+            if (BuildConfig.DEBUG) {
+                println("✅ Using existing database at: $dbPath")
+            }
 
             val currentVersion = getCurrentDatabaseVersion(dbPath)
             val latestVersion = L2LootDatabase.Schema.version.toLong()
             
             if (currentVersion < latestVersion) {
-                println("🔄 Running migrations from version $currentVersion to $latestVersion")
+                if (BuildConfig.DEBUG) {
+                    println("🔄 Running migrations from version $currentVersion to $latestVersion")
+                }
                 
                 try {
                     L2LootDatabase.Schema.migrate(
@@ -48,35 +55,51 @@ actual class DriverFactory {
                         oldVersion = currentVersion,
                         newVersion = latestVersion,
                         AfterVersion(1) { driver ->
-                            println("  📝 Rebuilt droplist table to support duplicate drops (double spoils)")
+                            if (BuildConfig.DEBUG) {
+                                println("  📝 Rebuilt droplist table to support duplicate drops (double spoils)")
+                            }
                         }
                         // Add more migrations here as needed:
                         // AfterVersion(2) { driver ->
-                        //     println("  📝 Description of migration 2...")
+                        //     if (BuildConfig.DEBUG) {
+                        //         println("  📝 Description of migration 2...")
+                        //     }
                         // }
                     )
                     
                     // Manually set the database version (SQLDelight doesn't always do this correctly)
                     driver.execute(null, "PRAGMA user_version = $latestVersion", 0)
                     
-                    println("🎉 Migrations completed successfully!")
+                    if (BuildConfig.DEBUG) {
+                        println("🎉 Migrations completed successfully!")
+                    }
                     
                     // Verify version was updated
                     val newVersion = getCurrentDatabaseVersion(dbPath)
-                    println("✅ Database version is now: $newVersion")
+                    if (BuildConfig.DEBUG) {
+                        println("✅ Database version is now: $newVersion")
+                    }
                     
                     if (newVersion != latestVersion) {
-                        println("⚠️ Warning: Version mismatch! Expected $latestVersion but got $newVersion")
+                        if (BuildConfig.DEBUG) {
+                            println("⚠️ Warning: Version mismatch! Expected $latestVersion but got $newVersion")
+                        }
                     }
                 } catch (e: Exception) {
-                    println("❌ Migration failed: ${e.message}")
-                    e.printStackTrace()
+                    if (BuildConfig.DEBUG) {
+                        println("❌ Migration failed: ${e.message}")
+                        e.printStackTrace()
+                    }
                     throw e
                 }
             } else if (currentVersion == latestVersion) {
-                println("✅ Database is up to date (version $currentVersion)")
+                if (BuildConfig.DEBUG) {
+                    println("✅ Database is up to date (version $currentVersion)")
+                }
             } else {
-                println("⚠️ Database version ($currentVersion) is newer than app version ($latestVersion)")
+                if (BuildConfig.DEBUG) {
+                    println("⚠️ Database version ($currentVersion) is newer than app version ($latestVersion)")
+                }
             }
         }
         

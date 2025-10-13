@@ -2,6 +2,7 @@ package com.l2loot.features.sellable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.l2loot.BuildConfig
 import com.l2loot.data.raw_data.SellableItemJson
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
@@ -52,7 +53,9 @@ internal class SellableViewModel(
                             sellableRepository.fetchAynixPricesOnce()
                             loadSellableItems()
                         } catch (e: Exception) {
-                            println("❌ Failed to fetch Aynix prices: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("❌ Failed to fetch Aynix prices: ${e.message}")
+                            }
                             _state.update { it.copy(loading = false) }
                         }
                     } else {
@@ -136,7 +139,9 @@ internal class SellableViewModel(
                     val priceValue = newPrice.toLongOrNull() ?: 0
                     sellableRepository.updateItemPrice(itemKey, priceValue)
                 } catch (e: Exception) {
-                    println("❌ Failed to update price: ${e.message}")
+                    if (BuildConfig.DEBUG) {
+                        println("❌ Failed to update price: ${e.message}")
+                    }
                 }
             }
         }
