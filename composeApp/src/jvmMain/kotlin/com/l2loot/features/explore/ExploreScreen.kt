@@ -175,7 +175,8 @@ fun ExploreScreen() {
                                 label = {
                                     Text(
                                         text = "HP ${multiplier.getHPMultiplierLabel()}",
-                                        style = MaterialTheme.typography.labelMedium
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
                                 },
                                 trailingIcon = {
@@ -190,9 +191,9 @@ fun ExploreScreen() {
                                     }
                                 },
                                 colors = AssistChipDefaults.assistChipColors(
-                                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                    labelColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    trailingIconContentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0F),
+                                    labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    trailingIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
                                 ),
                                 border = AssistChipDefaults.assistChipBorder(
                                     enabled = true,
