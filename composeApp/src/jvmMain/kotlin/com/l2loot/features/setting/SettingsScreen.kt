@@ -211,7 +211,9 @@ private fun UpdateSection(
                         try {
                             Desktop.getDesktop().browse(URI(updateInfo.downloadUrl))
                         } catch (e: Exception) {
-                            println("Failed to open download URL: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("Failed to open download URL: ${e.message}")
+                            }
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -228,7 +230,9 @@ private fun UpdateSection(
                         try {
                             Desktop.getDesktop().browse(URI(updateInfo.releaseUrl))
                         } catch (e: Exception) {
-                            println("Failed to open release URL: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("Failed to open release URL: ${e.message}")
+                            }
                         }
                     }
                 ) {
@@ -261,7 +265,9 @@ private fun SupportSection(
                 kofiPainter = kofiBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load support icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load support icons: ${e.message}")
+            }
         }
     }
 
@@ -305,7 +311,9 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                         } catch (e: Exception) {
-                            println("Failed to open Patreon URL: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("Failed to open Patreon URL: ${e.message}")
+                            }
                         }
                     }
                 ) {
@@ -332,7 +340,9 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                         } catch (e: Exception) {
-                            println("Failed to open Ko-fi URL: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("Failed to open Ko-fi URL: ${e.message}")
+                            }
                         }
                     }
                 ) {

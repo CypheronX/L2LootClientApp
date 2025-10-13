@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
+import com.l2loot.BuildConfig
 import com.l2loot.data.update.UpdateInfo
 import com.l2loot.design.LocalSpacing
 import kotlinx.coroutines.delay
@@ -49,7 +50,9 @@ fun UpdateNotification(
                 chevronPainter = chevronBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load svg icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load svg icons: ${e.message}")
+            }
         }
     }
     
@@ -139,7 +142,9 @@ fun UpdateNotification(
                                     try {
                                         Desktop.getDesktop().browse(URI(updateInfo.downloadUrl))
                                     } catch (e: Exception) {
-                                        println("Failed to open download URL: ${e.message}")
+                                        if (BuildConfig.DEBUG) {
+                                            println("Failed to open download URL: ${e.message}")
+                                        }
                                     }
                                     visible = false
                                     onDismiss()
@@ -158,7 +163,9 @@ fun UpdateNotification(
                                     try {
                                         Desktop.getDesktop().browse(URI(updateInfo.releaseUrl))
                                     } catch (e: Exception) {
-                                        println("Failed to open release URL: ${e.message}")
+                                        if (BuildConfig.DEBUG) {
+                                            println("Failed to open release URL: ${e.message}")
+                                        }
                                     }
                                 }
                             ) {

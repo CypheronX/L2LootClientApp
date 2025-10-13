@@ -1,5 +1,6 @@
 package com.l2loot.data.analytics
 
+import com.l2loot.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -100,7 +101,9 @@ class AnalyticsServiceImpl(
                     )
                 )
             } catch (e: Exception) {
-                println("Failed to track app open: ${e.message}")
+                if (BuildConfig.DEBUG) {
+                    println("Failed to track app open: ${e.message}")
+                }
             }
         }
     }
@@ -120,7 +123,9 @@ class AnalyticsServiceImpl(
                     )
                 )
             } catch (e: Exception) {
-                println("Failed to track support link click: ${e.message}")
+                if (BuildConfig.DEBUG) {
+                    println("Failed to track support link click: ${e.message}")
+                }
             }
         }
     }
@@ -130,7 +135,9 @@ class AnalyticsServiceImpl(
         parameters: Map<String, Any> = emptyMap()
     ) {
         if (userGuid.isEmpty()) {
-            println("Analytics: User GUID not set, skipping event")
+            if (BuildConfig.DEBUG) {
+                println("Analytics: User GUID not set, skipping event")
+            }
             return
         }
         
@@ -166,10 +173,14 @@ class AnalyticsServiceImpl(
                 setBody(payload)
             }
 
-            println("✓ Analytics event '$eventName' sent successfully - Status: ${response.status}")
+            if (BuildConfig.DEBUG) {
+                println("✓ Analytics event '$eventName' sent successfully - Status: ${response.status}")
+            }
         } catch (e: Exception) {
-            println("✗ Failed to send analytics event '$eventName': ${e.message}")
-            e.printStackTrace()
+            if (BuildConfig.DEBUG) {
+                println("✗ Failed to send analytics event '$eventName': ${e.message}")
+                e.printStackTrace()
+            }
         }
     }
 }
