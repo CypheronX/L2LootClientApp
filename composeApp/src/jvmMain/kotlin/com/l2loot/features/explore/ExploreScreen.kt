@@ -33,6 +33,7 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,6 +50,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.l2loot.BuildConfig
 import com.l2loot.data.monsters.strategy.HPMultiplier
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
@@ -96,7 +98,9 @@ fun ExploreScreen() {
                 chevronPainter = chevronBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load svg icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load svg icons: ${e.message}")
+            }
         }
     }
     

@@ -1,5 +1,6 @@
 package com.l2loot.data.sellable
 
+import com.l2loot.BuildConfig
 import com.l2loot.GetAllItemsWithPrices
 import com.l2loot.L2LootDatabase
 import com.l2loot.data.firebase.FirebaseAuthService
@@ -54,8 +55,10 @@ class SellableRepositoryImpl(
                     )
                 }
             } catch (e: Exception) {
-                println("❌ Failed to update Aynix prices: ${e.message}")
-                e.printStackTrace()
+                if (BuildConfig.DEBUG) {
+                    println("❌ Failed to update Aynix prices: ${e.message}")
+                    e.printStackTrace()
+                }
                 emit(emptyList())
             }
 
@@ -89,9 +92,13 @@ class SellableRepositoryImpl(
                         )
                     }
                 }
-                println("✅ Fetched ${items.size} Aynix prices from Firebase")
+                if (BuildConfig.DEBUG) {
+                    println("✅ Fetched ${items.size} Aynix prices from Firebase")
+                }
             } catch (e: Exception) {
-                println("❌ Failed to fetch Aynix prices: ${e.message}")
+                if (BuildConfig.DEBUG) {
+                    println("❌ Failed to fetch Aynix prices: ${e.message}")
+                }
                 throw e
             }
         }
@@ -130,19 +137,25 @@ class SellableRepositoryImpl(
             val body = response.body()
             
             if (body.isNullOrBlank() || body == "null") {
-                println("⚠️ Firebase returned null/empty data for sellable items")
+                if (BuildConfig.DEBUG) {
+                    println("⚠️ Firebase returned null/empty data for sellable items")
+                }
                 return@withContext emptyList()
             }
             
             try {
                 json.decodeFromString<List<SellableItemJson>>(body)
             } catch (e: Exception) {
-                println("⚠️ Failed to parse Firebase response: ${e.message}")
-                println("Response body: $body")
+                if (BuildConfig.DEBUG) {
+                    println("⚠️ Failed to parse Firebase response: ${e.message}")
+                    println("Response body: $body")
+                }
                 emptyList()
             }
         } else {
-            println("⚠️ Firebase request failed with status code: ${response.statusCode()}")
+            if (BuildConfig.DEBUG) {
+                println("⚠️ Firebase request failed with status code: ${response.statusCode()}")
+            }
             emptyList()
         }
     }
