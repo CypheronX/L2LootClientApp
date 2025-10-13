@@ -46,6 +46,7 @@ import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import com.l2loot.BuildConfig
 import com.l2loot.data.monsters.strategy.DropItemInfo
 import com.l2loot.data.monsters.strategy.HPMultiplier
 import com.l2loot.data.monsters.strategy.MonsterResult
@@ -78,7 +79,9 @@ fun MonsterCard(
                 linkPainter = linkBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load svg icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load svg icons: ${e.message}")
+            }
         }
     }
 

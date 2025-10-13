@@ -1,5 +1,6 @@
 package com.l2loot.data
 
+import com.l2loot.BuildConfig
 import com.l2loot.L2LootDatabase
 import com.l2loot.data.monsters.strategy.DropCategory
 import com.l2loot.data.monsters.strategy.HPMultiplier
@@ -41,19 +42,25 @@ class LoadDbDataRepositoryImpl(
         val dropsText = loadResourceAsText("data/droplist.json")
 
         if (itemsText == null) {
-            println("⚠️ sellable_items.json not found in resources")
+            if (BuildConfig.DEBUG) {
+                println("⚠️ sellable_items.json not found in resources")
+            }
             _progress.value = 1.0f
             return@withContext
         }
 
         if (monstersText == null) {
-            println("⚠️ monsters.json not found in resources")
+            if (BuildConfig.DEBUG) {
+                println("⚠️ monsters.json not found in resources")
+            }
             _progress.value = 1.0f
             return@withContext
         }
 
         if (dropsText == null) {
-            println("⚠️ droplist.json not found in resources")
+            if (BuildConfig.DEBUG) {
+                println("⚠️ droplist.json not found in resources")
+            }
             _progress.value = 1.0f
             return@withContext
         }
@@ -72,11 +79,15 @@ class LoadDbDataRepositoryImpl(
         awaitAll(itemsJob, monstersJob, droplistJob)
 
         _progress.value = 1.0f
-        println("✅ Database loaded successfully!")
+        if (BuildConfig.DEBUG) {
+            println("✅ Database loaded successfully!")
+        }
     }
 
     private fun loadSellableItems(database: L2LootDatabase, items: List<SellableItemJson> = emptyList()) {
-        println("📦 Loading sellable items...")
+        if (BuildConfig.DEBUG) {
+            println("📦 Loading sellable items...")
+        }
 
         database.transaction {
             items.forEach { item ->
@@ -92,7 +103,9 @@ class LoadDbDataRepositoryImpl(
     }
 
     private fun loadMonsters(database: L2LootDatabase, monsters: List<MonsterJson> = emptyList()) {
-        println("📦 Loading monsters...")
+        if (BuildConfig.DEBUG) {
+            println("📦 Loading monsters...")
+        }
 
         database.transaction {
             monsters.forEach { monster ->
@@ -108,7 +121,9 @@ class LoadDbDataRepositoryImpl(
                         hp_multiplier = HPMultiplier.fromValue(monster.hp_multiplier)
                     )
                 } catch (e: IllegalArgumentException) {
-                    println("❌ Error loading monster: id=${monster.id}, name=${monster.name}, hp_multiplier=${monster.hp_multiplier} (type: ${monster.hp_multiplier::class.simpleName})")
+                    if (BuildConfig.DEBUG) {
+                        println("❌ Error loading monster: id=${monster.id}, name=${monster.name}, hp_multiplier=${monster.hp_multiplier} (type: ${monster.hp_multiplier::class.simpleName})")
+                    }
                     throw e
                 }
             }
@@ -116,7 +131,9 @@ class LoadDbDataRepositoryImpl(
     }
 
     private fun loadDroplist(database: L2LootDatabase, drops: List<DroplistJson> = emptyList()) {
-        println("📦 Loading droplist...")
+        if (BuildConfig.DEBUG) {
+            println("📦 Loading droplist...")
+        }
         var skippedCount = 0
 
         database.transaction {
@@ -139,7 +156,7 @@ class LoadDbDataRepositoryImpl(
             }
         }
         
-        if (skippedCount > 0) {
+        if (skippedCount > 0 && BuildConfig.DEBUG) {
             println("⚠️ Skipped $skippedCount drops with unknown categories")
         }
     }
@@ -163,7 +180,9 @@ class LoadDbDataRepositoryImpl(
             val classLoader = this::class.java.classLoader
             classLoader.getResourceAsStream(resourcePath)?.bufferedReader()?.use { it.readText() }
         } catch (e: Exception) {
-            println("❌ Error loading resource $resourcePath: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("❌ Error loading resource $resourcePath: ${e.message}")
+            }
             null
         }
     }

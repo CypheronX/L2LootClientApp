@@ -1,5 +1,6 @@
 package com.l2loot.data.update
 
+import com.l2loot.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -41,7 +42,9 @@ class UpdateCheckerImpl(
             }
             
             if (response.status != HttpStatusCode.OK) {
-                println("Failed to check for updates: ${response.status}")
+                if (BuildConfig.DEBUG) {
+                    println("Failed to check for updates: ${response.status}")
+                }
                 return@withContext null
             }
             
@@ -52,7 +55,9 @@ class UpdateCheckerImpl(
             
             // Skip pre-release versions (alpha, beta, test, etc.)
             if (latestVersion.contains("-")) {
-                println("Skipping pre-release version: $latestVersion")
+                if (BuildConfig.DEBUG) {
+                    println("Skipping pre-release version: $latestVersion")
+                }
                 return@withContext null
             }
             
@@ -71,8 +76,10 @@ class UpdateCheckerImpl(
             
             null
         } catch (e: Exception) {
-            println("Error checking for updates: ${e.message}")
-            e.printStackTrace()
+            if (BuildConfig.DEBUG) {
+                println("Error checking for updates: ${e.message}")
+                e.printStackTrace()
+            }
             null
         }
     }
@@ -106,7 +113,9 @@ class UpdateCheckerImpl(
             
             return currentSemVer.preRelease != null
         } catch (e: Exception) {
-            println("Error comparing versions: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Error comparing versions: ${e.message}")
+            }
             return false
         }
     }
