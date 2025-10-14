@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.l2loot.BuildConfig
 import com.l2loot.data.analytics.AnalyticsService
 import com.l2loot.data.settings.UserSettingsRepository
 import com.l2loot.design.LocalSpacing
@@ -194,7 +195,9 @@ fun SupportDialog(
                 kofiPainter = kofiBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load support icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load support icons: ${e.message}")
+            }
         }
     }
 
@@ -261,7 +264,9 @@ fun SupportDialog(
                             try {
                                 Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                             } catch (e: Exception) {
-                                println("Failed to open Patreon URL: ${e.message}")
+                                if (BuildConfig.DEBUG) {
+                                    println("Failed to open Patreon URL: ${e.message}")
+                                }
                             }
                         }
                     ) {
@@ -289,7 +294,9 @@ fun SupportDialog(
                             try {
                                 Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                             } catch (e: Exception) {
-                                println("Failed to open Ko-fi URL: ${e.message}")
+                                if (BuildConfig.DEBUG) {
+                                    println("Failed to open Ko-fi URL: ${e.message}")
+                                }
                             }
                         }
                     ) {

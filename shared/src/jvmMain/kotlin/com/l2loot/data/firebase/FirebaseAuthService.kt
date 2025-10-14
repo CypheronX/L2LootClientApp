@@ -1,5 +1,6 @@
 package com.l2loot.data.firebase
 
+import com.l2loot.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -62,15 +63,21 @@ class FirebaseAuthServiceImpl(
                 val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: 3600000
                 tokenExpirationTime = System.currentTimeMillis() + expiresInMs
                 
-                println("✅ Firebase anonymous auth successful")
+                if (BuildConfig.DEBUG) {
+                    println("✅ Firebase anonymous auth successful")
+                }
                 true
             } else {
-                println("❌ Firebase auth failed: ${response.status}")
+                if (BuildConfig.DEBUG) {
+                    println("❌ Firebase auth failed: ${response.status}")
+                }
                 false
             }
         } catch (e: Exception) {
-            println("❌ Firebase auth error: ${e.message}")
-            e.printStackTrace()
+            if (BuildConfig.DEBUG) {
+                println("❌ Firebase auth error: ${e.message}")
+                e.printStackTrace()
+            }
             false
         }
     }
