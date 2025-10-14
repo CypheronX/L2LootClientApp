@@ -2,6 +2,7 @@ package com.l2loot.features.sellable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.l2loot.BuildConfig
 import com.l2loot.data.raw_data.SellableItemJson
 import com.l2loot.data.sellable.SellableRepository
 import com.l2loot.data.settings.UserSettingsRepository
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
@@ -19,6 +21,9 @@ internal class SellableViewModel(
 
     private val _state = MutableStateFlow(SellableScreenState.initial())
     val state = _state.asStateFlow()
+    
+    private var priceUpdateJob: Job? = null
+    private val priceUpdateDebounceMs = 500L
 
     init {
         loadSellableItems()
@@ -52,7 +57,9 @@ internal class SellableViewModel(
                             sellableRepository.fetchAynixPricesOnce()
                             loadSellableItems()
                         } catch (e: Exception) {
-                            println("❌ Failed to fetch Aynix prices: ${e.message}")
+                            if (BuildConfig.DEBUG) {
+                                println("❌ Failed to fetch Aynix prices: ${e.message}")
+                            }
                             _state.update { it.copy(loading = false) }
                         }
                     } else {
@@ -130,13 +137,16 @@ internal class SellableViewModel(
                 )
             }
             
-            // Persist to database
-            viewModelScope.launch {
+            priceUpdateJob?.cancel()
+            priceUpdateJob = viewModelScope.launch {
+                delay(priceUpdateDebounceMs)
                 try {
                     val priceValue = newPrice.toLongOrNull() ?: 0
                     sellableRepository.updateItemPrice(itemKey, priceValue)
                 } catch (e: Exception) {
-                    println("❌ Failed to update price: ${e.message}")
+                    if (BuildConfig.DEBUG) {
+                        println("❌ Failed to update price: ${e.message}")
+                    }
                 }
             }
         }

@@ -76,6 +76,12 @@ enum class L2LootScreens {
     Explore, Sellable, Settings
 }
 
+sealed class AuthState {
+    object Loading : AuthState()
+    object Success : AuthState()
+    object Failed : AuthState()
+}
+
 
 @Composable
 @Preview
@@ -104,6 +110,7 @@ fun App() {
     var isSupportDialogReminder by remember { mutableStateOf(false) }
     var availableUpdate by remember { mutableStateOf<UpdateInfo?>(null) }
     var showUpdateNotification by remember { mutableStateOf(false) }
+    var authState by remember { mutableStateOf<AuthState>(AuthState.Loading) }
     
     var spoilPainter by remember {
         mutableStateOf<Painter?>(null)
@@ -183,7 +190,9 @@ fun App() {
                 cogPainter = cogBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            println("Failed to load svg icons: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to load svg icons: ${e.message}")
+            }
         }
     }
 
@@ -211,8 +220,12 @@ fun App() {
     }
     
     LaunchedEffect(Unit) {
-        firebaseAuthService.signInAnonymously()
+        val authSuccess = firebaseAuthService.signInAnonymously()
         sellableRepository.setFirebaseAuthService(firebaseAuthService)
+        authState = if (authSuccess) AuthState.Success else AuthState.Failed
+        if (!authSuccess && BuildConfig.DEBUG) {
+            println("⚠️ Firebase authentication failed - some features may be unavailable")
+        }
     }
     
     LaunchedEffect(Unit) {
@@ -250,13 +263,18 @@ fun App() {
         }
     }
     
-    LaunchedEffect(Unit) {
-        userSettingsRepository.getSettings()
-            .collectLatest { settings ->
-                if (settings?.isAynixPrices == true) {
-                    sellableRepository.getSellableItemsFromFirebase().collect()
+    LaunchedEffect(authState) {
+        // Only fetch data if authentication succeeded
+        if (authState == AuthState.Success) {
+            userSettingsRepository.getSettings()
+                .collectLatest { settings ->
+                    if (settings?.isAynixPrices == true) {
+                        sellableRepository.getSellableItemsFromFirebase().collect()
+                    }
                 }
-            }
+        } else if (authState == AuthState.Failed && BuildConfig.DEBUG) {
+            println("⚠️ Skipping Firebase data fetch due to authentication failure")
+        }
     }
     
     // Check for updates on startup
@@ -269,7 +287,9 @@ fun App() {
                 showUpdateNotification = true
             }
         } catch (e: Exception) {
-            println("Failed to check for updates: ${e.message}")
+            if (BuildConfig.DEBUG) {
+                println("Failed to check for updates: ${e.message}")
+            }
         }
     }
 
