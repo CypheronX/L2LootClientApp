@@ -220,10 +220,10 @@ fun App() {
     }
     
     LaunchedEffect(Unit) {
-        val authSuccess = firebaseAuthService.signInAnonymously()
+        val token = firebaseAuthService.getIdToken()
         sellableRepository.setFirebaseAuthService(firebaseAuthService)
-        authState = if (authSuccess) AuthState.Success else AuthState.Failed
-        if (!authSuccess && BuildConfig.DEBUG) {
+        authState = if (token != null) AuthState.Success else AuthState.Failed
+        if (token == null && BuildConfig.DEBUG) {
             println("⚠️ Firebase authentication failed - some features may be unavailable")
         }
     }
@@ -237,6 +237,10 @@ fun App() {
             val newGuid = generateUserGuid()
             analyticsService.setUserGuid(newGuid)
             analyticsService.setTrackingEnabled(true)
+            
+            userSettingsRepository.updateUserGuid(newGuid)
+            userSettingsRepository.updateTrackEvents(true)
+            
             analyticsService.trackAppOpen(isFirstOpen = true)
             
             shouldShowConsentAfterLoad = true
