@@ -86,7 +86,7 @@ fun ExploreScreen() {
         try {
             val filterBytes = Res.readBytes("files/svg/filter.svg")
             val spoilBytes = Res.readBytes("files/svg/spoil.svg")
-            val chevronBytes = Res.readBytes("files/svg/chevron.svg")
+            val chevronBytes = Res.readBytes("files/svg/times.svg")
 
             if (filterBytes.isNotEmpty()) {
                 filterPainter = filterBytes.decodeToSvgPainter(density)

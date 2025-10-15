@@ -45,11 +45,12 @@ fun SellableItem(
     enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    var imageBitmap by remember {
+    var imageBitmap by remember(sellableItem.key) {
         mutableStateOf<ImageBitmap?>(null)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(sellableItem.key) {
+        imageBitmap = null
         try {
             val imageBytes = Res.readBytes("files/sellable_items/${sellableItem.key}.png")
 
@@ -58,7 +59,7 @@ fun SellableItem(
             }
         } catch (e: Exception) {
             if (BuildConfig.DEBUG) {
-                println("Failed to load svg icons: ${e.message}")
+                println("Failed to load image for ${sellableItem.key}: ${e.message}")
             }
         }
     }

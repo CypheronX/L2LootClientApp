@@ -24,6 +24,9 @@ internal class SellableViewModel(
     
     private var priceUpdateJob: Job? = null
     private val priceUpdateDebounceMs = 500L
+    
+    private var searchJob: Job? = null
+    private val searchDebounceMs = 300L
 
     init {
         loadSellableItems()
@@ -66,6 +69,9 @@ internal class SellableViewModel(
                         loadSellableItems()
                     }
                 }
+            }
+            is SellableScreenEvent.OnSearch -> {
+                onSearch(event.value)
             }
         }
     }
@@ -148,6 +154,19 @@ internal class SellableViewModel(
                         println("❌ Failed to update price: ${e.message}")
                     }
                 }
+            }
+        }
+    }
+
+    fun onSearch(searchValue: String) {
+        searchJob?.cancel()
+        
+        _state.update { it.copy(searchValue = searchValue) }
+        
+        searchJob = viewModelScope.launch {
+            delay(searchDebounceMs)
+            if (BuildConfig.DEBUG) {
+                println("🔍 Search completed: \"$searchValue\" - Found ${_state.value.searchedResult.size} items")
             }
         }
     }
