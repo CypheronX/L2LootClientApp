@@ -44,7 +44,7 @@ fun UpdateNotification(
 
     LaunchedEffect(Unit) {
         try {
-            val chevronBytes = Res.readBytes("files/svg/chevron.svg")
+            val chevronBytes = Res.readBytes("files/svg/times.svg")
 
             if (chevronBytes.isNotEmpty()) {
                 chevronPainter = chevronBytes.decodeToSvgPainter(density)
