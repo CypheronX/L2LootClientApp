@@ -30,6 +30,11 @@ jobs:
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
       - name: Build MSI Installer
+        env:
+          FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
+          FIREBASE_SELLABLE_ITEMS_URL: ${{ secrets.FIREBASE_SELLABLE_ITEMS_URL }}
+          FIREBASE_ANONYMOUS_AUTH_URL: ${{ secrets.FIREBASE_ANONYMOUS_AUTH_URL }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         run: ./gradlew composeApp:packageReleaseMsi
 
 
