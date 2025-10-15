@@ -165,9 +165,6 @@ internal class SellableViewModel(
         
         searchJob = viewModelScope.launch {
             delay(searchDebounceMs)
-            if (BuildConfig.DEBUG) {
-                println("🔍 Search completed: \"$searchValue\" - Found ${_state.value.searchedResult.size} items")
-            }
         }
     }
 

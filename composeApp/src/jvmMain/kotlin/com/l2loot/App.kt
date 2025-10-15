@@ -59,6 +59,7 @@ import com.l2loot.features.setting.SettingsScreen
 import com.l2loot.ui.components.SupportDialog
 import com.l2loot.ui.components.TrackingConsentDialog
 import com.l2loot.ui.components.UpdateNotification
+import com.l2loot.ui.modifiers.clearFocusOnClick
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -542,7 +543,10 @@ fun App() {
                                 NavHost(
                                     navController = navController,
                                     startDestination = Explore,
-                                    modifier = Modifier.weight(1f).fillMaxHeight()
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .fillMaxHeight()
+                                        .clearFocusOnClick()
                                 ) {
                                     composable<Explore> { ExploreScreen() }
                                     composable<Sellable> { SellableScreen() }
