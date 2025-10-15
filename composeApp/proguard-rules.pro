@@ -148,8 +148,29 @@
 -keep class * extends org.koin.core.module.Module { *; }
 -keep class **.*KoinModule* { *; }
 
-# Keep all classes that might be injected by Koin
--keep class com.l2loot.** { *; }
+# Keep only specific classes needed by Koin and reflection
+# DON'T keep everything - allow obfuscation for better security
+
+# Keep main entry point
+-keep class com.l2loot.MainKt { *; }
+
+# Keep ViewModels and their constructors (needed by Koin)
+-keep class * extends androidx.lifecycle.ViewModel {
+    public <init>(...);
+}
+
+# Keep repositories and services (needed by Koin)
+-keep class * implements com.l2loot.data.** {
+    public <init>(...);
+}
+
+# Keep data classes used in database (SQLDelight needs these)
+-keep class com.l2loot.GetAllItemsWithPrices { *; }
+-keep class com.l2loot.data.raw_data.** { *; }
+
+# IMPORTANT: Allow obfuscation of Config class to make URL extraction harder
+# (This makes reverse engineering slightly more difficult, but not impossible)
+# The URLs will still be in the binary, just harder to find
 
 # Keep ViewModels (used by Koin)
 -keep class * extends androidx.lifecycle.ViewModel { *; }

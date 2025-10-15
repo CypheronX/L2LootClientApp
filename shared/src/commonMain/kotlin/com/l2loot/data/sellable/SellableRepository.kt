@@ -1,6 +1,7 @@
 package com.l2loot.data.sellable
 
 import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.GetAllItemsWithPrices
 import com.l2loot.L2LootDatabase
 import com.l2loot.data.firebase.FirebaseAuthService
@@ -30,11 +31,12 @@ class SellableRepositoryImpl(
 ) : SellableRepository {
     private val httpClient = HttpClient.newBuilder().build()
     private val json = Json { ignoreUnknownKeys = true }
-    private val firebaseUrl = "https://l2loot-default-rtdb.europe-west1.firebasedatabase.app/sellable.json"
-    
     private var firebaseAuthService: FirebaseAuthService? = null
 
-    private val pollingIntervalMs = 3600000L
+    private val pollingIntervalMs = 3600000L // 1 hour
+    
+    private var cachedItems: List<SellableItemJson>? = null
+    private var cacheTimestamp: Long = 0
     
     override suspend fun setFirebaseAuthService(authService: FirebaseAuthService?) {
         this.firebaseAuthService = authService
@@ -79,9 +81,21 @@ class SellableRepositoryImpl(
 
     override suspend fun fetchAynixPricesOnce() {
         withContext(Dispatchers.IO) {
+            val now = System.currentTimeMillis()
+            if (cachedItems != null && (now - cacheTimestamp) < pollingIntervalMs) {
+                if (BuildConfig.DEBUG) {
+                    val remainingMinutes = (pollingIntervalMs - (now - cacheTimestamp)) / 60000
+                    println("ℹ️ Using cached Aynix prices (${remainingMinutes} min until refresh)")
+                }
+                return@withContext
+            }
+            
             try {
                 val items = fetchItemsFromFirebase()
                 val timestamp = System.currentTimeMillis()
+                
+                cachedItems = items
+                cacheTimestamp = timestamp
                 
                 database.transaction {
                     for (item in items) {
@@ -93,7 +107,7 @@ class SellableRepositoryImpl(
                     }
                 }
                 if (BuildConfig.DEBUG) {
-                    println("✅ Fetched ${items.size} Aynix prices from Firebase")
+                    println("✅ Fetched ${items.size} Aynix prices from Firebase (cached for 1 hour)")
                 }
             } catch (e: Exception) {
                 if (BuildConfig.DEBUG) {
@@ -118,16 +132,8 @@ class SellableRepositoryImpl(
     }
 
     private suspend fun fetchItemsFromFirebase(): List<SellableItemJson> = withContext(Dispatchers.IO) {
-        val idToken = firebaseAuthService?.getIdToken()
-        
-        val urlWithAuth = if (idToken != null) {
-            "$firebaseUrl?auth=$idToken"
-        } else {
-            firebaseUrl
-        }
-        
         val request = HttpRequest.newBuilder()
-            .uri(URI.create(urlWithAuth))
+            .uri(URI.create(Config.SELLABLE_ITEMS_URL))
             .GET()
             .build()
 

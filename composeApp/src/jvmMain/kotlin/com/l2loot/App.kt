@@ -96,7 +96,7 @@ fun App() {
     val analyticsService: AnalyticsService = koinInject()
     val updateChecker: UpdateChecker = koinInject()
     val firebaseAuthService: FirebaseAuthService = koinInject()
-    
+
     val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
@@ -237,6 +237,10 @@ fun App() {
             val newGuid = generateUserGuid()
             analyticsService.setUserGuid(newGuid)
             analyticsService.setTrackingEnabled(true)
+            
+            userSettingsRepository.updateUserGuid(newGuid)
+            userSettingsRepository.updateTrackEvents(true)
+            
             analyticsService.trackAppOpen(isFirstOpen = true)
             
             shouldShowConsentAfterLoad = true
