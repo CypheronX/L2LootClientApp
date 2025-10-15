@@ -1,6 +1,7 @@
 package com.l2loot.data.analytics
 
 import com.l2loot.BuildConfig
+import com.l2loot.Config
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
@@ -54,10 +55,7 @@ interface AnalyticsService {
     fun setTrackingEnabled(enabled: Boolean)
 }
 
-class AnalyticsServiceImpl(
-    private val measurementId: String = "REDACTED",
-    private val apiSecret: String = "REDACTED"
-) : AnalyticsService {
+class AnalyticsServiceImpl : AnalyticsService {
     
     private var userGuid: String = ""
     private var trackingEnabled: Boolean = true
@@ -152,23 +150,16 @@ class AnalyticsServiceImpl(
             }
         }
         
-        val event = GA4Event(
-            name = eventName,
-            params = jsonParams
-        )
-        
-        val payload = GA4Payload(
-            client_id = userGuid,
-            user_id = userGuid,
-            events = listOf(event),
-            timestamp_micros = System.currentTimeMillis() * 1000,
-            debug_mode = true
+        val payload = ProxyPayload(
+            eventName = eventName,
+            parameters = jsonParams,
+            clientId = userGuid,
+            userId = userGuid,
+            timestamp = System.currentTimeMillis() / 1000
         )
         
         try {
-            val response = client.post("https://www.google-analytics.com/mp/collect") {
-                parameter("measurement_id", measurementId)
-                parameter("api_secret", apiSecret)
+            val response = client.post(Config.ANALYTICS_URL) {
                 contentType(ContentType.Application.Json)
                 setBody(payload)
             }
@@ -186,18 +177,12 @@ class AnalyticsServiceImpl(
 }
 
 @Serializable
-private data class GA4Payload(
-    val client_id: String,
-    val user_id: String,
-    val events: List<GA4Event>,
-    val timestamp_micros: Long,
-    val debug_mode: Boolean
-)
-
-@Serializable
-private data class GA4Event(
-    val name: String,
-    val params: JsonElement
+private data class ProxyPayload(
+    val eventName: String,
+    val parameters: JsonElement,
+    val clientId: String,
+    val userId: String,
+    val timestamp: Long
 )
 
 /**

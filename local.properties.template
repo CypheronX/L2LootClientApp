@@ -1,0 +1,20 @@
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+# For customization when using a Version Control System, please read the
+# header note.
+sdk.dir=C\:\\Users\\YourUser\\AppData\\Local\\Android\\Sdk
+
+# Firebase Configuration
+# Copy this file to 'local.properties' and fill in your values
+# The local.properties file is in .gitignore and won't be committed
+
+# Your Firebase Cloud Run endpoints (or Cloud Functions URLs)
+FIREBASE_ANALYTICS_URL=https://analytics-xxxxx.a.run.app
+FIREBASE_SELLABLE_ITEMS_URL=https://sellableitems-xxxxx.a.run.app
+FIREBASE_ANONYMOUS_AUTH_URL=https://anonymousauth-xxxxx.a.run.app
+
+# Your Firebase Project ID
+FIREBASE_PROJECT_ID=your-project-id
+
