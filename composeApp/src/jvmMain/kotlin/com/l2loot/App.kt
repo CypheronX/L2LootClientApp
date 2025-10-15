@@ -96,7 +96,7 @@ fun App() {
     val analyticsService: AnalyticsService = koinInject()
     val updateChecker: UpdateChecker = koinInject()
     val firebaseAuthService: FirebaseAuthService = koinInject()
-
+    
     val scope = rememberCoroutineScope()
     val isDatabaseEmpty = remember { loadDbDataRepository.isDatabaseEmpty() }
     val dbLoadProgress by loadDbDataRepository.progress.collectAsState()
@@ -220,10 +220,10 @@ fun App() {
     }
     
     LaunchedEffect(Unit) {
-        val authSuccess = firebaseAuthService.signInAnonymously()
+        val token = firebaseAuthService.getIdToken()
         sellableRepository.setFirebaseAuthService(firebaseAuthService)
-        authState = if (authSuccess) AuthState.Success else AuthState.Failed
-        if (!authSuccess && BuildConfig.DEBUG) {
+        authState = if (token != null) AuthState.Success else AuthState.Failed
+        if (token == null && BuildConfig.DEBUG) {
             println("⚠️ Firebase authentication failed - some features may be unavailable")
         }
     }
