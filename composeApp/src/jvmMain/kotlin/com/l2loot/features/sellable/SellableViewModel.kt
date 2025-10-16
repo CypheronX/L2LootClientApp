@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.Job
+import kotlin.coroutines.cancellation.CancellationException
 
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
@@ -24,9 +25,6 @@ internal class SellableViewModel(
     
     private var priceUpdateJob: Job? = null
     private val priceUpdateDebounceMs = 500L
-    
-    private var searchJob: Job? = null
-    private val searchDebounceMs = 300L
 
     init {
         loadSellableItems()
@@ -52,13 +50,13 @@ internal class SellableViewModel(
             }
             is SellableScreenEvent.TogglePriceSource -> {
                 viewModelScope.launch {
-                    userSettingsRepository.updateIsAynixPrices(event.value)
-                    
                     if (event.value) {
                         _state.update { it.copy(loading = true) }
                         try {
                             sellableRepository.fetchAynixPricesOnce()
-                            loadSellableItems()
+                            userSettingsRepository.updateIsAynixPrices(event.value)
+                        } catch (e: CancellationException) {
+                            throw e
                         } catch (e: Exception) {
                             if (BuildConfig.DEBUG) {
                                 println("❌ Failed to fetch Aynix prices: ${e.message}")
@@ -66,7 +64,7 @@ internal class SellableViewModel(
                             _state.update { it.copy(loading = false) }
                         }
                     } else {
-                        loadSellableItems()
+                        userSettingsRepository.updateIsAynixPrices(event.value)
                     }
                 }
             }
@@ -158,14 +156,8 @@ internal class SellableViewModel(
         }
     }
 
-    fun onSearch(searchValue: String) {
-        searchJob?.cancel()
-        
+    private fun onSearch(searchValue: String) {
         _state.update { it.copy(searchValue = searchValue) }
-        
-        searchJob = viewModelScope.launch {
-            delay(searchDebounceMs)
-        }
     }
 
 }
