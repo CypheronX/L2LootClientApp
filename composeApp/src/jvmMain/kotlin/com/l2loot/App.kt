@@ -65,6 +65,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 @Serializable
 object Explore
@@ -271,12 +272,28 @@ fun App() {
     LaunchedEffect(authState) {
         // Only fetch data if authentication succeeded
         if (authState == AuthState.Success) {
-            userSettingsRepository.getSettings()
-                .collectLatest { settings ->
-                    if (settings?.isAynixPrices == true) {
-                        sellableRepository.getSellableItemsFromFirebase().collect()
+            try {
+                userSettingsRepository.getSettings()
+                    .collectLatest { settings ->
+                        if (settings?.isAynixPrices == true) {
+                            try {
+                                sellableRepository.getSellableItemsFromFirebase().collect()
+                            } catch (e: CancellationException) {
+                                throw e
+                            } catch (e: Exception) {
+                                if (BuildConfig.DEBUG) {
+                                    println("⚠️ Failed to fetch Aynix prices on startup: ${e.message}")
+                                }
+                            }
+                        }
                     }
+            } catch (e: CancellationException) {
+                // Normal cancellation, don't log
+            } catch (e: Exception) {
+                if (BuildConfig.DEBUG) {
+                    println("⚠️ Error in settings flow: ${e.message}")
                 }
+            }
         } else if (authState == AuthState.Failed && BuildConfig.DEBUG) {
             println("⚠️ Skipping Firebase data fetch due to authentication failure")
         }

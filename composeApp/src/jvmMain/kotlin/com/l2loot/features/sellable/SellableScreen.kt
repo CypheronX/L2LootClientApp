@@ -1,5 +1,8 @@
 package com.l2loot.features.sellable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ScrollbarStyle
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -15,23 +18,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.l2loot.BuildConfig
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.sellable.components.SellableItem
 import com.l2loot.features.sellable.components.SellableItemData
 import com.l2loot.features.sellable.components.SellableItemShimmer
+import com.l2loot.ui.components.NoResultsFound
 import com.l2loot.ui.components.SearchInput
+import l2loot.composeapp.generated.resources.Res
+import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -39,6 +52,22 @@ fun SellableScreen() {
     val viewModel: SellableViewModel = koinViewModel()
     val state by viewModel.state.collectAsState()
     val horizontalScrollState = rememberScrollState()
+    
+    var searchIconPainter by remember { mutableStateOf<Painter?>(null) }
+    val density = LocalDensity.current
+
+    LaunchedEffect(Unit) {
+        try {
+            val searchBytes = Res.readBytes("files/svg/search.svg")
+            if (searchBytes.isNotEmpty()) {
+                searchIconPainter = searchBytes.decodeToSvgPainter(density)
+            }
+        } catch (e: Exception) {
+            if (BuildConfig.DEBUG) {
+                println("Failed to load search icon: ${e.message}")
+            }
+        }
+    }
 
 
     BoxWithConstraints(
@@ -72,28 +101,6 @@ fun SellableScreen() {
 
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space20))
 
-                val allItems = state.items.filter {
-                    it.key.lowercase() != "adena" && it.name.lowercase() != "adena"
-                }
-                val midpoint = (allItems.size + 1) / 2
-                val firstColumnOriginal = allItems.take(midpoint)
-                val secondColumnOriginal = allItems.drop(midpoint)
-                
-                val firstColumnItems = if (state.searchValue.isBlank()) {
-                    firstColumnOriginal
-                } else {
-                    firstColumnOriginal.filter { 
-                        it.name.contains(state.searchValue, ignoreCase = true)
-                    }
-                }
-                val secondColumnItems = if (state.searchValue.isBlank()) {
-                    secondColumnOriginal
-                } else {
-                    secondColumnOriginal.filter { 
-                        it.name.contains(state.searchValue, ignoreCase = true)
-                    }
-                }
-                
                 val scrollState = rememberScrollState()
 
                 Column(
@@ -166,6 +173,12 @@ fun SellableScreen() {
                             ) {
                                 val minHeight = maxHeight
                                 
+                                if (state.firstColumnItems.isEmpty() && state.secondColumnItems.isEmpty() && state.searchValue.isNotBlank() && !state.loading) {
+                                    NoResultsFound(
+                                        iconPainter = searchIconPainter,
+                                        message = "No items match your search."
+                                    )
+                                } else {
                                     Row(
                                         horizontalArrangement = Arrangement.SpaceEvenly,
                                         modifier = Modifier
@@ -194,21 +207,27 @@ fun SellableScreen() {
                                                         SellableItemShimmer()
                                                     }
                                                 } else {
-                                                    firstColumnItems.forEach { sellable ->
-                                                        SellableItem(
-                                                            sellableItem = SellableItemData(
-                                                                key = sellable.key,
-                                                                name = sellable.name
-                                                            ),
-                                                            price = state.prices[sellable.key] ?: "",
-                                                            onPriceChange = { newPrice ->
-                                                                viewModel.updatePrice(sellable.key, newPrice)
-                                                            },
-                                                            enabled = !state.pricesByAynix
-                                                        )
+                                                    state.firstColumnAllItems.forEach { sellable ->
+                                                        AnimatedVisibility(
+                                                            visible = state.matchesSearch(sellable),
+                                                            enter = fadeIn(),
+                                                            exit = fadeOut()
+                                                        ) {
+                                                            SellableItem(
+                                                                sellableItem = SellableItemData(
+                                                                    key = sellable.key,
+                                                                    name = sellable.name
+                                                                ),
+                                                                price = state.prices[sellable.key] ?: "",
+                                                                onPriceChange = { newPrice ->
+                                                                    viewModel.updatePrice(sellable.key, newPrice)
+                                                                },
+                                                                enabled = !state.pricesByAynix
+                                                            )
+                                                        }
                                                     }
 
-                                                    if (firstColumnItems.isEmpty()) {
+                                                    if (state.firstColumnItems.isEmpty()) {
                                                         Spacer(modifier = Modifier.weight(1f).width(253.dp))
                                                     }
                                                 }
@@ -236,27 +255,34 @@ fun SellableScreen() {
                                                         SellableItemShimmer()
                                                     }
                                                 } else {
-                                                    secondColumnItems.forEach { sellable ->
-                                                        SellableItem(
-                                                            sellableItem = SellableItemData(
-                                                                key = sellable.key,
-                                                                name = sellable.name
-                                                            ),
-                                                            price = state.prices[sellable.key] ?: "",
-                                                            onPriceChange = { newPrice ->
-                                                                viewModel.updatePrice(sellable.key, newPrice)
-                                                            },
-                                                            enabled = !state.pricesByAynix
-                                                        )
+                                                    state.secondColumnAllItems.forEach { sellable ->
+                                                        AnimatedVisibility(
+                                                            visible = state.matchesSearch(sellable),
+                                                            enter = fadeIn(),
+                                                            exit = fadeOut()
+                                                        ) {
+                                                            SellableItem(
+                                                                sellableItem = SellableItemData(
+                                                                    key = sellable.key,
+                                                                    name = sellable.name
+                                                                ),
+                                                                price = state.prices[sellable.key] ?: "",
+                                                                onPriceChange = { newPrice ->
+                                                                    viewModel.updatePrice(sellable.key, newPrice)
+                                                                },
+                                                                enabled = !state.pricesByAynix
+                                                            )
+                                                        }
                                                     }
-                                                    if (secondColumnItems.isEmpty()) {
+                                                    if (state.secondColumnItems.isEmpty()) {
                                                         Spacer(modifier = Modifier.weight(1f).width(253.dp))
-                                                    }}
+                                                    }
+                                                }
                                             }
                                         }
                                     }
 
-                                    if (state.searchedResult.isNotEmpty()) {
+                                    if (state.filteredItems.isNotEmpty()) {
                                         VerticalScrollbar(
                                             adapter = rememberScrollbarAdapter(scrollState),
                                             style = ScrollbarStyle(
@@ -278,8 +304,9 @@ fun SellableScreen() {
                                                 .pointerHoverIcon(PointerIcon.Hand)
                                         )
                                     }
-
                                 }
+
+                            }
                             }
                     }
                     Spacer(modifier = Modifier.size(LocalSpacing.current.space34))

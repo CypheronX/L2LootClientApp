@@ -16,6 +16,7 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import kotlin.coroutines.cancellation.CancellationException
 
 interface SellableRepository {
     fun getSellableItemsFromFirebase(): Flow<List<SellableItemJson>>
@@ -56,6 +57,8 @@ class SellableRepositoryImpl(
                         last_updated = timestamp
                     )
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 if (BuildConfig.DEBUG) {
                     println("❌ Failed to update Aynix prices: ${e.message}")

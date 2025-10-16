@@ -56,6 +56,7 @@ import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
 import com.l2loot.features.explore.components.MonsterCardShimmer
+import com.l2loot.ui.components.NoResultsFound
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -317,32 +318,11 @@ fun ExploreScreen() {
                     }
 
                     if (state.monsters.isEmpty() && !state.isRefreshing) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .align(Alignment.Center)
-                        ) {
-                            spoilPainter?.let { painter ->
-                                Image(
-                                    painter = painter,
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(
-                                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                                    ),
-                                    modifier = Modifier.size(120.dp)
-                                )
-                            }
-                            
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space24))
-                            
-                            Text(
-                                text = "These lands hold no spoils for ye by yer criteria.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                            )
-                        }
+                        NoResultsFound(
+                            iconPainter = spoilPainter,
+                            message = "These lands hold no spoils for ye by yer criteria.",
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
 
                     if (state.monsters.isNotEmpty()) {
