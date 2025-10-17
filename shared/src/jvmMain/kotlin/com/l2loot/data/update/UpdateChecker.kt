@@ -36,7 +36,6 @@ class UpdateCheckerImpl(
     
     override suspend fun checkForUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
         try {
-            // Fetch latest release from GitHub API
             val response = client.get("https://api.github.com/repos/$githubRepo/releases/latest") {
                 header("Accept", "application/vnd.github.v3+json")
             }
