@@ -1,33 +1,14 @@
 package com.l2loot
 
 /**
- * Application configuration loaded from environment variables.
- * URLs are not stored in source code for security.
- * 
- * Set these environment variables before running:
- * - FIREBASE_ANALYTICS_URL
- * - FIREBASE_SELLABLE_ITEMS_URL
- * - FIREBASE_ANONYMOUS_AUTH_URL
- * - FIREBASE_PROJECT_ID
- * 
- * Or configure them in local.properties file.
+ * Application configuration compiled at build time
+ * URLs are injected during build from environment variables or local.properties
+ *
+ * For local development: Set values in local.properties file
+ * For CI/CD: Set environment variables in the build environment
  */
 object Config {
-    val ANALYTICS_URL: String by lazy {
-        getEnvOrDefault("FIREBASE_ANALYTICS_URL", "https://example.com/analytics")
-    }
-    
-    val SELLABLE_ITEMS_URL: String by lazy {
-        getEnvOrDefault("FIREBASE_SELLABLE_ITEMS_URL", "https://example.com/sellableitems")
-    }
-    
-    val ANONYMOUS_AUTH_URL: String by lazy {
-        getEnvOrDefault("FIREBASE_ANONYMOUS_AUTH_URL", "https://example.com/anonymousauth")
-    }
-    
-    val FIREBASE_PROJECT_ID: String by lazy {
-        getEnvOrDefault("FIREBASE_PROJECT_ID", "your-project-id")
-    }
+    const val ANALYTICS_URL: String = AppConfig.ANALYTICS_URL
+    const val SELLABLE_ITEMS_URL: String = AppConfig.SELLABLE_ITEMS_URL
+    const val ANONYMOUS_AUTH_URL: String = AppConfig.ANONYMOUS_AUTH_URL
 }
-
-expect fun getEnvOrDefault(key: String, defaultValue: String): String

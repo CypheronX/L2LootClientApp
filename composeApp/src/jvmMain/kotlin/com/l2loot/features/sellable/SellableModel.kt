@@ -19,9 +19,11 @@ internal data class SellableScreenState(
 
     fun matchesSearch(item: SellableItemJson): Boolean {
         if (searchValue.isBlank()) return true
-        return item.name.contains(searchValue, ignoreCase = true) ||
-                item.key.contains(searchValue, ignoreCase = true) ||
-                item.key.abbreviationMatch(searchValue)
+
+        val searchString = searchValue.trim().lowercase()
+        return item.name.contains(searchString, ignoreCase = true) ||
+                item.key.contains(searchString, ignoreCase = true) ||
+                item.key.abbreviationMatch(searchString)
     }
 
     val firstColumnAllItems: List<SellableItemJson>

@@ -324,7 +324,7 @@ fun SellableScreen() {
 
                         pushStringAnnotation(
                             tag = "URL",
-                            annotation = "https://discord.gg/D75XKfS6"
+                            annotation = "https://discord.gg/bcB4BufXgz"
                         )
                         withStyle(
                             style = SpanStyle(
