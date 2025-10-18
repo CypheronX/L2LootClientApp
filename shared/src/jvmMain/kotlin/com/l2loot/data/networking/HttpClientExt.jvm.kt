@@ -14,7 +14,7 @@ import kotlin.coroutines.coroutineContext
 
 actual suspend fun <T> platformSafeCall(
     execute: suspend () -> HttpResponse,
-    handleResponse: (HttpResponse) -> Result<T, DataError.Remote>
+    handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
 ): Result<T, DataError.Remote> {
     return try {
         val response = execute()

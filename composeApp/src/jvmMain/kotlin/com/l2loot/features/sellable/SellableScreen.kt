@@ -41,8 +41,8 @@ import com.l2loot.design.LocalSpacing
 import com.l2loot.features.sellable.components.SellableItem
 import com.l2loot.features.sellable.components.SellableItemData
 import com.l2loot.features.sellable.components.SellableItemShimmer
-import com.l2loot.ui.components.NoResultsFound
-import com.l2loot.ui.components.SearchInput
+import com.l2loot.designsystem.components.NoResultsFound
+import com.l2loot.designsystem.components.SearchInput
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel

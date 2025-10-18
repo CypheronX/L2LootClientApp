@@ -36,7 +36,7 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l2loot.design.LocalSpacing
-import com.l2loot.ui.components.SelectInput
+import com.l2loot.designsystem.components.SelectInput
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

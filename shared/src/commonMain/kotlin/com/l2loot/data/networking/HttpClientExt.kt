@@ -16,7 +16,7 @@ import io.ktor.client.statement.HttpResponse
 
 expect suspend fun <T> platformSafeCall(
     execute: suspend () -> HttpResponse,
-    handleResponse: (HttpResponse) -> Result<T, DataError.Remote>
+    handleResponse: suspend (HttpResponse) -> Result<T, DataError.Remote>
 ): Result<T, DataError.Remote>
 
 suspend inline fun <reified Request, reified Response: Any> HttpClient.post(
@@ -37,7 +37,7 @@ suspend inline fun <reified Request, reified Response: Any> HttpClient.post(
     }
 }
 
-suspend inline fun <reified Request, reified Response: Any> HttpClient.get(
+suspend inline fun <reified Response: Any> HttpClient.get(
     route: String,
     queryParams: Map<String, Any> = mapOf(),
     crossinline builder: HttpRequestBuilder.() -> Unit = {}

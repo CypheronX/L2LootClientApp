@@ -33,7 +33,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -51,12 +50,12 @@ import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.l2loot.BuildConfig
-import com.l2loot.data.monsters.strategy.HPMultiplier
+import com.l2loot.domain.model.HPMultiplier
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
 import com.l2loot.features.explore.components.MonsterCardShimmer
-import com.l2loot.ui.components.NoResultsFound
+import com.l2loot.designsystem.components.NoResultsFound
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel

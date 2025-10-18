@@ -1,10 +1,10 @@
 package com.l2loot.features.sellable
 
-import com.l2loot.data.raw_data.SellableItemJson
+import com.l2loot.domain.model.SellableItem
 import com.l2loot.extensions.abbreviationMatch
 
 internal data class SellableScreenState(
-    val items: List<SellableItemJson>,
+    val items: List<SellableItem>,
     val loading: Boolean,
     val pricesByAynix: Boolean,
     val prices: Map<String, String>,
@@ -12,41 +12,41 @@ internal data class SellableScreenState(
     val error: String?,
 ) {
 
-    private val allItemsWithoutAdena: List<SellableItemJson>
+    private val allItemsWithoutAdena: List<SellableItem>
         get() = items.filter {
             it.key.lowercase() != "adena" && it.name.lowercase() != "adena"
         }
 
-    fun matchesSearch(item: SellableItemJson): Boolean {
+    fun matchesSearch(item: SellableItem): Boolean {
         if (searchValue.isBlank()) return true
 
         val searchString = searchValue.trim().lowercase()
-        return item.name.contains(searchString, ignoreCase = true) ||
-                item.key.contains(searchString, ignoreCase = true) ||
-                item.key.abbreviationMatch(searchString)
+        return item.matchesSearchWithAbbreviation(searchString) { key, query ->
+            key.abbreviationMatch(query)
+        }
     }
 
-    val firstColumnAllItems: List<SellableItemJson>
+    val firstColumnAllItems: List<SellableItem>
         get() {
             val allItems = allItemsWithoutAdena
             val midpoint = (allItems.size + 1) / 2
             return allItems.take(midpoint)
         }
 
-    val secondColumnAllItems: List<SellableItemJson>
+    val secondColumnAllItems: List<SellableItem>
         get() {
             val allItems = allItemsWithoutAdena
             val midpoint = (allItems.size + 1) / 2
             return allItems.drop(midpoint)
         }
 
-    val firstColumnItems: List<SellableItemJson>
+    val firstColumnItems: List<SellableItem>
         get() = firstColumnAllItems.filter { matchesSearch(it) }
 
-    val secondColumnItems: List<SellableItemJson>
+    val secondColumnItems: List<SellableItem>
         get() = secondColumnAllItems.filter { matchesSearch(it) }
 
-    val filteredItems: List<SellableItemJson>
+    val filteredItems: List<SellableItem>
         get() = firstColumnItems + secondColumnItems
 
     companion object {

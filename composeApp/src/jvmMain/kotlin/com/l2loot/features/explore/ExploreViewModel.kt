@@ -2,15 +2,11 @@ package com.l2loot.features.explore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.data.monsters.MonsterRepository
-import com.l2loot.Monsters
-import com.l2loot.data.monsters.strategy.MonsterQueryParams
-import com.l2loot.data.monsters.strategy.MonsterResult
-import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.domain.model.MonsterQueryParams
+import com.l2loot.domain.repository.MonsterRepository
+import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
