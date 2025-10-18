@@ -2,7 +2,6 @@ package com.l2loot
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.compose.runtime.snapshotFlow
 import com.l2loot.data.firebase.generateUserGuid
 import com.l2loot.domain.firebase.AnalyticsService
 import com.l2loot.domain.firebase.FirebaseAuthService
@@ -126,7 +125,8 @@ class MainViewModel(
             val (shouldShowSupport, isReminder) = shouldShowSupportDialog(settings)
             
             if (shouldShowSupport && !isFirstOpen) {
-                while (_state.value.isLoading || _state.value.showConsentDialog) {
+                // Wait for loading and consent dialog to finish
+                while (state.value.isLoading || state.value.showConsentDialog) {
                     delay(100)
                 }
                 delay(500)
@@ -142,7 +142,8 @@ class MainViewModel(
 
         // Handle Aynix prices fetch
         viewModelScope.launch {
-            snapshotFlow { _state.value.authState }.collect { authState ->
+            state.collect { currentState ->
+                val authState = currentState.authState
                 if (authState == AuthState.Success) {
                     try {
                         val settings = userSettingsRepository.getSettings().firstOrNull()

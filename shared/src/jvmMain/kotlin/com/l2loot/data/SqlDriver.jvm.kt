@@ -10,9 +10,7 @@ import java.io.File
 import java.sql.DriverManager
 import java.util.Properties
 
-actual class DriverFactory(
-    val logger: LootLogger
-) {
+actual class DriverFactory {
     actual fun createDriver(): SqlDriver {
         val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), "L2Loot")
         if (!appDataDir.exists()) {
