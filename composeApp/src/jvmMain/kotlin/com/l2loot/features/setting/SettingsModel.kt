@@ -1,6 +1,6 @@
 package com.l2loot.features.setting
 
-import com.l2loot.data.update.UpdateInfo
+import com.l2loot.domain.model.UpdateInfo
 
 internal data class SettingsState(
     val trackUserEvents: Boolean,

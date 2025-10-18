@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -47,9 +46,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.l2loot.BuildConfig
-import com.l2loot.data.monsters.strategy.DropItemInfo
-import com.l2loot.data.monsters.strategy.HPMultiplier
-import com.l2loot.data.monsters.strategy.MonsterResult
+import com.l2loot.domain.model.DropItemInfo
+import com.l2loot.domain.model.MonsterResult
 import com.l2loot.design.LocalSpacing
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter

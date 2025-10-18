@@ -1,8 +1,8 @@
 package com.l2loot.features.explore
 
-import com.l2loot.data.monsters.strategy.HPMultiplier
-import com.l2loot.data.monsters.strategy.MonsterQueryParams
-import com.l2loot.data.monsters.strategy.MonsterResult
+import com.l2loot.domain.model.HPMultiplier
+import com.l2loot.domain.model.MonsterQueryParams
+import com.l2loot.domain.model.MonsterResult
 
 internal data class ExploreScreenState(
     val monsters: List<MonsterResult>,

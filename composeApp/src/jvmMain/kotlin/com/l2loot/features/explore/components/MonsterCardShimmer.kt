@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.l2loot.design.LocalSpacing
-import com.l2loot.ui.components.shimmerLoading
+import com.l2loot.designsystem.components.shimmerLoading
 
 @Composable
 fun MonsterCardShimmer(

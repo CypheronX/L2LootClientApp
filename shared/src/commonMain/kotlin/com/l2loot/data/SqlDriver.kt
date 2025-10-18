@@ -5,8 +5,8 @@ import app.cash.sqldelight.db.SqlDriver
 import com.l2loot.Droplist
 import com.l2loot.L2LootDatabase
 import com.l2loot.Monsters
-import com.l2loot.data.monsters.strategy.DropCategory
-import com.l2loot.data.monsters.strategy.HPMultiplier
+import com.l2loot.domain.model.DropCategory
+import com.l2loot.domain.model.HPMultiplier
 
 expect class DriverFactory {
     fun createDriver(): SqlDriver

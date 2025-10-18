@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -47,9 +46,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.l2loot.BuildConfig
-import com.l2loot.data.settings.UserSettingsRepository
-import com.l2loot.data.update.UpdateInfo
 import com.l2loot.design.LocalSpacing
+import com.l2loot.domain.model.UpdateInfo
+import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.launch
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter

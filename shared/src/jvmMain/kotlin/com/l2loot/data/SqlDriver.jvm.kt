@@ -5,6 +5,7 @@ import app.cash.sqldelight.db.SqlDriver
 import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import com.l2loot.BuildConfig
 import com.l2loot.L2LootDatabase
+import com.l2loot.domain.logging.LootLogger
 import java.io.File
 import java.sql.DriverManager
 import java.util.Properties
@@ -48,7 +49,7 @@ actual class DriverFactory {
                 if (BuildConfig.DEBUG) {
                     println("🔄 Running migrations from version $currentVersion to $latestVersion")
                 }
-                
+
                 try {
                     L2LootDatabase.Schema.migrate(
                         driver = driver,
@@ -69,7 +70,7 @@ actual class DriverFactory {
                     
                     // Manually set the database version (SQLDelight doesn't always do this correctly)
                     driver.execute(null, "PRAGMA user_version = $latestVersion", 0)
-                    
+
                     if (BuildConfig.DEBUG) {
                         println("🎉 Migrations completed successfully!")
                     }
