@@ -1,5 +1,6 @@
 package com.l2loot.data.firebase
 
+import com.l2loot.BuildConfig
 import com.l2loot.Config
 import com.l2loot.data.networking.post
 import com.l2loot.domain.firebase.FirebaseAuthService
@@ -36,8 +37,10 @@ class FirebaseAuthServiceImpl(
     override suspend fun getIdToken(): String? {
         mutex.withLock {
             if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - 300000) {
-                val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
-                logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
+                if (BuildConfig.DEBUG) {
+                    val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
+                    logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
+                }
                 return currentIdToken
             }
 
@@ -64,8 +67,6 @@ class FirebaseAuthServiceImpl(
                 tokenExpirationTime = System.currentTimeMillis() + expiresInMs
 
                 persistToken()
-
-                logger.info("Firebase anonymous auth successful (cached for ${expiresInMs/1000/60} minutes)")
                 true
             }
             is Result.Failure -> {
@@ -90,12 +91,8 @@ class FirebaseAuthServiceImpl(
                 if (token != null && expiration != null && System.currentTimeMillis() < expiration) {
                     currentIdToken = token
                     tokenExpirationTime = expiration
-                    
-                    val remainingMinutes = (expiration - System.currentTimeMillis()) / 60000
-                    logger.debug("Loaded cached auth token ($remainingMinutes min remaining)")
                 } else {
                     tokenCacheFile.delete()
-                    logger.debug("Cached token expired, will request new one")
                 }
             }
         } catch (e: Exception) {
@@ -113,8 +110,6 @@ class FirebaseAuthServiceImpl(
             props.setProperty("expiresAt", tokenExpirationTime.toString())
             
             tokenCacheFile.outputStream().use { props.store(it, "Firebase Auth Token Cache") }
-            
-            logger.debug("Auth token cached to: ${tokenCacheFile.absolutePath}")
         } catch (e: Exception) {
             logger.warn("Failed to cache token: ${e.message}")
         }

@@ -1,5 +1,6 @@
 package com.l2loot.data.firebase
 
+import com.l2loot.BuildConfig
 import com.l2loot.Config
 import com.l2loot.data.networking.post
 import com.l2loot.domain.firebase.AnalyticsService
@@ -74,7 +75,6 @@ class AnalyticsServiceImpl(
         parameters: Map<String, Any> = emptyMap()
     ) {
         if (userGuid.isEmpty()) {
-            logger.debug("Analytics: User GUID not set, skipping event")
             return
         }
         
