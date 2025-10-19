@@ -9,6 +9,8 @@ import com.l2loot.domain.repository.SellableRepository
 import com.l2loot.data.repository.SellableRepositoryImpl
 import com.l2loot.data.repository.UserSettingsRepositoryImpl
 import com.l2loot.data.createDatabase
+import com.l2loot.data.repository.ExternalLinksRepositoryImpl
+import com.l2loot.domain.repository.ExternalLinksRepository
 import com.l2loot.domain.repository.LoadDbDataRepository
 import com.l2loot.domain.repository.MonsterRepository
 import com.l2loot.domain.repository.UserSettingsRepository
@@ -31,4 +33,5 @@ val sharedModule = module {
     singleOf(::LoadDbDataRepositoryImpl) bind LoadDbDataRepository::class
     singleOf(::SellableRepositoryImpl) bind SellableRepository::class
     singleOf(::UserSettingsRepositoryImpl) bind UserSettingsRepository::class
+    singleOf(::ExternalLinksRepositoryImpl) bind ExternalLinksRepository::class
 }

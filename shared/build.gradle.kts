@@ -39,6 +39,7 @@ fun getConfigValue(key: String): String {
 val firebaseAnalyticsUrl = getConfigValue("FIREBASE_ANALYTICS_URL")
 val sellableItemsUrl = getConfigValue("SELLABLE_ITEMS_URL")
 val anonymousAuthUrl = getConfigValue("ANONYMOUS_AUTH_URL")
+val externalLinksUrl = getConfigValue("EXTERNAL_LINKS_URL")
 
 val generateConfigTask = tasks.register("generateAppConfig") {
     val outputDir = layout.buildDirectory.dir("generated/source/appconfig/commonMain/kotlin").get().asFile.path
@@ -60,6 +61,7 @@ val generateConfigTask = tasks.register("generateAppConfig") {
                 const val ANALYTICS_URL = "$firebaseAnalyticsUrl"
                 const val SELLABLE_ITEMS_URL = "$sellableItemsUrl"
                 const val ANONYMOUS_AUTH_URL = "$anonymousAuthUrl"
+                const val EXTERNAL_LINKS_URL = "$externalLinksUrl"
             }
         """.trimIndent())
     }

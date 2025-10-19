@@ -3,6 +3,8 @@ package com.l2loot.features.sellable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.l2loot.domain.logging.LootLogger
+import com.l2loot.domain.model.ExternalLinks
+import com.l2loot.domain.repository.ExternalLinksRepository
 import com.l2loot.domain.repository.SellableRepository
 import com.l2loot.domain.repository.UserSettingsRepository
 import com.l2loot.domain.util.Result
@@ -16,6 +18,7 @@ import kotlinx.coroutines.Job
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
     private val userSettingsRepository: UserSettingsRepository,
+    private val externalLinksRepository: ExternalLinksRepository,
     private val logger: LootLogger
 ) : ViewModel() {
 
@@ -26,6 +29,7 @@ internal class SellableViewModel(
     private val priceUpdateDebounceMs = 500L
 
     init {
+        loadExternalLinks()
         loadSellableItems()
         
         viewModelScope.launch {
@@ -67,6 +71,23 @@ internal class SellableViewModel(
             }
             is SellableScreenEvent.OnSearch -> {
                 onSearch(event.value)
+            }
+        }
+    }
+
+    private fun loadExternalLinks() {
+        viewModelScope.launch {
+            when (val result = externalLinksRepository.fetchExternalLinks()) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            marketOwnersLink = result.data.marketOwnersDiscord
+                        )
+                    }
+                }
+                is Result.Failure -> {
+
+                }
             }
         }
     }
