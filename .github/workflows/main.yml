@@ -1,14 +1,18 @@
-name: Build and Release to Public Repo
+name: Build and Release
 
 on:
   push:
     tags:
       - v*
+    branches:
+      - develop
   workflow_dispatch:
 
 jobs:
-  build-and-release:
+  build-prod:
+    name: Build Production Release
     runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -29,13 +33,14 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build MSI Installer
+      - name: Build Production MSI Installer
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
-          FIREBASE_SELLABLE_ITEMS_URL: ${{ secrets.FIREBASE_SELLABLE_ITEMS_URL }}
-          FIREBASE_ANONYMOUS_AUTH_URL: ${{ secrets.FIREBASE_ANONYMOUS_AUTH_URL }}
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        run: ./gradlew composeApp:packageReleaseMsi
+        run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=prod
 
 
       - name: Upload Release to Public Repository
@@ -65,3 +70,82 @@ jobs:
             
             ### What's New
             - Add your release notes here
+
+  build-dev:
+    name: Build Development Build
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Checkout private repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Get Version Name
+        id: get_version
+        shell: bash
+        run: |
+          source version.properties
+          echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
+
+      - name: Build Development MSI Installer
+        env:
+          FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
+          FIREBASE_ANALYTICS_URL_DEV: ${{ secrets.FIREBASE_ANALYTICS_URL_DEV }}
+          SELLABLE_ITEMS_URL_DEV: ${{ secrets.SELLABLE_ITEMS_URL_DEV }}
+          ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
+          EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=dev
+
+      - name: Get Short Commit SHA
+        id: commit_sha
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Create Dev Release in Private Repo
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: dev-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          name: Dev Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
+          draft: false
+          prerelease: true
+          files: |
+            composeApp/build/compose/binaries/main-release/msi/*.msi
+          body: |
+            ## 🚧 Development Build v${{ steps.get_version.outputs.version_name }}
+            
+            **Commit:** ${{ github.sha }}
+            **Branch:** develop
+            **Build Date:** ${{ github.event.head_commit.timestamp }}
+            
+            ### ⚠️ Important
+            This is a **development build** for testing purposes only.
+            - Uses dev backend endpoints (or prod as fallback)
+            - Can be installed alongside production version
+            - Database stored in `%APPDATA%\L2LootDev`
+            
+            ### Installation
+            1. Download `L2Loot Dev-${{ steps.get_version.outputs.version_name }}.msi`
+            2. Run the installer
+            3. App will appear as "L2Loot Dev" in Start Menu
+            
+            ### Recent Changes
+            ${{ github.event.head_commit.message }}
+
+      - name: Also Upload as Artifact (for quick access)
+        uses: actions/upload-artifact@v4
+        with:
+          name: L2Loot-Dev-${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          path: composeApp/build/compose/binaries/main-release/msi/*.msi
+          retention-days: 7

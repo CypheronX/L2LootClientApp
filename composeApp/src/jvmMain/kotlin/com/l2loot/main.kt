@@ -12,12 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.l2loot.BuildConfig
 import com.l2loot.di.appModule
 import com.l2loot.di.initKoin
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToImageBitmap
-import org.jetbrains.compose.resources.painterResource
 
 fun main() {
     initKoin {
@@ -39,7 +37,7 @@ fun main() {
                     spoilLogoPainter = BitmapPainter(imageBitmap)
                 }
             } catch (e: Exception) {
-                if (BuildConfig.DEBUG) {
+                if (Config.IS_DEBUG) {
                     println("Failed to load spoil icon: ${e.message}")
                 }
             }

@@ -163,7 +163,7 @@ class MainViewModel(
         viewModelScope.launch {
             delay(2000)
             try {
-                val updateInfo = updateChecker.checkForUpdate(com.l2loot.BuildConfig.VERSION_NAME)
+                val updateInfo = updateChecker.checkForUpdate(Config.VERSION_NAME)
                 if (updateInfo != null) {
                     _state.update {
                         it.copy(

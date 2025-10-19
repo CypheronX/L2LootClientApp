@@ -90,7 +90,7 @@ fun App(
                 cogPainter = cogBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load svg icons: ${e.message}")
             }
         }

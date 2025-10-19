@@ -209,5 +209,6 @@
     public static <fields>;
 }
 
-# Keep BuildConfig
--keep class com.l2loot.BuildConfig { *; }
+# Keep BuildKonfig (generated configuration)
+-keep class com.l2loot.BuildKonfig { *; }
+-keep class com.l2loot.Config { *; }

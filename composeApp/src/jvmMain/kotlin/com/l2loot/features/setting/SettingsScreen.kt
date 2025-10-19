@@ -45,7 +45,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
 import com.l2loot.domain.model.UpdateInfo
 import com.l2loot.domain.repository.UserSettingsRepository
@@ -63,7 +63,7 @@ fun SettingsScreen() {
     val horizontalScrollState = rememberScrollState()
     
     LaunchedEffect(Unit) {
-        viewModel.onEvent(SettingsEvent.CheckForUpdates(BuildConfig.VERSION_NAME))
+        viewModel.onEvent(SettingsEvent.CheckForUpdates(Config.VERSION_NAME))
     }
 
     BoxWithConstraints(
@@ -210,7 +210,7 @@ private fun UpdateSection(
                         try {
                             Desktop.getDesktop().browse(URI(updateInfo.downloadUrl))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open download URL: ${e.message}")
                             }
                         }
@@ -229,7 +229,7 @@ private fun UpdateSection(
                         try {
                             Desktop.getDesktop().browse(URI(updateInfo.releaseUrl))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open release URL: ${e.message}")
                             }
                         }
@@ -264,7 +264,7 @@ private fun SupportSection(
                 kofiPainter = kofiBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load support icons: ${e.message}")
             }
         }
@@ -310,7 +310,7 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open Patreon URL: ${e.message}")
                             }
                         }
@@ -339,7 +339,7 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open Ko-fi URL: ${e.message}")
                             }
                         }

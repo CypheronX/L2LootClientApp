@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.unit.dp
+import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
 import com.l2loot.domain.model.UpdateInfo
 
@@ -180,7 +181,7 @@ fun AppNavigationRail(
             }
             
             Text(
-                text = "v${com.l2loot.BuildConfig.VERSION_NAME}",
+                text = "v${Config.VERSION_NAME}",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.padding(bottom = LocalSpacing.current.space16)
