@@ -45,7 +45,7 @@ import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.domain.model.DropItemInfo
 import com.l2loot.domain.model.MonsterResult
 import com.l2loot.design.LocalSpacing
@@ -77,7 +77,7 @@ fun MonsterCard(
                 linkPainter = linkBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load svg icons: ${e.message}")
             }
         }

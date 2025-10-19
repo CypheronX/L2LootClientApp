@@ -1,6 +1,5 @@
 package com.l2loot.data.firebase
 
-import com.l2loot.BuildConfig
 import com.l2loot.Config
 import com.l2loot.data.networking.post
 import com.l2loot.domain.firebase.FirebaseAuthService
@@ -37,10 +36,8 @@ class FirebaseAuthServiceImpl(
     override suspend fun getIdToken(): String? {
         mutex.withLock {
             if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - 300000) {
-                if (BuildConfig.DEBUG) {
-                    val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
-                    logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
-                }
+                val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
+                logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
                 return currentIdToken
             }
 

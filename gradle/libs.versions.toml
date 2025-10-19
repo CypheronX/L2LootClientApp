@@ -1,5 +1,6 @@
 [versions]
 androidx-lifecycle = "2.9.3"
+buildkonfig = "0.17.1"
 composeHotReload = "1.0.0-beta06"
 composeMultiplatform = "1.9.0"
 junit = "4.13.2"
@@ -49,6 +50,7 @@ sql-delight = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sql
 sql-delight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelight"}
 
 [plugins]
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

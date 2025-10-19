@@ -2,7 +2,7 @@ package com.l2loot.features.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.domain.firebase.AnalyticsService
 import com.l2loot.domain.repository.UpdateCheckerRepository
 import com.l2loot.domain.repository.UserSettingsRepository
@@ -55,7 +55,7 @@ internal class SettingsViewModel(
                             )
                         }
                     } catch (e: Exception) {
-                        if (BuildConfig.DEBUG) {
+                        if (Config.IS_DEBUG) {
                             println("Failed to check for updates: ${e.message}")
                         }
                     }
