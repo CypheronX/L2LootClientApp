@@ -45,19 +45,27 @@ A Lineage 2 quality-of-life desktop application for Spoilers, built with Kotlin 
 
 ### Building Installer
 
-**Windows:**
+**Production Build (for releases):**
 ```bash
-./gradlew packageMsi
-```
-or
-```bash
-./gradlew packageExe
+./gradlew clean
+./gradlew packageReleaseMsi -Pbuildkonfig.flavor=prod
 ```
 
-The installer will be created in `composeApp/build/compose/binaries/main/`
+**Development Build (for testing):**
+```bash
+./gradlew clean
+./gradlew packageReleaseMsi -Pbuildkonfig.flavor=dev
+```
+
+The installers will be created in `composeApp/build/compose/binaries/main-release/msi/`
+
+> **Important:** Always run `clean` before switching between flavors.
+
+> **Note:** Dev and prod builds can be installed side-by-side on the same machine. They use separate directories and databases. See [Build Flavors Documentation](BUILD_FLAVORS.md) for details.
 
 ## Documentation
 
+- [Build Flavors](BUILD_FLAVORS.md) - Dev and prod build configuration
 - [Configuration Setup](docs/CONFIGURATION_SETUP.md) - How to configure Firebase URLs
 - [Security Considerations](docs/SECURITY_CONSIDERATIONS_OPEN_SOURCE.md) - Security approach for open-source desktop apps
 

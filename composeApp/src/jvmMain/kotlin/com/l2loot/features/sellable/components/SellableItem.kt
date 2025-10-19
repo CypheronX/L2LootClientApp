@@ -26,8 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToImageBitmap
@@ -58,7 +57,7 @@ fun SellableItem(
                 imageBitmap = imageBytes.decodeToImageBitmap()
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load image for ${sellableItem.key}: ${e.message}")
             }
         }

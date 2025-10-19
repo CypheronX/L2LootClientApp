@@ -1,6 +1,7 @@
 package com.l2loot.data.networking
 
 import io.ktor.client.plugins.logging.Logger
+import com.l2loot.Config
 import com.l2loot.domain.logging.LootLogger
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -36,7 +37,7 @@ class HttpClientFactory(
                         lootLogger.debug(message)
                     }
                 }
-                level = LogLevel.ALL
+                level = if (Config.IS_DEBUG) LogLevel.ALL else LogLevel.NONE
             }
             defaultRequest {
                 contentType(ContentType.Application.Json)

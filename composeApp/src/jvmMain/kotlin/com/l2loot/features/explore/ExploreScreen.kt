@@ -49,7 +49,7 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.domain.model.HPMultiplier
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
@@ -98,7 +98,7 @@ fun ExploreScreen() {
                 chevronPainter = chevronBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load svg icons: ${e.message}")
             }
         }

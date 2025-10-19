@@ -1,5 +1,6 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.jetbrains.compose.internal.utils.localPropertiesFile
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.sql.delight)
+    alias(libs.plugins.buildkonfig)
 }
 
 sqldelight {
@@ -23,47 +25,67 @@ sqldelight {
     }
 }
 
-fun getConfigValue(key: String): String {
+fun getConfigValue(key: String, defaultValue: String = ""): String {
     System.getenv(key)?.let { return it }
 
     val localProperties = rootProject.file("local.properties")
     if (localProperties.exists()) {
-        val localProperties = Properties()
-        localProperties.load(localPropertiesFile.inputStream())
-        localProperties.getProperty(key)?.let { return it }
+        val properties = Properties()
+        properties.load(localPropertiesFile.inputStream())
+        properties.getProperty(key)?.let { return it }
     }
 
-    return ""
+    return defaultValue
 }
 
-val firebaseAnalyticsUrl = getConfigValue("FIREBASE_ANALYTICS_URL")
-val sellableItemsUrl = getConfigValue("SELLABLE_ITEMS_URL")
-val anonymousAuthUrl = getConfigValue("ANONYMOUS_AUTH_URL")
-val externalLinksUrl = getConfigValue("EXTERNAL_LINKS_URL")
+val versionPropertiesFile = rootProject.file("version.properties")
+val versionProperties = Properties().apply {
+    if (versionPropertiesFile.exists()) {
+        load(versionPropertiesFile.inputStream())
+    }
+}
+val versionName = "${versionProperties.getProperty("versionMajor", "1")}.${versionProperties.getProperty("versionMinor", "0")}.${versionProperties.getProperty("versionPatch", "0")}"
 
-val generateConfigTask = tasks.register("generateAppConfig") {
-    val outputDir = layout.buildDirectory.dir("generated/source/appconfig/commonMain/kotlin").get().asFile.path
-    val outputFile = file("$outputDir/com/l2loot/AppConfig.kt")
+buildkonfig {
+    packageName = "com.l2loot"
 
-    outputs.dir(outputDir)
-    outputs.file(outputFile)
+    // Default flavor (prod)
+    defaultConfigs {
+        buildConfigField(STRING, "VERSION_NAME", versionName)
+        buildConfigField(STRING, "BUILD_FLAVOR", "prod")
+        buildConfigField(STRING, "APP_NAME", "L2Loot")
+        buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
+        buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
+        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
+        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
+        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL"))
+    }
 
-    doLast {
-        outputFile.parentFile.mkdirs()
-        outputFile.writeText("""
-            package com.l2loot
-            
-            /**
-              * Application configuration generated at build time.
-              * There values are compiled into the application.
-              */
-            object AppConfig {
-                const val ANALYTICS_URL = "$firebaseAnalyticsUrl"
-                const val SELLABLE_ITEMS_URL = "$sellableItemsUrl"
-                const val ANONYMOUS_AUTH_URL = "$anonymousAuthUrl"
-                const val EXTERNAL_LINKS_URL = "$externalLinksUrl"
-            }
-        """.trimIndent())
+    // Dev flavor
+    defaultConfigs("dev") {
+        buildConfigField(STRING, "VERSION_NAME", versionName)
+        buildConfigField(STRING, "BUILD_FLAVOR", "dev")
+        buildConfigField(STRING, "APP_NAME", "L2Loot Dev")
+        buildConfigField(STRING, "DB_DIR_NAME", "L2LootDev")
+        buildConfigField(BOOLEAN, "IS_DEBUG", "true")
+        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL_DEV", getConfigValue("FIREBASE_ANALYTICS_URL")))
+        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL_DEV", getConfigValue("SELLABLE_ITEMS_URL")))
+        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL_DEV", getConfigValue("ANONYMOUS_AUTH_URL")))
+        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL_DEV", getConfigValue("EXTERNAL_LINKS_URL")))
+    }
+
+    // Prod flavor (explicit)
+    defaultConfigs("prod") {
+        buildConfigField(STRING, "VERSION_NAME", versionName)
+        buildConfigField(STRING, "BUILD_FLAVOR", "prod")
+        buildConfigField(STRING, "APP_NAME", "L2Loot")
+        buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
+        buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
+        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
+        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
+        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL"))
     }
 }
 
@@ -72,7 +94,6 @@ kotlin {
     
     sourceSets {
         commonMain {
-            kotlin.srcDirs(layout.buildDirectory.dir("generated/source/appconfig/commonMain/kotlin").get().asFile.path)
             dependencies {
                 api(libs.koin.core)
                 implementation(libs.touchlab.kermit)
@@ -97,6 +118,3 @@ kotlin {
     }
 }
 
-tasks.withType<KotlinCompile>().configureEach {
-    dependsOn(generateConfigTask)
-}
