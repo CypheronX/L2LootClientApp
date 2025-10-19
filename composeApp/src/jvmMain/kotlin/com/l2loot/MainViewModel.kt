@@ -9,7 +9,6 @@ import com.l2loot.domain.logging.LootLogger
 import com.l2loot.domain.model.UserSettings
 import com.l2loot.domain.repository.LoadDbDataRepository
 import com.l2loot.domain.repository.SellableRepository
-import com.l2loot.domain.repository.UpdateCheckerRepository
 import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +29,6 @@ class MainViewModel(
     private val sellableRepository: SellableRepository,
     private val userSettingsRepository: UserSettingsRepository,
     private val analyticsService: AnalyticsService,
-    private val updateChecker: UpdateCheckerRepository,
     private val firebaseAuthService: FirebaseAuthService,
     private val logger: LootLogger
 ) : ViewModel() {
@@ -156,24 +154,6 @@ class MainViewModel(
                 } else if (authState == AuthState.Failed) {
                     logger.warn("Skipping Aynix price fetch due to authentication failure")
                 }
-            }
-        }
-
-        // Check for updates
-        viewModelScope.launch {
-            delay(2000)
-            try {
-                val updateInfo = updateChecker.checkForUpdate(Config.VERSION_NAME)
-                if (updateInfo != null) {
-                    _state.update {
-                        it.copy(
-                            availableUpdate = updateInfo,
-                            showUpdateNotification = true
-                        )
-                    }
-                }
-            } catch (e: Exception) {
-                logger.error("Failed to check for updates: ${e.message}")
             }
         }
     }

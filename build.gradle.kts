@@ -9,3 +9,15 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.sql.delight) apply false
 }
+
+allprojects {
+    val buildFlavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+    
+    ext.set("buildkonfig.flavor", buildFlavor)
+    
+    gradle.taskGraph.whenReady {
+        if (project.hasProperty("buildkonfig.flavor")) {
+            println("${project.name}: Using buildkonfig.flavor=$buildFlavor")
+        }
+    }
+}
