@@ -56,6 +56,8 @@ buildkonfig {
         buildConfigField(STRING, "APP_NAME", "L2Loot")
         buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
         buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppReleases")
+        buildConfigField(STRING, "GITHUB_TOKEN", "")
         buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
         buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
         buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
@@ -69,6 +71,8 @@ buildkonfig {
         buildConfigField(STRING, "APP_NAME", "L2Loot Dev")
         buildConfigField(STRING, "DB_DIR_NAME", "L2LootDev")
         buildConfigField(BOOLEAN, "IS_DEBUG", "true")
+        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppTest")
+        buildConfigField(STRING, "GITHUB_TOKEN", getConfigValue("GITHUB_TOKEN", ""))
         buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL_DEV", getConfigValue("FIREBASE_ANALYTICS_URL")))
         buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL_DEV", getConfigValue("SELLABLE_ITEMS_URL")))
         buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL_DEV", getConfigValue("ANONYMOUS_AUTH_URL")))
@@ -82,6 +86,8 @@ buildkonfig {
         buildConfigField(STRING, "APP_NAME", "L2Loot")
         buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
         buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppReleases")
+        buildConfigField(STRING, "GITHUB_TOKEN", "")
         buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
         buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
         buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
@@ -112,7 +118,6 @@ kotlin {
             implementation(libs.kotlin.test)
         }
         jvmMain.dependencies {
-//            implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.okhttp)
         }
     }

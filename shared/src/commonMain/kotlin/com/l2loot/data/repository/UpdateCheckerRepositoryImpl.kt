@@ -1,5 +1,6 @@
 package com.l2loot.data.repository
 
+import com.l2loot.Config
 import com.l2loot.data.networking.get
 import com.l2loot.domain.logging.LootLogger
 import com.l2loot.domain.model.UpdateInfo
@@ -13,40 +14,61 @@ import kotlinx.serialization.Serializable
 
 class UpdateCheckerRepositoryImpl(
     private val httpClient: HttpClient,
-    private val logger: LootLogger,
-    private val githubRepo: String = "aleksbalev/L2LootClientAppReleases"
+    private val logger: LootLogger
 ) : UpdateCheckerRepository {
+    private val githubRepo: String = Config.GITHUB_RELEASE_REPO
+    private val githubToken: String = Config.GITHUB_TOKEN
     
     override suspend fun checkForUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
         val result = httpClient.get<GitHubRelease>(
             route = "https://api.github.com/repos/$githubRepo/releases/latest"
         ) {
             header("Accept", "application/vnd.github.v3+json")
+            
+            if (githubToken.isNotEmpty()) {
+                header("Authorization", "Bearer $githubToken")
+            }
         }
         
         when (result) {
             is Result.Success -> {
                 val release = result.data
                 
-                // Remove 'v' prefix from tag if present (v1.0.0 -> 1.0.0)
-                val latestVersion = release.tag_name.removePrefix("v")
+                // Parse version from tag_name
+                // Supports formats:
+                // - v1.0.0 (prod)
+                // - dev-v1.0.0-abc123 (dev)
+                val latestVersion = parseVersionFromTag(release.tag_name)
                 
-                // Skip pre-release versions (alpha, beta, test, etc.)
-                if (latestVersion.contains("-")) {
-                    logger.debug("Skipping pre-release version: $latestVersion")
+                if (latestVersion == null) {
+                    logger.debug("Could not parse version from tag: ${release.tag_name}")
                     return@withContext null
                 }
+                
+                logger.debug("Checking for updates: current=$currentVersion, latest=$latestVersion (from tag: ${release.tag_name})")
                 
                 // Compare versions
                 if (isNewerVersion(latestVersion, currentVersion)) {
                     // Find the MSI asset
                     val msiAsset = release.assets.find { it.name.endsWith(".msi") }
                     
+                    // Find the update ZIP asset
+                    val zipAsset = release.assets.find { 
+                        it.name.contains("-Update-", ignoreCase = true) && it.name.endsWith(".zip", ignoreCase = true)
+                    } ?: release.assets.find { it.name.endsWith(".zip", ignoreCase = true) }
+                    
+                    val zipDownloadUrl = if (githubToken.isNotEmpty()) {
+                        zipAsset?.url ?: ""
+                    } else {
+                        zipAsset?.browser_download_url ?: ""
+                    }
+                    
                     return@withContext UpdateInfo(
                         version = latestVersion,
                         downloadUrl = msiAsset?.browser_download_url ?: release.html_url,
                         releaseUrl = release.html_url,
-                        releaseNotes = release.body ?: "No release notes available"
+                        releaseNotes = release.body ?: "No release notes available",
+                        updateZipUrl = zipDownloadUrl
                     )
                 }
                 
@@ -56,6 +78,37 @@ class UpdateCheckerRepositoryImpl(
                 logger.debug("Failed to check for updates: ${result.error}")
                 null
             }
+        }
+    }
+    
+    /**
+     * Parses version from various tag formats:
+     * - v1.0.0 -> 1.0.0 (prod and dev)
+     * - dev-v1.0.0-abc123 -> 1.0.0 (dev only)
+     * Returns null if tag format is not recognized
+     */
+    private fun parseVersionFromTag(tag: String): String? {
+        val isDev = Config.BUILD_FLAVOR == "dev"
+        
+        return when {
+            // Dev format: dev-v1.0.0-abc123 (only for dev builds)
+            tag.startsWith("dev-v") -> {
+                if (!isDev) {
+                    logger.debug("Skipping dev tag in production build: $tag")
+                    return null
+                }
+                // Remove "dev-v" prefix and everything after the version (commit sha)
+                val withoutPrefix = tag.removePrefix("dev-v")
+                // Split by "-" and take first part (major.minor.patch)
+                val versionParts = withoutPrefix.split("-").firstOrNull()
+                versionParts
+            }
+            // Prod format: v1.0.0
+            tag.startsWith("v") -> {
+                tag.removePrefix("v")
+            }
+            // Already without prefix: 1.0.0
+            else -> tag
         }
     }
     
@@ -126,6 +179,7 @@ data class GitHubRelease(
 @Serializable
 data class GitHubAsset(
     val name: String,
+    val url: String,
     val browser_download_url: String
 )
 

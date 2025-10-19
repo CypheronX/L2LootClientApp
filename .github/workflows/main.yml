@@ -13,6 +13,8 @@ jobs:
     name: Build Production Release
     runs-on: windows-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -33,14 +35,19 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build Production MSI Installer
+      - name: Build Updater JAR
+        shell: bash
+        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+
+      - name: Build Production MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
           ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
           EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=prod
+        shell: bash
+        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=prod
 
 
       - name: Upload Release to Public Repository
@@ -54,19 +61,20 @@ jobs:
           prerelease: false
           files: |
             composeApp/build/compose/binaries/main-release/msi/L2Loot-${{ steps.get_version.outputs.version_name }}.msi
+            composeApp/build/compose/binaries/main-release/update/L2Loot-Update-${{ steps.get_version.outputs.version_name }}.zip
           body: |
             ## L2Loot ${{ github.ref_name }}
             
             ### Installation
             
-            **Windows MSI Installer (Recommended):**
+            **Windows MSI Installer:**
             - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.msi`
             - Run the installer and follow the setup wizard
             - The app will be installed and a desktop shortcut will be created
             
-            **Windows EXE Portable:**
-            - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.exe`
-            - Extract and run the executable
+            **Auto-Update:**
+            - The app will automatically check for updates on startup
+            - Updates will be downloaded and installed automatically
             
             ### What's New
             - Add your release notes here
@@ -75,6 +83,8 @@ jobs:
     name: Build Development Build
     runs-on: windows-latest
     if: github.ref == 'refs/heads/test'
+    permissions:
+      contents: write
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -95,7 +105,11 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build Development MSI Installer
+      - name: Build Updater JAR
+        shell: bash
+        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+
+      - name: Build Development MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
@@ -106,22 +120,27 @@ jobs:
           ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
           EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=dev
+          GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
+        shell: bash
+        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=dev
 
       - name: Get Short Commit SHA
         id: commit_sha
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Create Dev Release in Private Repo
+      - name: Create Dev Release in Test Repository
         uses: softprops/action-gh-release@v2
         with:
+          repository: aleksbalev/L2LootClientAppTest
+          token: ${{ secrets.TEST_REPO_TOKEN }}
           tag_name: dev-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
           name: Dev Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
           draft: false
           prerelease: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/*.msi
+            composeApp/build/compose/binaries/main-release/update/*.zip
           body: |
             ## 🚧 Development Build v${{ steps.get_version.outputs.version_name }}
             
@@ -139,6 +158,9 @@ jobs:
             1. Download `L2Loot Dev-${{ steps.get_version.outputs.version_name }}.msi`
             2. Run the installer
             3. App will appear as "L2Loot Dev" in Start Menu
+            
+            **Auto-Update:**
+            - The app will automatically check for updates on startup
             
             ### Recent Changes
             ${{ github.event.head_commit.message }}

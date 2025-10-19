@@ -47,7 +47,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
-import com.l2loot.domain.model.UpdateInfo
 import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.launch
 import l2loot.composeapp.generated.resources.Res
@@ -61,10 +60,6 @@ fun SettingsScreen() {
     val viewModel = koinViewModel<SettingsViewModel>()
     val state by viewModel.state.collectAsState()
     val horizontalScrollState = rememberScrollState()
-    
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(SettingsEvent.CheckForUpdates(Config.VERSION_NAME))
-    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -101,10 +96,6 @@ fun SettingsScreen() {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space16)
                     ) {
-                        state.availableUpdate?.let { updateInfo ->
-                            UpdateSection(updateInfo)
-                        }
-
                         SettingsSection(
                             trackUserEvents = state.trackUserEvents,
                             onTrackUserEventsChange = { viewModel.onEvent(SettingsEvent.SetTracking(it)) }
@@ -172,72 +163,6 @@ private fun SettingsSection(
                 modifier = Modifier
                     .pointerHoverIcon(PointerIcon.Hand)
             )
-        }
-    }
-}
-
-@Composable
-private fun UpdateSection(
-    updateInfo: UpdateInfo
-) {
-    Card(
-        colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(LocalSpacing.current.space16),
-            verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space12)
-        ) {
-            Text(
-                text = "Version ${updateInfo.version} is now available!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.space8)
-            ) {
-                Button(
-                    modifier = Modifier
-                        .pointerHoverIcon(PointerIcon.Hand),
-                    onClick = {
-                        try {
-                            Desktop.getDesktop().browse(URI(updateInfo.downloadUrl))
-                        } catch (e: Exception) {
-                            if (Config.IS_DEBUG) {
-                                println("Failed to open download URL: ${e.message}")
-                            }
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text("Download")
-                }
-
-                OutlinedButton(
-                    modifier = Modifier
-                        .pointerHoverIcon(PointerIcon.Hand),
-                    onClick = {
-                        try {
-                            Desktop.getDesktop().browse(URI(updateInfo.releaseUrl))
-                        } catch (e: Exception) {
-                            if (Config.IS_DEBUG) {
-                                println("Failed to open release URL: ${e.message}")
-                            }
-                        }
-                    }
-                ) {
-                    Text("Release Notes")
-                }
-            }
         }
     }
 }

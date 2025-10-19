@@ -80,6 +80,15 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
+
+# Keep OkHttp classes to prevent VerifyError - ProGuard breaks OkHttp's bytecode otherwise
+-keep class okhttp3.** { *; }
+-keep class okio.** { *; }
+-keep interface okhttp3.** { *; }
+-keep interface okio.** { *; }
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+-dontnote okhttp3.internal.platform.**
+-dontnote okio.**
 #################################### SLF4J #####################################
 -dontwarn org.slf4j.**
 

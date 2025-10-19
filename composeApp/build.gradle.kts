@@ -59,7 +59,7 @@ compose.desktop {
         jvmArgs += listOf("--enable-native-access=ALL-UNNAMED")
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
+            targetFormats(TargetFormat.Msi)
             
             val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
             val isProd = flavor == "prod"
@@ -106,6 +106,12 @@ tasks.register("packageMsiProd") {
     doFirst {
         println("Building Production MSI...")
         println("Note: Make sure to run: ./gradlew clean before switching flavors")
+        
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "prod") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building production MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=prod")
+        }
     }
 }
 
@@ -116,5 +122,65 @@ tasks.register("packageMsiDev") {
     doFirst {
         println("Building Development MSI...")
         println("Note: Make sure to run: ./gradlew clean before switching flavors")
+        
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "dev") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building development MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=dev")
+        }
     }
+}
+
+tasks.register<Zip>("zipAppUpdate") {
+    group = "distribution"
+    description = "Create update ZIP from built app distributable"
+    
+    val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+    val isProd = flavor == "prod"
+    val appName = if (isProd) "L2Loot" else "L2Loot Dev"
+    
+    // Depend on both MSI creation and app folder generation
+    dependsOn("packageReleaseMsi", "createReleaseDistributable")
+    
+    from(layout.buildDirectory.dir("compose/binaries/main-release/app/$appName"))
+    
+    // Destination
+    destinationDirectory.set(layout.buildDirectory.dir("compose/binaries/main-release/update"))
+    archiveFileName.set(if (isProd) "L2Loot-Update-$versionNameProperty.zip" else "L2Loot-Dev-Update-$versionNameProperty.zip")
+}
+
+tasks.register("createAppImage") {
+    group = "distribution"
+    description = "Create runtime image for the app"
+    
+    dependsOn("createRuntimeImage", "proguardReleaseJars")
+    
+    doLast {
+        println("App image created successfully")
+    }
+}
+
+tasks.register<Copy>("copyUpdaterToResources") {
+    group = "distribution"
+    description = "Copy updater JAR to app resources"
+    
+    // Depend on updater package task - use UberJar instead of Exe
+    dependsOn(":updater:packageReleaseUberJarForCurrentOS")
+    
+    // Source: updater JAR from build output
+    from("${rootProject.projectDir}/updater/build/compose/jars")
+    
+    // Destination: app resources
+    into("src/jvmMain/composeResources/files/updater")
+    
+    // Only copy JAR files
+    include("*.jar")
+    
+    // Rename to standard name
+    rename { "L2LootUpdater.jar" }
+}
+
+// Ensure resource copying tasks wait for updater to be copied
+tasks.matching { it.name == "copyNonXmlValueResourcesForJvmMain" }.configureEach {
+    dependsOn("copyUpdaterToResources")
 }
