@@ -9,6 +9,7 @@ internal data class SellableScreenState(
     val pricesByAynix: Boolean,
     val prices: Map<String, String>,
     val searchValue: String,
+    val marketOwnersLink: String,
     val error: String?,
 ) {
 
@@ -56,6 +57,7 @@ internal data class SellableScreenState(
             loading = true,
             prices = emptyMap(),
             searchValue = "",
+            marketOwnersLink = "",
             error = null,
         )
     }
