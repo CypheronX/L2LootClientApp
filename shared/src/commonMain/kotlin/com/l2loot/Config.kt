@@ -14,6 +14,8 @@ object Config {
     val APP_NAME: String = BuildKonfig.APP_NAME
     val DB_DIR_NAME: String = BuildKonfig.DB_DIR_NAME
     val IS_DEBUG: Boolean = BuildKonfig.IS_DEBUG
+    val GITHUB_RELEASE_REPO: String = BuildKonfig.GITHUB_RELEASE_REPO
+    val GITHUB_TOKEN: String = BuildKonfig.GITHUB_TOKEN
     val ANALYTICS_URL: String = BuildKonfig.ANALYTICS_URL
     val SELLABLE_ITEMS_URL: String = BuildKonfig.SELLABLE_ITEMS_URL
     val ANONYMOUS_AUTH_URL: String = BuildKonfig.ANONYMOUS_AUTH_URL

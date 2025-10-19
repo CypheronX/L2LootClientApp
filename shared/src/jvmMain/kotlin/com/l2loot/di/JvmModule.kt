@@ -16,6 +16,6 @@ val jvmModule = module {
     
     // Services
     single<AnalyticsService> { AnalyticsServiceImpl(get(), get()) }
-    single<UpdateCheckerRepository> { UpdateCheckerRepositoryImpl(get(), get()) }
+    single<UpdateCheckerRepository> { UpdateCheckerRepositoryImpl(httpClient = get(), logger = get()) }
     single<FirebaseAuthService> { FirebaseAuthServiceImpl(get(), get()) }
 }

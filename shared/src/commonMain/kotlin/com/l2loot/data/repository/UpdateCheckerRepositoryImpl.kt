@@ -1,5 +1,6 @@
 package com.l2loot.data.repository
 
+import com.l2loot.Config
 import com.l2loot.data.networking.get
 import com.l2loot.domain.logging.LootLogger
 import com.l2loot.domain.model.UpdateInfo
@@ -13,15 +14,20 @@ import kotlinx.serialization.Serializable
 
 class UpdateCheckerRepositoryImpl(
     private val httpClient: HttpClient,
-    private val logger: LootLogger,
-    private val githubRepo: String = "aleksbalev/L2LootClientAppReleases"
+    private val logger: LootLogger
 ) : UpdateCheckerRepository {
+    private val githubRepo: String = Config.GITHUB_RELEASE_REPO
+    private val githubToken: String = Config.GITHUB_TOKEN
     
     override suspend fun checkForUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
         val result = httpClient.get<GitHubRelease>(
             route = "https://api.github.com/repos/$githubRepo/releases/latest"
         ) {
             header("Accept", "application/vnd.github.v3+json")
+            
+            if (githubToken.isNotEmpty()) {
+                header("Authorization", "Bearer $githubToken")
+            }
         }
         
         when (result) {
@@ -42,11 +48,17 @@ class UpdateCheckerRepositoryImpl(
                     // Find the MSI asset
                     val msiAsset = release.assets.find { it.name.endsWith(".msi") }
                     
+                    // Find the update ZIP asset
+                    val zipAsset = release.assets.find { 
+                        it.name.contains("-Update-", ignoreCase = true) && it.name.endsWith(".zip", ignoreCase = true)
+                    } ?: release.assets.find { it.name.endsWith(".zip", ignoreCase = true) }
+                    
                     return@withContext UpdateInfo(
                         version = latestVersion,
                         downloadUrl = msiAsset?.browser_download_url ?: release.html_url,
                         releaseUrl = release.html_url,
-                        releaseNotes = release.body ?: "No release notes available"
+                        releaseNotes = release.body ?: "No release notes available",
+                        updateZipUrl = zipAsset?.browser_download_url ?: ""
                     )
                 }
                 

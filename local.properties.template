@@ -26,3 +26,10 @@ EXTERNAL_LINKS_URL_DEV=https://externallinks-dev-xxxxx.a.run.app
 # Your Firebase Project ID
 FIREBASE_PROJECT_ID=your-project-id
 
+# GitHub Token for Private Release Repository (optional)
+# Only needed for dev builds if L2LootClientAppTest is private
+# Create a Personal Access Token with 'repo' (or 'public_repo') scope:
+# https://github.com/settings/tokens
+# For prod builds, leave empty (L2LootClientAppReleases should be public)
+GITHUB_TOKEN=
+

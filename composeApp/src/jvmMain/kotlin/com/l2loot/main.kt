@@ -16,10 +16,16 @@ import com.l2loot.di.appModule
 import com.l2loot.di.initKoin
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToImageBitmap
+import org.koin.core.context.GlobalContext
 
 fun main() {
     initKoin {
         modules(appModule)
+    }
+    
+    val updateChecker = CheckForUpdatesOnStartup(GlobalContext.get())
+    if (updateChecker.checkAndLaunchUpdater()) {
+        return
     }
     
     application {

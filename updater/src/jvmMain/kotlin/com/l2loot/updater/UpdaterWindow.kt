@@ -1,0 +1,281 @@
+package com.l2loot.updater
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.util.zip.ZipFile
+import kotlin.io.path.deleteIfExists
+
+sealed class UpdateState {
+    object Downloading : UpdateState()
+    object Extracting : UpdateState()
+    object Installing : UpdateState()
+    object Completed : UpdateState()
+    data class Error(val message: String) : UpdateState()
+}
+
+@Composable
+fun UpdaterWindow(
+    arguments: UpdaterArguments,
+    onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit
+) {
+    var updateState by remember { mutableStateOf<UpdateState>(UpdateState.Downloading) }
+    var progress by remember { mutableFloatStateOf(0f) }
+    var statusText by remember { mutableStateOf("Preparing update...") }
+    
+    val scope = rememberCoroutineScope()
+    
+    LaunchedEffect(Unit) {
+        scope.launch {
+            try {
+                // Download update
+                updateState = UpdateState.Downloading
+                statusText = "Downloading update..."
+                val zipFile = downloadUpdate(arguments.downloadUrl) { downloadProgress ->
+                    progress = downloadProgress
+                    statusText = "Downloading update... ${(downloadProgress * 100).toInt()}%"
+                }
+                
+                // Extract update
+                updateState = UpdateState.Extracting
+                statusText = "Extracting files..."
+                progress = 0f
+                val extractedDir = extractZip(zipFile) { extractProgress ->
+                    progress = extractProgress
+                    statusText = "Extracting files... ${(extractProgress * 100).toInt()}%"
+                }
+                
+                // Install update
+                updateState = UpdateState.Installing
+                statusText = "Installing update..."
+                progress = 0f
+                installUpdate(extractedDir, arguments.installPath) { installProgress ->
+                    progress = installProgress
+                    statusText = "Installing update... ${(installProgress * 100).toInt()}%"
+                }
+                
+                // Cleanup
+                zipFile.toPath().deleteIfExists()
+                extractedDir.deleteRecursively()
+                
+                // Complete
+                updateState = UpdateState.Completed
+                statusText = "Update completed successfully!"
+                progress = 1f
+                
+                delay(1000)
+                onComplete(true, scope)
+                
+            } catch (e: Exception) {
+                updateState = UpdateState.Error(e.message ?: "Unknown error")
+                statusText = "Update failed: ${e.message}"
+            }
+        }
+    }
+    
+    MaterialTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "L2Loot Updater",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                Text(
+                    text = "${arguments.currentVersion} → ${arguments.newVersion}",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+                
+                Spacer(modifier = Modifier.height(32.dp))
+                
+                when (updateState) {
+                    is UpdateState.Error -> {
+                        Text(
+                            text = statusText,
+                            color = MaterialTheme.colorScheme.error,
+                            fontSize = 14.sp
+                        )
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = { onComplete(false, scope) }
+                            ) {
+                                Text("Close")
+                            }
+                            
+                            Button(
+                                onClick = {
+                                    // Launch old version on error
+                                    scope.launch {
+                                        launchApp(arguments.appExePath)
+                                    }
+                                    onComplete(false, scope)
+                                }
+                            ) {
+                                Text("Launch Old Version")
+                            }
+                        }
+                    }
+                    
+                    else -> {
+                        LinearProgressIndicator(
+                            progress = { progress },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(8.dp),
+                        )
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Text(
+                            text = statusText,
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Download update ZIP file
+ */
+suspend fun downloadUpdate(
+    url: String,
+    onProgress: (Float) -> Unit
+): File = withContext(Dispatchers.IO) {
+    val tempFile = Files.createTempFile("l2loot-update", ".zip").toFile()
+    
+    val connection = URL(url).openConnection()
+    val totalSize = connection.contentLengthLong
+    
+    connection.getInputStream().use { input ->
+        FileOutputStream(tempFile).use { output ->
+            val buffer = ByteArray(8192)
+            var bytesRead: Int
+            var totalBytesRead = 0L
+            
+            while (input.read(buffer).also { bytesRead = it } != -1) {
+                output.write(buffer, 0, bytesRead)
+                totalBytesRead += bytesRead
+                
+                if (totalSize > 0) {
+                    onProgress(totalBytesRead.toFloat() / totalSize)
+                }
+            }
+        }
+    }
+    
+    tempFile
+}
+
+/**
+ * Extract ZIP file
+ */
+suspend fun extractZip(
+    zipFile: File,
+    onProgress: (Float) -> Unit
+): File = withContext(Dispatchers.IO) {
+    val extractDir = Files.createTempDirectory("l2loot-extracted").toFile()
+    
+    ZipFile(zipFile).use { zip ->
+        val entries = zip.entries().toList()
+        val totalEntries = entries.size
+        
+        entries.forEachIndexed { index, entry ->
+            val destFile = File(extractDir, entry.name)
+            
+            if (entry.isDirectory) {
+                destFile.mkdirs()
+            } else {
+                destFile.parentFile?.mkdirs()
+                zip.getInputStream(entry).use { input ->
+                    destFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+            }
+            
+            onProgress((index + 1).toFloat() / totalEntries)
+        }
+    }
+    
+    extractDir
+}
+
+/**
+ * Install update by replacing files
+ */
+suspend fun installUpdate(
+    sourceDir: File,
+    targetPath: String,
+    onProgress: (Float) -> Unit
+) = withContext(Dispatchers.IO) {
+    val targetDir = File(targetPath)
+    
+    // Get list of all files to copy
+    val filesToCopy = sourceDir.walkTopDown().filter { it.isFile }.toList()
+    val totalFiles = filesToCopy.size
+    
+    filesToCopy.forEachIndexed { index, sourceFile ->
+        val relativePath = sourceFile.relativeTo(sourceDir)
+        val targetFile = File(targetDir, relativePath.path)
+        
+        // Ensure parent directory exists
+        targetFile.parentFile?.mkdirs()
+        
+        // Copy with retry for locked files
+        var retries = 3
+        while (retries > 0) {
+            try {
+                Files.copy(
+                    sourceFile.toPath(),
+                    targetFile.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING
+                )
+                break
+            } catch (e: Exception) {
+                retries--
+                if (retries == 0) throw e
+                delay(1000) // Wait before retry
+            }
+        }
+        
+        onProgress((index + 1).toFloat() / totalFiles)
+    }
+}
+

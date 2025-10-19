@@ -4,5 +4,6 @@ data class UpdateInfo(
     val version: String,
     val downloadUrl: String,
     val releaseUrl: String,
-    val releaseNotes: String
+    val releaseNotes: String,
+    val updateZipUrl: String
 )
