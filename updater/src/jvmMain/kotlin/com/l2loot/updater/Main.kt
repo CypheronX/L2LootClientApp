@@ -76,7 +76,8 @@ fun parseArguments(args: Array<String>): UpdaterArguments {
         installPath = argsMap["--install-path"] ?: error("Missing --install-path argument"),
         appExePath = argsMap["--app-exe"] ?: error("Missing --app-exe argument"),
         currentVersion = argsMap["--current-version"] ?: "Unknown",
-        newVersion = argsMap["--new-version"] ?: "Unknown"
+        newVersion = argsMap["--new-version"] ?: "Unknown",
+        githubToken = argsMap["--github-token"]
     )
 }
 
@@ -104,6 +105,7 @@ data class UpdaterArguments(
     val installPath: String,
     val appExePath: String,
     val currentVersion: String,
-    val newVersion: String
+    val newVersion: String,
+    val githubToken: String? = null
 )
 

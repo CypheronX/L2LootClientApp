@@ -133,20 +133,16 @@ tasks.register("packageMsiDev") {
 
 tasks.register<Zip>("zipAppUpdate") {
     group = "distribution"
-    description = "Create update ZIP from app image"
+    description = "Create update ZIP from built app distributable"
     
     val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
     val isProd = flavor == "prod"
+    val appName = if (isProd) "L2Loot" else "L2Loot Dev"
     
-    dependsOn("createRuntimeImage", "proguardReleaseJars")
+    // Depend on both MSI creation and app folder generation
+    dependsOn("packageReleaseMsi", "createReleaseDistributable")
     
-    // Source: the runtime image directory
-    from(layout.buildDirectory.dir("compose/tmp/main/runtime"))
-    
-    // Add app JARs
-    from(layout.buildDirectory.dir("compose/tmp/main-release/proguard")) {
-        into("app")
-    }
+    from(layout.buildDirectory.dir("compose/binaries/main-release/app/$appName"))
     
     // Destination
     destinationDirectory.set(layout.buildDirectory.dir("compose/binaries/main-release/update"))
@@ -182,4 +178,9 @@ tasks.register<Copy>("copyUpdaterToResources") {
     
     // Rename to standard name
     rename { "L2LootUpdater.jar" }
+}
+
+// Ensure resource copying tasks wait for updater to be copied
+tasks.matching { it.name == "copyNonXmlValueResourcesForJvmMain" }.configureEach {
+    dependsOn("copyUpdaterToResources")
 }

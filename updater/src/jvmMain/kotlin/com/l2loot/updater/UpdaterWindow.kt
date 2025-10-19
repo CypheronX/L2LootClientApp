@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.l2loot.theme.AppTheme
+import com.l2loot.theme.LocalSpacing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,7 +47,7 @@ fun UpdaterWindow(
                 // Download update
                 updateState = UpdateState.Downloading
                 statusText = "Downloading update..."
-                val zipFile = downloadUpdate(arguments.downloadUrl) { downloadProgress ->
+                val zipFile = downloadUpdate(arguments.downloadUrl, arguments.githubToken) { downloadProgress ->
                     progress = downloadProgress
                     statusText = "Downloading update... ${(downloadProgress * 100).toInt()}%"
                 }
@@ -86,11 +88,11 @@ fun UpdaterWindow(
             }
         }
     }
-    
-    MaterialTheme {
+
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.background
+            color = MaterialTheme.colorScheme.surface
         ) {
             Column(
                 modifier = Modifier
@@ -126,43 +128,26 @@ fun UpdaterWindow(
                         
                         Spacer(modifier = Modifier.height(16.dp))
                         
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        Button(
+                            onClick = { onComplete(false, scope) }
                         ) {
-                            Button(
-                                onClick = { onComplete(false, scope) }
-                            ) {
-                                Text("Close")
-                            }
-                            
-                            Button(
-                                onClick = {
-                                    // Launch old version on error
-                                    scope.launch {
-                                        launchApp(arguments.appExePath)
-                                    }
-                                    onComplete(false, scope)
-                                }
-                            ) {
-                                Text("Launch Old Version")
-                            }
+                            Text("Close")
                         }
                     }
                     
                     else -> {
                         LinearProgressIndicator(
                             progress = { progress },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp),
+                            gapSize = LocalSpacing.current.none,
+                            drawStopIndicator = { },
+                            modifier = Modifier.padding(horizontal = 32.dp)
+                                .fillMaxWidth(fraction = 0.6f)
                         )
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
+                        Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
                         Text(
                             text = statusText,
-                            fontSize = 14.sp,
-                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -176,11 +161,18 @@ fun UpdaterWindow(
  */
 suspend fun downloadUpdate(
     url: String,
+    githubToken: String?,
     onProgress: (Float) -> Unit
 ): File = withContext(Dispatchers.IO) {
     val tempFile = Files.createTempFile("l2loot-update", ".zip").toFile()
     
     val connection = URL(url).openConnection()
+    
+    if (!githubToken.isNullOrEmpty()) {
+        connection.setRequestProperty("Authorization", "Bearer $githubToken")
+        connection.setRequestProperty("Accept", "application/octet-stream")
+    }
+    
     val totalSize = connection.contentLengthLong
     
     connection.getInputStream().use { input ->

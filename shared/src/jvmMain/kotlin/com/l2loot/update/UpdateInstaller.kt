@@ -45,15 +45,26 @@ class UpdateInstaller(
             logger.info("Using Java: $javaExe")
             
             // Build command arguments - run JAR with bundled JVM
-            val command = listOf(
-                javaExe,
-                "-jar", updaterJar.absolutePath,
-                "--download-url", updateZipUrl,
-                "--install-path", appPath.absolutePath,
-                "--app-exe", appExePath,
-                "--current-version", currentVersion,
-                "--new-version", newVersion
-            )
+            val command = buildList {
+                add(javaExe)
+                add("-jar")
+                add(updaterJar.absolutePath)
+                add("--download-url")
+                add(updateZipUrl)
+                add("--install-path")
+                add(appPath.absolutePath)
+                add("--app-exe")
+                add(appExePath)
+                add("--current-version")
+                add(currentVersion)
+                add("--new-version")
+                add(newVersion)
+                
+                if (Config.GITHUB_TOKEN.isNotEmpty()) {
+                    add("--github-token")
+                    add(Config.GITHUB_TOKEN)
+                }
+            }
             
             // Launch updater process
             ProcessBuilder(command)
@@ -78,17 +89,32 @@ class UpdateInstaller(
         val tempDir = Files.createTempDirectory("l2loot-updater").toFile()
         val updaterJar = File(tempDir, "L2LootUpdater.jar")
         
-        // Extract from resources
-        val resourceStream = javaClass.classLoader.getResourceAsStream("files/updater/L2LootUpdater.jar")
-            ?: throw UpdateInstallerException("Updater JAR not found in resources")
+        // Try multiple resource paths
+        val possiblePaths = listOf(
+            "l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
+            "/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
+            "composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
+            "/composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
+            "files/updater/L2LootUpdater.jar",
+            "/files/updater/L2LootUpdater.jar"
+        )
         
-        resourceStream.use { input ->
-            Files.copy(input, updaterJar.toPath(), StandardCopyOption.REPLACE_EXISTING)
+        logger.debug("Searching for updater JAR in resources...")
+        for (path in possiblePaths) {
+            logger.debug("Trying path: $path")
+            val resourceStream = javaClass.classLoader.getResourceAsStream(path)
+            if (resourceStream != null) {
+                logger.info("Found updater at: $path")
+                resourceStream.use { input ->
+                    Files.copy(input, updaterJar.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                }
+                logger.info("Updater extracted to: ${updaterJar.absolutePath}")
+                return updaterJar
+            }
         }
         
-        logger.info("Updater extracted to: ${updaterJar.absolutePath}")
-        
-        return updaterJar
+        logger.error("Failed to find updater JAR in any known path")
+        throw UpdateInstallerException("Updater JAR not found in resources")
     }
     
     /**

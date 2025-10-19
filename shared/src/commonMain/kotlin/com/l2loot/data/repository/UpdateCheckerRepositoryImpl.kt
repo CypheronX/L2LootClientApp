@@ -34,14 +34,18 @@ class UpdateCheckerRepositoryImpl(
             is Result.Success -> {
                 val release = result.data
                 
-                // Remove 'v' prefix from tag if present (v1.0.0 -> 1.0.0)
-                val latestVersion = release.tag_name.removePrefix("v")
+                // Parse version from tag_name
+                // Supports formats:
+                // - v1.0.0 (prod)
+                // - dev-v1.0.0-abc123 (dev)
+                val latestVersion = parseVersionFromTag(release.tag_name)
                 
-                // Skip pre-release versions (alpha, beta, test, etc.)
-                if (latestVersion.contains("-")) {
-                    logger.debug("Skipping pre-release version: $latestVersion")
+                if (latestVersion == null) {
+                    logger.debug("Could not parse version from tag: ${release.tag_name}")
                     return@withContext null
                 }
+                
+                logger.debug("Checking for updates: current=$currentVersion, latest=$latestVersion (from tag: ${release.tag_name})")
                 
                 // Compare versions
                 if (isNewerVersion(latestVersion, currentVersion)) {
@@ -53,12 +57,18 @@ class UpdateCheckerRepositoryImpl(
                         it.name.contains("-Update-", ignoreCase = true) && it.name.endsWith(".zip", ignoreCase = true)
                     } ?: release.assets.find { it.name.endsWith(".zip", ignoreCase = true) }
                     
+                    val zipDownloadUrl = if (githubToken.isNotEmpty()) {
+                        zipAsset?.url ?: ""
+                    } else {
+                        zipAsset?.browser_download_url ?: ""
+                    }
+                    
                     return@withContext UpdateInfo(
                         version = latestVersion,
                         downloadUrl = msiAsset?.browser_download_url ?: release.html_url,
                         releaseUrl = release.html_url,
                         releaseNotes = release.body ?: "No release notes available",
-                        updateZipUrl = zipAsset?.browser_download_url ?: ""
+                        updateZipUrl = zipDownloadUrl
                     )
                 }
                 
@@ -68,6 +78,37 @@ class UpdateCheckerRepositoryImpl(
                 logger.debug("Failed to check for updates: ${result.error}")
                 null
             }
+        }
+    }
+    
+    /**
+     * Parses version from various tag formats:
+     * - v1.0.0 -> 1.0.0 (prod and dev)
+     * - dev-v1.0.0-abc123 -> 1.0.0 (dev only)
+     * Returns null if tag format is not recognized
+     */
+    private fun parseVersionFromTag(tag: String): String? {
+        val isDev = Config.BUILD_FLAVOR == "dev"
+        
+        return when {
+            // Dev format: dev-v1.0.0-abc123 (only for dev builds)
+            tag.startsWith("dev-v") -> {
+                if (!isDev) {
+                    logger.debug("Skipping dev tag in production build: $tag")
+                    return null
+                }
+                // Remove "dev-v" prefix and everything after the version (commit sha)
+                val withoutPrefix = tag.removePrefix("dev-v")
+                // Split by "-" and take first part (major.minor.patch)
+                val versionParts = withoutPrefix.split("-").firstOrNull()
+                versionParts
+            }
+            // Prod format: v1.0.0
+            tag.startsWith("v") -> {
+                tag.removePrefix("v")
+            }
+            // Already without prefix: 1.0.0
+            else -> tag
         }
     }
     
@@ -138,6 +179,7 @@ data class GitHubRelease(
 @Serializable
 data class GitHubAsset(
     val name: String,
+    val url: String,
     val browser_download_url: String
 )
 

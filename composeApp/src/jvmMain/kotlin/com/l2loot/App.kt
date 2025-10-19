@@ -113,13 +113,10 @@ fun App(
                 showConsentDialog = state.showConsentDialog,
                 showSupportDialog = state.showSupportDialog,
                 isSupportDialogReminder = state.isSupportDialogReminder,
-                showUpdateNotification = state.showUpdateNotification,
-                availableUpdate = state.availableUpdate,
                 analyticsService = analyticsService,
                 onAcceptConsent = viewModel::acceptConsent,
                 onDeclineConsent = viewModel::declineConsent,
                 onDismissSupport = viewModel::hideSupportDialog,
-                onDismissUpdate = viewModel::hideUpdateNotification,
                 onUpdateSupportClickDate = viewModel::updateSupportClickDate,
                 scope = scope
             )

@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
 
-      - name: Build Production MSI Installer
+      - name: Build Production MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
@@ -47,7 +47,7 @@ jobs:
           EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         shell: bash
-        run: ./gradlew clean packageReleaseMsi zipAppUpdate -Pbuildkonfig.flavor=prod
+        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=prod
 
 
       - name: Upload Release to Public Repository
@@ -109,7 +109,7 @@ jobs:
         shell: bash
         run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
 
-      - name: Build Development MSI Installer
+      - name: Build Development MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
@@ -122,7 +122,7 @@ jobs:
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
         shell: bash
-        run: ./gradlew clean packageReleaseMsi zipAppUpdate -Pbuildkonfig.flavor=dev
+        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=dev
 
       - name: Get Short Commit SHA
         id: commit_sha

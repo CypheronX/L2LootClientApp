@@ -14,13 +14,10 @@ fun AppDialogManager(
     showConsentDialog: Boolean,
     showSupportDialog: Boolean,
     isSupportDialogReminder: Boolean,
-    showUpdateNotification: Boolean,
-    availableUpdate: UpdateInfo?,
     analyticsService: AnalyticsService,
     onAcceptConsent: () -> Unit,
     onDeclineConsent: () -> Unit,
     onDismissSupport: () -> Unit,
-    onDismissUpdate: () -> Unit,
     onUpdateSupportClickDate: (Long) -> Unit,
     scope: CoroutineScope
 ) {
@@ -38,13 +35,6 @@ fun AppDialogManager(
             updateSupportClickDate = onUpdateSupportClickDate,
             scope = scope,
             isReminderAfterSupport = isSupportDialogReminder
-        )
-    }
-    
-    if (showUpdateNotification && availableUpdate != null) {
-        UpdateNotification(
-            updateInfo = availableUpdate,
-            onDismiss = onDismissUpdate
         )
     }
 }

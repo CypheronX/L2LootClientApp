@@ -61,7 +61,7 @@ internal class SellableViewModel(
                             }
                             is Result.Failure -> {
                                 logger.error("Failed to fetch Aynix prices: ${result.error}")
-                                _state.update { it.copy(loading = false) }
+                                _state.update { it.copy(loading = false, error = "Failed to fetch prices: ${result.error}") }
                             }
                         }
                     } else {
