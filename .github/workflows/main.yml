@@ -5,7 +5,7 @@ on:
     tags:
       - v*
     branches:
-      - develop
+      - test
   workflow_dispatch:
 
 jobs:
@@ -74,7 +74,7 @@ jobs:
   build-dev:
     name: Build Development Build
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/test'
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -126,7 +126,7 @@ jobs:
             ## 🚧 Development Build v${{ steps.get_version.outputs.version_name }}
             
             **Commit:** ${{ github.sha }}
-            **Branch:** develop
+            **Branch:** test
             **Build Date:** ${{ github.event.head_commit.timestamp }}
             
             ### ⚠️ Important
