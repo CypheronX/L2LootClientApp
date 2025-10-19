@@ -40,6 +40,7 @@ jobs:
           ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
           EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        shell: bash
         run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=prod
 
 
@@ -106,6 +107,7 @@ jobs:
           ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
           EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
           FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+        shell: bash
         run: ./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=dev
 
       - name: Get Short Commit SHA
