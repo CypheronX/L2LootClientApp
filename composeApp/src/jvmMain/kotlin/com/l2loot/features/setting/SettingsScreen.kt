@@ -85,7 +85,7 @@ fun SettingsScreen() {
                 verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space8)
             ) {
                 Text(
-                    text = "Settings",
+                    text = "Settings Updated",
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )

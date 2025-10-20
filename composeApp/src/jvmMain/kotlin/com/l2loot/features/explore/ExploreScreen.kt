@@ -128,7 +128,7 @@ fun ExploreScreen() {
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Explore Spoil",
+                    text = "Explore Spoil Updated",
                     style = MaterialTheme.typography.headlineLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )
