@@ -82,7 +82,7 @@ jobs:
   build-dev:
     name: Build Development Build
     runs-on: windows-latest
-    if: github.ref == 'refs/heads/test'
+    if: github.ref == 'refs/heads/test' || github.event_name == 'workflow_dispatch'
     permissions:
       contents: write
     steps:
