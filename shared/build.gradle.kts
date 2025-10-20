@@ -26,15 +26,31 @@ sqldelight {
 }
 
 fun getConfigValue(key: String, defaultValue: String = ""): String {
-    System.getenv(key)?.let { return it }
+    // Check environment variable first
+    val envValue = System.getenv(key)
+    if (envValue != null && envValue.isNotEmpty()) {
+        println("✓ $key from environment: ${envValue.take(10)}...")
+        return envValue
+    }
 
+    // Check local.properties
     val localProperties = rootProject.file("local.properties")
     if (localProperties.exists()) {
         val properties = Properties()
         properties.load(localPropertiesFile.inputStream())
-        properties.getProperty(key)?.let { return it }
+        val propValue = properties.getProperty(key)
+        if (propValue != null && propValue.isNotEmpty()) {
+            println("✓ $key from local.properties: ${propValue.take(10)}...")
+            return propValue
+        }
     }
 
+    if (defaultValue.isNotEmpty()) {
+        println("✓ $key using default: ${defaultValue.take(10)}...")
+        return defaultValue
+    }
+
+    println("⚠ $key is EMPTY!")
     return defaultValue
 }
 
@@ -48,6 +64,18 @@ val versionName = "${versionProperties.getProperty("versionMajor", "1")}.${versi
 
 buildkonfig {
     packageName = "com.l2loot"
+    
+    // Print build configuration info
+    println("═══════════════════════════════════════════════")
+    println("Building L2Loot - Configuration Summary")
+    println("═══════════════════════════════════════════════")
+    val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+    println("Flavor: $flavor")
+    println("Version: $versionName")
+    println("Environment Variables Check:")
+    println("  CI: ${System.getenv("CI") ?: "not set"}")
+    println("  GITHUB_ACTIONS: ${System.getenv("GITHUB_ACTIONS") ?: "not set"}")
+    println("═══════════════════════════════════════════════")
 
     // Default flavor (prod)
     defaultConfigs {
