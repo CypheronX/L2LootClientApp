@@ -39,13 +39,26 @@ jobs:
         shell: bash
         run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
 
+      - name: Verify Environment Variables (Debug)
+        shell: bash
+        run: |
+          echo "Checking environment variables..."
+          echo "FIREBASE_ANALYTICS_URL is set: $([[ -n "$FIREBASE_ANALYTICS_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "SELLABLE_ITEMS_URL is set: $([[ -n "$SELLABLE_ITEMS_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "ANONYMOUS_AUTH_URL is set: $([[ -n "$ANONYMOUS_AUTH_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "EXTERNAL_LINKS_URL is set: $([[ -n "$EXTERNAL_LINKS_URL" ]] && echo 'YES' || echo 'NO')"
+        env:
+          FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
+
       - name: Build Production MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
           ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
           EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
         shell: bash
         run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=prod
 
@@ -109,6 +122,26 @@ jobs:
         shell: bash
         run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
 
+      - name: Verify Environment Variables (Debug)
+        shell: bash
+        run: |
+          echo "Checking environment variables..."
+          echo "FIREBASE_ANALYTICS_URL is set: $([[ -n "$FIREBASE_ANALYTICS_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "SELLABLE_ITEMS_URL is set: $([[ -n "$SELLABLE_ITEMS_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "ANONYMOUS_AUTH_URL is set: $([[ -n "$ANONYMOUS_AUTH_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "EXTERNAL_LINKS_URL is set: $([[ -n "$EXTERNAL_LINKS_URL" ]] && echo 'YES' || echo 'NO')"
+          echo "GITHUB_TOKEN is set: $([[ -n "$GITHUB_TOKEN" ]] && echo 'YES' || echo 'NO')"
+        env:
+          FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
+          FIREBASE_ANALYTICS_URL_DEV: ${{ secrets.FIREBASE_ANALYTICS_URL_DEV }}
+          SELLABLE_ITEMS_URL_DEV: ${{ secrets.SELLABLE_ITEMS_URL_DEV }}
+          ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
+          EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
+          GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
+
       - name: Build Development MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
@@ -119,7 +152,6 @@ jobs:
           SELLABLE_ITEMS_URL_DEV: ${{ secrets.SELLABLE_ITEMS_URL_DEV }}
           ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
           EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
           GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
         shell: bash
         run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=dev

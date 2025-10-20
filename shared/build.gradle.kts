@@ -62,6 +62,9 @@ val versionProperties = Properties().apply {
 }
 val versionName = "${versionProperties.getProperty("versionMajor", "1")}.${versionProperties.getProperty("versionMinor", "0")}.${versionProperties.getProperty("versionPatch", "0")}"
 
+// Determine flavor early
+val buildFlavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+
 buildkonfig {
     packageName = "com.l2loot"
     
@@ -69,57 +72,50 @@ buildkonfig {
     println("═══════════════════════════════════════════════")
     println("Building L2Loot - Configuration Summary")
     println("═══════════════════════════════════════════════")
-    val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
-    println("Flavor: $flavor")
+    println("Flavor: $buildFlavor")
     println("Version: $versionName")
     println("Environment Variables Check:")
     println("  CI: ${System.getenv("CI") ?: "not set"}")
     println("  GITHUB_ACTIONS: ${System.getenv("GITHUB_ACTIONS") ?: "not set"}")
+    println("")
+    println("Checking if secrets are visible to Gradle:")
+    println("  FIREBASE_ANALYTICS_URL present: ${System.getenv("FIREBASE_ANALYTICS_URL") != null}")
+    println("  SELLABLE_ITEMS_URL present: ${System.getenv("SELLABLE_ITEMS_URL") != null}")
+    println("  ANONYMOUS_AUTH_URL present: ${System.getenv("ANONYMOUS_AUTH_URL") != null}")
+    println("  EXTERNAL_LINKS_URL present: ${System.getenv("EXTERNAL_LINKS_URL") != null}")
+    println("  GITHUB_TOKEN present: ${System.getenv("GITHUB_TOKEN") != null}")
     println("═══════════════════════════════════════════════")
 
-    // Default flavor (prod)
-    defaultConfigs {
-        buildConfigField(STRING, "VERSION_NAME", versionName)
-        buildConfigField(STRING, "BUILD_FLAVOR", "prod")
-        buildConfigField(STRING, "APP_NAME", "L2Loot")
-        buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
-        buildConfigField(BOOLEAN, "IS_DEBUG", "false")
-        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppReleases")
-        buildConfigField(STRING, "GITHUB_TOKEN", "")
-        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
-        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
-        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
-        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL"))
-    }
-
-    // Dev flavor
-    defaultConfigs("dev") {
-        buildConfigField(STRING, "VERSION_NAME", versionName)
-        buildConfigField(STRING, "BUILD_FLAVOR", "dev")
-        buildConfigField(STRING, "APP_NAME", "L2Loot Dev")
-        buildConfigField(STRING, "DB_DIR_NAME", "L2LootDev")
-        buildConfigField(BOOLEAN, "IS_DEBUG", "true")
-        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppTest")
-        buildConfigField(STRING, "GITHUB_TOKEN", getConfigValue("GITHUB_TOKEN", ""))
-        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL_DEV", getConfigValue("FIREBASE_ANALYTICS_URL")))
-        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL_DEV", getConfigValue("SELLABLE_ITEMS_URL")))
-        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL_DEV", getConfigValue("ANONYMOUS_AUTH_URL")))
-        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL_DEV", getConfigValue("EXTERNAL_LINKS_URL")))
-    }
-
-    // Prod flavor (explicit)
-    defaultConfigs("prod") {
-        buildConfigField(STRING, "VERSION_NAME", versionName)
-        buildConfigField(STRING, "BUILD_FLAVOR", "prod")
-        buildConfigField(STRING, "APP_NAME", "L2Loot")
-        buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
-        buildConfigField(BOOLEAN, "IS_DEBUG", "false")
-        buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppReleases")
-        buildConfigField(STRING, "GITHUB_TOKEN", "")
-        buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
-        buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
-        buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
-        buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL"))
+    // Configure based on flavor
+    if (buildFlavor == "dev") {
+        defaultConfigs {
+            buildConfigField(STRING, "VERSION_NAME", versionName)
+            buildConfigField(STRING, "BUILD_FLAVOR", "dev")
+            buildConfigField(STRING, "APP_NAME", "L2Loot Dev")
+            buildConfigField(STRING, "DB_DIR_NAME", "L2LootDev")
+            buildConfigField(BOOLEAN, "IS_DEBUG", "true")
+            buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppTest")
+            buildConfigField(STRING, "GITHUB_TOKEN", getConfigValue("GITHUB_TOKEN", ""))
+            buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL_DEV", getConfigValue("FIREBASE_ANALYTICS_URL")))
+            buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL_DEV", getConfigValue("SELLABLE_ITEMS_URL")))
+            buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL_DEV", getConfigValue("ANONYMOUS_AUTH_URL")))
+            buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL_DEV", getConfigValue("EXTERNAL_LINKS_URL")))
+        }
+    } else {
+        // prod flavor
+        defaultConfigs {
+            buildConfigField(STRING, "VERSION_NAME", versionName)
+            buildConfigField(STRING, "BUILD_FLAVOR", "prod")
+            buildConfigField(STRING, "APP_NAME", "L2Loot")
+            buildConfigField(STRING, "DB_DIR_NAME", "L2Loot")
+            buildConfigField(BOOLEAN, "IS_DEBUG", "false")
+            buildConfigField(STRING, "GITHUB_RELEASE_REPO", "aleksbalev/L2LootClientAppReleases")
+            buildConfigField(STRING, "GITHUB_TOKEN", "")
+            buildConfigField(STRING, "ANALYTICS_URL", getConfigValue("FIREBASE_ANALYTICS_URL"))
+            buildConfigField(STRING, "SELLABLE_ITEMS_URL", getConfigValue("SELLABLE_ITEMS_URL"))
+            buildConfigField(STRING, "ANONYMOUS_AUTH_URL", getConfigValue("ANONYMOUS_AUTH_URL"))
+            buildConfigField(STRING, "EXTERNAL_LINKS_URL", getConfigValue("EXTERNAL_LINKS_URL"))
+        }
     }
 }
 
