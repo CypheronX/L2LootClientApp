@@ -83,8 +83,8 @@ class UpdateCheckerRepositoryImpl(
     
     /**
      * Parses version from various tag formats:
-     * - v1.0.0 -> 1.0.0 (prod and dev)
-     * - dev-v1.0.0-abc123 -> 1.0.0 (dev only)
+     * - v1.0.0 -> 1.0.0 (prod)
+     * - stage-v1.0.0-abc123 -> 1.0.0 (stage only)
      * Returns null if tag format is not recognized
      */
     private fun parseVersionFromTag(tag: String): String? {
