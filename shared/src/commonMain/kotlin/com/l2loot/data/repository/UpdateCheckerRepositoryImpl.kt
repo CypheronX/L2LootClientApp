@@ -88,17 +88,17 @@ class UpdateCheckerRepositoryImpl(
      * Returns null if tag format is not recognized
      */
     private fun parseVersionFromTag(tag: String): String? {
-        val isDev = Config.BUILD_FLAVOR == "dev"
+        val isDev = Config.BUILD_FLAVOR == "stage"
         
         return when {
-            // Dev format: dev-v1.0.0-abc123 (only for dev builds)
-            tag.startsWith("dev-v") -> {
+            // Dev format: stage-v1.0.0-abc123 (only for stage builds)
+            tag.startsWith("stage-v") -> {
                 if (!isDev) {
                     logger.debug("Skipping dev tag in production build: $tag")
                     return null
                 }
                 // Remove "dev-v" prefix and everything after the version (commit sha)
-                val withoutPrefix = tag.removePrefix("dev-v")
+                val withoutPrefix = tag.removePrefix("stage-v")
                 // Split by "-" and take first part (major.minor.patch)
                 val versionParts = withoutPrefix.split("-").firstOrNull()
                 versionParts
