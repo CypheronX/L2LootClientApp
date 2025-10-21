@@ -19,7 +19,7 @@ import org.jetbrains.compose.resources.decodeToImageBitmap
 import org.koin.core.context.GlobalContext
 import java.io.File
 
-fun main() {
+fun main(args: Array<String>) {
     if (Config.IS_DEBUG) {
         writeDebugConfigToFile()
     }
@@ -28,9 +28,17 @@ fun main() {
         modules(appModule)
     }
     
-    val updateChecker = CheckForUpdatesOnStartup(GlobalContext.get())
-    if (updateChecker.checkAndLaunchUpdater()) {
-        return
+    val skipUpdateCheck = args.contains("--skip-update-check")
+    
+    if (!skipUpdateCheck && Config.BUILD_FLAVOR != "dev") {
+        try {
+            val logger = GlobalContext.get().get<com.l2loot.domain.logging.LootLogger>()
+            val installer = UpdateInstaller(logger)
+            installer.launchUpdaterAndCheckForUpdates()
+            return
+        } catch (e: Exception) {
+            println("Failed to launch updater, continuing with main app: ${e.message}")
+        }
     }
     
     application {

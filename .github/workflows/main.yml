@@ -111,7 +111,7 @@ jobs:
         shell: bash
         run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
 
-      - name: Build Development MSI and Update ZIP
+      - name: Build Stage MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
           SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
@@ -122,29 +122,36 @@ jobs:
           ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
           EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
           GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
-          buildkonfig_flavor: dev
+          buildkonfig_flavor: stage
         shell: bash
-        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
+        run: |
+          touch local.properties
+          echo "FIREBASE_ANALYTICS_URL=$FIREBASE_ANALYTICS_URL" >> local.properties
+          echo "SELLABLE_ITEMS_URL=$SELLABLE_ITEMS_URL" >> local.properties
+          echo "ANONYMOUS_AUTH_URL=$ANONYMOUS_AUTH_URL" >> local.properties
+          echo "EXTERNAL_LINKS_URL=$EXTERNAL_LINKS_URL" >> local.properties
+          echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> local.properties
+          ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
 
       - name: Get Short Commit SHA
         id: commit_sha
         run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Create Dev Release in Test Repository
+      - name: Create Stage Release in Test Repository
         uses: softprops/action-gh-release@v2
         with:
           repository: aleksbalev/L2LootClientAppTest
           token: ${{ secrets.TEST_REPO_TOKEN }}
-          tag_name: dev-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
-          name: Dev Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
+          tag_name: stage-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          name: Stage Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
           draft: false
           prerelease: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/*.msi
             composeApp/build/compose/binaries/main-release/update/*.zip
           body: |
-            ## 🚧 Development Build v${{ steps.get_version.outputs.version_name }}
+            ## 🚧 Stage Build v${{ steps.get_version.outputs.version_name }}
             
             **Commit:** ${{ github.sha }}
             **Branch:** test
@@ -154,12 +161,12 @@ jobs:
             This is a **development build** for testing purposes only.
             - Uses dev backend endpoints (or prod as fallback)
             - Can be installed alongside production version
-            - Database stored in `%APPDATA%\L2LootDev`
+            - Database stored in `%APPDATA%\L2LootStage`
             
             ### Installation
-            1. Download `L2Loot Dev-${{ steps.get_version.outputs.version_name }}.msi`
+            1. Download `L2Loot Stage-${{ steps.get_version.outputs.version_name }}.msi`
             2. Run the installer
-            3. App will appear as "L2Loot Dev" in Start Menu
+            3. App will appear as "L2Loot Stage" in Start Menu
             
             **Auto-Update:**
             - The app will automatically check for updates on startup
@@ -170,6 +177,6 @@ jobs:
       - name: Also Upload as Artifact (for quick access)
         uses: actions/upload-artifact@v4
         with:
-          name: L2Loot-Dev-${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          name: L2Loot-Stage-${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
           path: composeApp/build/compose/binaries/main-release/msi/*.msi
           retention-days: 7
