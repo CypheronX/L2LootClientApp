@@ -19,8 +19,6 @@ jobs:
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -62,14 +60,12 @@ jobs:
       - name: Upload Release to Public Repository
         uses: softprops/action-gh-release@v2
         with:
-          repository: aleksbalev/L2LootClientAppReleases
+          repository: CypheronX/L2LootClientAppReleases
           token: ${{ secrets.PUBLIC_REPO_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           draft: true
           prerelease: true
-          make_latest: false
-          fail_on_unmatched_files: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/L2Loot-${{ steps.get_version.outputs.version_name }}.msi
             composeApp/build/compose/binaries/main-release/update/L2Loot-Update-${{ steps.get_version.outputs.version_name }}.zip
@@ -100,8 +96,6 @@ jobs:
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -153,14 +147,13 @@ jobs:
       - name: Create Stage Release in Test Repository
         uses: softprops/action-gh-release@v2
         with:
-          repository: aleksbalev/L2LootClientAppTest
+          repository: CypheronX/L2LootClientAppTest
           token: ${{ secrets.TEST_REPO_TOKEN }}
           tag_name: stage-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
           name: Stage Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
           draft: false
           prerelease: true
           make_latest: false
-          fail_on_unmatched_files: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/*.msi
             composeApp/build/compose/binaries/main-release/update/*.zip
