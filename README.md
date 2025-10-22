@@ -1,6 +1,8 @@
-# L2Loot
+[![License: BUSL 1.1 (3yr)](https://img.shields.io/badge/License-BUSL%201.1%20(3yr)-blue.svg)](https://mariadb.com/bsl1-1-text)
 
-A Lineage 2 quality-of-life desktop application for Spoilers, built with Kotlin Multiplatform and Compose Desktop.
+# L2Loot by Cypheron
+
+**Lineage 2 Quality-of-Life app for Spoilers**
 
 ## Features
 
@@ -47,16 +49,6 @@ See [BUILD_FLAVORS.md](BUILD_FLAVORS.md) for dev/prod build options.
 ## Technologies
 
 Kotlin Multiplatform • Compose Desktop • Firebase • SQLDelight • Ktor • Koin
-
-## Documentation
-
-- [Build Flavors](BUILD_FLAVORS.md)
-- [Configuration Setup](docs/CONFIGURATION_SETUP.md)
-- [Security Considerations](docs/SECURITY_CONSIDERATIONS_OPEN_SOURCE.md)
-
-## License
-
-[Your License Here]
 
 ## Support
 
