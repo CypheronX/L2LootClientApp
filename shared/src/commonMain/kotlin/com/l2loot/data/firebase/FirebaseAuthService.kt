@@ -22,7 +22,7 @@ class FirebaseAuthServiceImpl(
     private val mutex = Mutex()
     
     private val tokenCacheFile: File by lazy {
-        val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), "L2Loot")
+        val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), Config.DB_DIR_NAME)
         if (!appDataDir.exists()) {
             appDataDir.mkdirs()
         }

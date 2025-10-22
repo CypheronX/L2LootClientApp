@@ -62,11 +62,18 @@ compose.desktop {
             targetFormats(TargetFormat.Msi)
             
             val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
-            val isProd = flavor == "prod"
             
-            packageName = if (isProd) "L2Loot" else "L2Loot Dev"
+            packageName = when (flavor) {
+                "prod" -> "L2Loot"
+                "stage" -> "L2Loot Stage"
+                else -> "L2Loot Dev"
+            }
             packageVersion = versionNameProperty
-            description = if (isProd) "Lineage 2 QoL app for Spoilers" else "Lineage 2 QoL app for Spoilers (Dev)"
+            description = when (flavor) {
+                "prod" -> "Lineage 2 QoL app for Spoilers"
+                "stage" -> "Lineage 2 QoL app for Spoilers (Stage)"
+                else -> "Lineage 2 QoL app for Spoilers (Dev)"
+            }
             copyright = "© 2025 L2Loot. All rights reserved."
             vendor = "L2Loot"
             
@@ -81,8 +88,16 @@ compose.desktop {
             
             windows {
                 iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.ico"))
-                menuGroup = if (isProd) "L2Loot" else "L2Loot Dev"
-                upgradeUuid = if (isProd) "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c" else "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"
+                menuGroup = when (flavor) {
+                    "prod" -> "L2Loot"
+                    "stage" -> "L2Loot Stage"
+                    else -> "L2Loot Dev"
+                }
+                upgradeUuid = when (flavor) {
+                    "prod" -> "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c"
+                    "stage" -> "c0e1f9f6-7f6f-6f0c-be5d-0f4f3f6c7d8e"
+                    else -> "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"
+                }
                 perUserInstall = true
                 dirChooser = true
                 shortcut = true
@@ -131,22 +146,44 @@ tasks.register("packageMsiDev") {
     }
 }
 
+tasks.register("packageMsiStage") {
+    group = "distribution"
+    description = "Package MSI installer for Stage/Testing"
+    
+    doFirst {
+        println("Building Stage MSI...")
+        println("Note: Make sure to run: ./gradlew clean before switching flavors")
+        
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "stage") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building stage MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=stage")
+        }
+    }
+}
+
 tasks.register<Zip>("zipAppUpdate") {
     group = "distribution"
     description = "Create update ZIP from built app distributable"
     
     val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
-    val isProd = flavor == "prod"
-    val appName = if (isProd) "L2Loot" else "L2Loot Dev"
+    val appName = when (flavor) {
+        "prod" -> "L2Loot"
+        "stage" -> "L2Loot Stage"
+        else -> "L2Loot Dev"
+    }
     
     // Depend on both MSI creation and app folder generation
     dependsOn("packageReleaseMsi", "createReleaseDistributable")
     
     from(layout.buildDirectory.dir("compose/binaries/main-release/app/$appName"))
     
-    // Destination
     destinationDirectory.set(layout.buildDirectory.dir("compose/binaries/main-release/update"))
-    archiveFileName.set(if (isProd) "L2Loot-Update-$versionNameProperty.zip" else "L2Loot-Dev-Update-$versionNameProperty.zip")
+    archiveFileName.set(when (flavor) {
+        "prod" -> "L2Loot-Update-$versionNameProperty.zip"
+        "stage" -> "L2Loot-Stage-Update-$versionNameProperty.zip"
+        else -> "L2Loot-Dev-Update-$versionNameProperty.zip"
+    })
 }
 
 tasks.register("createAppImage") {
@@ -164,19 +201,14 @@ tasks.register<Copy>("copyUpdaterToResources") {
     group = "distribution"
     description = "Copy updater JAR to app resources"
     
-    // Depend on updater package task - use UberJar instead of Exe
     dependsOn(":updater:packageReleaseUberJarForCurrentOS")
     
-    // Source: updater JAR from build output
     from("${rootProject.projectDir}/updater/build/compose/jars")
     
-    // Destination: app resources
     into("src/jvmMain/composeResources/files/updater")
-    
-    // Only copy JAR files
+
     include("*.jar")
     
-    // Rename to standard name
     rename { "L2LootUpdater.jar" }
 }
 
