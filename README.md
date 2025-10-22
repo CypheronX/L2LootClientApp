@@ -5,108 +5,54 @@ A Lineage 2 quality-of-life desktop application for Spoilers, built with Kotlin 
 ## Features
 
 - 🎯 Monster database with drop rates
-- 💰 Real-time Aynix price tracking
+- 💰 Real-time price tracking
 - 📊 Sellable items management
-- 📈 Analytics tracking
 - 🔄 Automatic updates
 
-## Setup
+## Quick Start
 
 ### Prerequisites
-
 - JDK 17 or higher
-- Gradle 8.x (included via wrapper)
 
-### Configuration
+### Setup
 
-1. **Clone the repository:**
+1. Clone and configure:
    ```bash
    git clone https://github.com/your-username/L2Loot.git
    cd L2Loot
-   ```
-
-2. **Configure Firebase (Required):**
-   ```bash
    cp local.properties.template local.properties
    ```
-   
-   Edit `local.properties` and add your Firebase configuration:
+
+2. Edit `local.properties` with Firebase configuration:
    ```properties
    FIREBASE_FUNCTIONS_BASE_URL=https://your-project.cloudfunctions.net
    FIREBASE_PROJECT_ID=your-project-id
    ```
-   
-   > **Note:** For the public version, the maintainer will provide these values. If you're forking the project, you'll need to set up your own Firebase project.
 
-3. **Build and run:**
+3. Run:
    ```bash
    ./gradlew run
    ```
 
-### Building Installer
+### Build Installer
 
-**Production Build (for releases):**
 ```bash
-./gradlew clean
-./gradlew packageReleaseMsi -Pbuildkonfig.flavor=prod
+./gradlew clean packageReleaseMsi -Pbuildkonfig.flavor=prod
 ```
 
-**Development Build (for testing):**
-```bash
-./gradlew clean
-./gradlew packageReleaseMsi -Pbuildkonfig.flavor=dev
-```
+Output: `composeApp/build/compose/binaries/main-release/msi/`
 
-The installers will be created in `composeApp/build/compose/binaries/main-release/msi/`
-
-> **Important:** Always run `clean` before switching between flavors.
-
-> **Note:** Dev and prod builds can be installed side-by-side on the same machine. They use separate directories and databases. See [Build Flavors Documentation](BUILD_FLAVORS.md) for details.
-
-## Documentation
-
-- [Build Flavors](BUILD_FLAVORS.md) - Dev and prod build configuration
-- [Configuration Setup](docs/CONFIGURATION_SETUP.md) - How to configure Firebase URLs
-- [Security Considerations](docs/SECURITY_CONSIDERATIONS_OPEN_SOURCE.md) - Security approach for open-source desktop apps
-
-## Project Structure
-
-```
-L2Loot/
-├── composeApp/          # Main desktop application
-│   └── src/jvmMain/     # JVM-specific code (UI, etc.)
-├── shared/              # Shared business logic
-│   ├── src/commonMain/  # Cross-platform code
-│   └── src/jvmMain/     # JVM-specific implementations
-├── firebase-functions/  # Firebase Cloud Functions
-├── docs/                # Documentation
-└── local.properties     # Local configuration (not committed)
-```
+See [BUILD_FLAVORS.md](BUILD_FLAVORS.md) for dev/prod build options.
 
 ## Technologies
 
-- **Kotlin Multiplatform** - Cross-platform code sharing
-- **Compose Desktop** - Modern declarative UI
-- **Firebase** - Authentication and real-time data
-- **SQLDelight** - Type-safe SQL database
-- **Ktor** - HTTP client
-- **Koin** - Dependency injection
+Kotlin Multiplatform • Compose Desktop • Firebase • SQLDelight • Ktor • Koin
 
-## Contributing
+## Documentation
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Set up your own Firebase project and configure `local.properties`
-4. Make your changes
-5. Commit your changes (`git commit -m 'Add some amazing feature'`)
-6. Push to the branch (`git push origin feature/amazing-feature`)
-7. Open a Pull Request
-
-## Security
-
-This is an open-source desktop application. See [Security Considerations](docs/SECURITY_CONSIDERATIONS_OPEN_SOURCE.md) for details on our security approach.
-
-**Important:** Firebase Function URLs are NOT included in the source code. They must be configured via `local.properties` or environment variables.
+- [Build Flavors](BUILD_FLAVORS.md)
+- [Configuration Setup](docs/CONFIGURATION_SETUP.md)
+- [Security Considerations](docs/SECURITY_CONSIDERATIONS_OPEN_SOURCE.md)
 
 ## License
 
@@ -114,12 +60,12 @@ This is an open-source desktop application. See [Security Considerations](docs/S
 
 ## Support
 
-- ☕ [Ko-fi](https://ko-fi.com/your-account)
-- 🎉 [Patreon](https://patreon.com/your-account)
+- ☕ [Ko-fi](https://ko-fi.com/cypheron)
+- 🎉 [Patreon](https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink)
 
 ## Acknowledgments
 
-- L2Aynix for pricing data
+- Aynix for pricing data
 - Lineage 2 community
 
 ---
