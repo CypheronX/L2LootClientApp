@@ -88,7 +88,7 @@ compose.desktop {
             
             windows {
                 iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.ico"))
-                licenseFile.set(project.file("LICENSE.txt"))
+                licenseFile.set(rootProject.file("LICENSE.txt"))
                 menuGroup = when (flavor) {
                     "prod" -> "L2Loot"
                     "stage" -> "L2Loot Stage"
