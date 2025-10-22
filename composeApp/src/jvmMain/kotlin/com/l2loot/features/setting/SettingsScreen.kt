@@ -445,7 +445,7 @@ private fun ReportBugSection() {
 
                 pushStringAnnotation(
                     tag = "URL",
-                    annotation = "https://github.com/aleksbalev/L2LootClientAppReleases/issues"
+                    annotation = "https://github.com/CypheronX/L2LootClientApp/issues"
                 )
                 withStyle(
                     style = SpanStyle(

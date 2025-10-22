@@ -287,7 +287,7 @@ Add these secrets to your repository (Settings → Secrets and variables → Act
 When implementing an auto-updater in the future, use this strategy:
 
 ### Repository Setup
-- **Production builds** → Check public repository: `aleksbalev/L2LootClientAppReleases`
+- **Production builds** → Check public repository: `CypheronX/L2LootClientAppReleases`
   - Release tags: `v1.2.0`, `v1.3.0`, etc.
   - Publicly accessible
   
@@ -301,9 +301,9 @@ When implementing an auto-updater in the future, use this strategy:
 ```kotlin
 object UpdateConfig {
     val updateRepository = when (Config.BUILD_FLAVOR) {
-        "prod" -> "aleksbalev/L2LootClientAppReleases" // Public
+        "prod" -> "CypheronX/L2LootClientAppReleases" // Public
         "dev" -> "your-org/L2LootClientApp"            // Private
-        else -> "aleksbalev/L2LootClientAppReleases"
+        else -> "CypheronX/L2LootClientAppReleases"
     }
     
     val checkPrereleases = Config.BUILD_FLAVOR == "dev"
