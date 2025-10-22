@@ -34,7 +34,8 @@ class UpdateCheckerRepositoryImpl(
         
         when (result) {
             is Result.Success -> {
-                val release = result.data
+                // Get the first (most recent) release, including prereleases
+                val release = result.data.firstOrNull() ?: return@withContext null
                 
                 // Parse version from tag_name
                 // Supports formats:
