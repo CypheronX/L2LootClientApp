@@ -27,8 +27,10 @@
 
 2. Edit `local.properties` with Firebase configuration:
    ```properties
-   FIREBASE_FUNCTIONS_BASE_URL=https://your-project.cloudfunctions.net
-   FIREBASE_PROJECT_ID=your-project-id
+   FIREBASE_ANALYTICS_URL=https://analytics-xxxxx.a.run.app
+   SELLABLE_ITEMS_URL=https://sellableitems-xxxxx.a.run.app
+   ANONYMOUS_AUTH_URL=https://anonymousauth-xxxxx.a.run.app
+   EXTERNAL_LINKS_URL=https://externallinks-xxxxx.a.run.app
    ```
 
 3. Run:
