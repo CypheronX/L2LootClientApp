@@ -20,7 +20,9 @@ import java.io.File
  * --install-path <path>     Path to app installation directory
  * --app-exe <path>          Path to app executable
  * --current-version <ver>   Current version
- * --new-version <ver>       New version
+ * --new-version <ver>       New version (optional if only checking)
+ * --check-update-url <url>  URL to check for updates
+ * --github-token <token>    GitHub token for authentication (optional)
  */
 fun main(args: Array<String>) {
     val arguments = parseArguments(args)
@@ -29,6 +31,8 @@ fun main(args: Array<String>) {
         Window(
             onCloseRequest = ::exitApplication,
             title = "L2Loot Updater",
+            undecorated = true,
+            transparent = true,
             state = WindowState(
                 width = 500.dp,
                 height = 300.dp,
@@ -72,11 +76,12 @@ fun parseArguments(args: Array<String>): UpdaterArguments {
     }
     
     return UpdaterArguments(
-        downloadUrl = argsMap["--download-url"] ?: error("Missing --download-url argument"),
+        downloadUrl = argsMap["--download-url"] ?: "",
         installPath = argsMap["--install-path"] ?: error("Missing --install-path argument"),
         appExePath = argsMap["--app-exe"] ?: error("Missing --app-exe argument"),
         currentVersion = argsMap["--current-version"] ?: "Unknown",
         newVersion = argsMap["--new-version"] ?: "Unknown",
+        checkUpdateUrl = argsMap["--check-update-url"] ?: error("Missing --check-update-url argument"),
         githubToken = argsMap["--github-token"]
     )
 }
@@ -91,7 +96,7 @@ suspend fun launchApp(appExePath: String) = withContext(Dispatchers.IO) {
         
         val appExe = File(appExePath)
         if (appExe.exists()) {
-            ProcessBuilder(appExe.absolutePath)
+            ProcessBuilder(appExe.absolutePath, "--skip-update-check")
                 .directory(appExe.parentFile)
                 .start()
         }
@@ -106,6 +111,7 @@ data class UpdaterArguments(
     val appExePath: String,
     val currentVersion: String,
     val newVersion: String,
+    val checkUpdateUrl: String,
     val githubToken: String? = null
 )
 

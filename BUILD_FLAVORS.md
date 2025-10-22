@@ -1,6 +1,6 @@
-# Build Flavors - Dev and Prod
+# Build Flavors - Dev, Stage, and Prod
 
-This project now supports two build flavors: **dev** and **prod**. Each flavor creates separate MSI installers that can be installed side-by-side on Windows without conflicts.
+This project now supports three build flavors: **dev**, **stage**, and **prod**. Each flavor creates separate MSI installers that can be installed side-by-side on Windows without conflicts.
 
 ## Quick Start
 
@@ -8,6 +8,12 @@ This project now supports two build flavors: **dev** and **prod**. Each flavor c
 ```bash
 ./gradlew clean
 ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=prod
+```
+
+### Building Stage MSI (for testers)
+```bash
+./gradlew clean
+./gradlew packageReleaseMsi -Pbuildkonfig.flavor=stage
 ```
 
 ### Building Development MSI
@@ -29,14 +35,28 @@ The installers will be created in: `composeApp/build/compose/binaries/main-relea
 - **Database Directory**: `%APPDATA%\L2Loot`
 - **Upgrade UUID**: `a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c`
 - **Backend URLs**: Uses standard environment variables (no suffix)
+- **Auto-Updater**: Enabled ✅
+- **Debug Mode**: Disabled
+
+### Stage (stage) - For Testers
+- **App Name**: "L2Loot Stage"
+- **Install Directory**: `%ProgramFiles%\L2Loot Stage`
+- **Start Menu**: "L2Loot Stage"
+- **Database Directory**: `%APPDATA%\L2Loot Stage`
+- **Upgrade UUID**: `c0e1f9f6-7f6f-6f0c-be5d-0f4f3f6c7d8e` (different from dev and prod)
+- **Backend URLs**: Uses standard environment variables (same as prod)
+- **Auto-Updater**: Enabled ✅
+- **Debug Mode**: Disabled
 
 ### Development (dev)
 - **App Name**: "L2Loot Dev"
 - **Install Directory**: `%ProgramFiles%\L2Loot Dev`
 - **Start Menu**: "L2Loot Dev"
 - **Database Directory**: `%APPDATA%\L2LootDev`
-- **Upgrade UUID**: `b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d` (different from prod)
+- **Upgrade UUID**: `b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d` (different from stage and prod)
 - **Backend URLs**: Uses `*_DEV` suffixed environment variables, falls back to prod URLs if not set
+- **Auto-Updater**: Disabled ❌ (for development convenience)
+- **Debug Mode**: Enabled
 
 ## Configuration
 

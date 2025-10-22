@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 kotlin {
@@ -18,6 +19,10 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             
+            implementation(project(":shared"))
+            
+            implementation(libs.kotlinx.serialization.json)
+            
             // For HTTP downloads
             implementation(libs.bundles.ktor.common)
             implementation(libs.ktor.client.okhttp)
@@ -28,9 +33,6 @@ kotlin {
 compose.desktop {
     application {
         mainClass = "com.l2loot.updater.MainKt"
-        
-        // Don't need native distributions - we'll use UberJar instead
-        // UberJar is much smaller and can use the main app's bundled JVM
         
         buildTypes.release {
             proguard {

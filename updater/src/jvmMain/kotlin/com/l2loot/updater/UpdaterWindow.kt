@@ -10,10 +10,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l2loot.theme.AppTheme
 import com.l2loot.theme.LocalSpacing
+import com.l2loot.data.repository.UpdateCheckerRepositoryImpl
+import com.l2loot.data.logging.KermitLogger
+import io.ktor.client.*
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -23,10 +30,12 @@ import java.util.zip.ZipFile
 import kotlin.io.path.deleteIfExists
 
 sealed class UpdateState {
+    object Checking : UpdateState()
     object Downloading : UpdateState()
     object Extracting : UpdateState()
     object Installing : UpdateState()
     object Completed : UpdateState()
+    object NoUpdateAvailable : UpdateState()
     data class Error(val message: String) : UpdateState()
 }
 
@@ -35,19 +44,46 @@ fun UpdaterWindow(
     arguments: UpdaterArguments,
     onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit
 ) {
-    var updateState by remember { mutableStateOf<UpdateState>(UpdateState.Downloading) }
+    var updateState by remember { mutableStateOf<UpdateState>(UpdateState.Checking) }
     var progress by remember { mutableFloatStateOf(0f) }
-    var statusText by remember { mutableStateOf("Preparing update...") }
+    var statusText by remember { mutableStateOf("Checking for updates...") }
     
     val scope = rememberCoroutineScope()
     
     LaunchedEffect(Unit) {
         scope.launch {
             try {
-                // Download update
+                updateState = UpdateState.Checking
+                statusText = "Checking for updates..."
+                
+                val httpClient = HttpClient(OkHttp) {
+                    install(ContentNegotiation) {
+                        json(Json {
+                            ignoreUnknownKeys = true
+                            prettyPrint = true
+                        })
+                    }
+                }
+                
+                val updateChecker = UpdateCheckerRepositoryImpl(httpClient, KermitLogger)
+                
+                val updateInfo = try {
+                    updateChecker.checkForUpdate(arguments.currentVersion)
+                } finally {
+                    httpClient.close()
+                }
+                
+                if (updateInfo == null || updateInfo.updateZipUrl.isEmpty()) {
+                    updateState = UpdateState.NoUpdateAvailable
+                    statusText = "No updates available"
+                    delay(500)
+                    onComplete(true, scope)
+                    return@launch
+                }
+                
                 updateState = UpdateState.Downloading
                 statusText = "Downloading update..."
-                val zipFile = downloadUpdate(arguments.downloadUrl, arguments.githubToken) { downloadProgress ->
+                val zipFile = downloadUpdate(updateInfo.updateZipUrl, arguments.githubToken) { downloadProgress ->
                     progress = downloadProgress
                     statusText = "Downloading update... ${(downloadProgress * 100).toInt()}%"
                 }
@@ -108,17 +144,41 @@ fun UpdaterWindow(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Text(
-                    text = "${arguments.currentVersion} → ${arguments.newVersion}",
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
-                )
-                
                 Spacer(modifier = Modifier.height(32.dp))
                 
                 when (updateState) {
+                    is UpdateState.Checking -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(48.dp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        
+                        Spacer(modifier = Modifier.height(16.dp))
+                        
+                        Text(
+                            text = statusText,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
+                    is UpdateState.NoUpdateAvailable -> {
+                        Text(
+                            text = "✓ No updates available",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Text(
+                            text = "Launching app...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                    
                     is UpdateState.Error -> {
                         Text(
                             text = statusText,
@@ -239,7 +299,6 @@ suspend fun installUpdate(
 ) = withContext(Dispatchers.IO) {
     val targetDir = File(targetPath)
     
-    // Get list of all files to copy
     val filesToCopy = sourceDir.walkTopDown().filter { it.isFile }.toList()
     val totalFiles = filesToCopy.size
     
@@ -247,10 +306,8 @@ suspend fun installUpdate(
         val relativePath = sourceFile.relativeTo(sourceDir)
         val targetFile = File(targetDir, relativePath.path)
         
-        // Ensure parent directory exists
         targetFile.parentFile?.mkdirs()
         
-        // Copy with retry for locked files
         var retries = 3
         while (retries > 0) {
             try {
