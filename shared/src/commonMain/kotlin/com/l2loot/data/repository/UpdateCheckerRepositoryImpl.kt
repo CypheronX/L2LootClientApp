@@ -20,8 +20,10 @@ class UpdateCheckerRepositoryImpl(
     private val githubToken: String = Config.GITHUB_TOKEN
     
     override suspend fun checkForUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
-        val result = httpClient.get<GitHubRelease>(
-            route = "https://api.github.com/repos/$githubRepo/releases/latest"
+        // TESTING: Changed from /releases/latest to /releases to include prereleases
+        // TODO: Revert this back to /releases/latest for production
+        val result = httpClient.get<List<GitHubRelease>>(
+            route = "https://api.github.com/repos/$githubRepo/releases"
         ) {
             header("Accept", "application/vnd.github.v3+json")
             

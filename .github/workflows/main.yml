@@ -48,7 +48,13 @@ jobs:
           EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
           buildkonfig_flavor: prod
         shell: bash
-        run: ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
+        run: |
+          touch local.properties
+          echo "FIREBASE_ANALYTICS_URL=$FIREBASE_ANALYTICS_URL" >> local.properties
+          echo "SELLABLE_ITEMS_URL=$SELLABLE_ITEMS_URL" >> local.properties
+          echo "ANONYMOUS_AUTH_URL=$ANONYMOUS_AUTH_URL" >> local.properties
+          echo "EXTERNAL_LINKS_URL=$EXTERNAL_LINKS_URL" >> local.properties
+          ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor"
 
 
       - name: Upload Release to Public Repository
@@ -58,8 +64,8 @@ jobs:
           token: ${{ secrets.PUBLIC_REPO_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/L2Loot-${{ steps.get_version.outputs.version_name }}.msi
             composeApp/build/compose/binaries/main-release/update/L2Loot-Update-${{ steps.get_version.outputs.version_name }}.zip

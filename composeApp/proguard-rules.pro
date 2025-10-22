@@ -189,7 +189,6 @@
 # Keep Ktor CIO engine - it uses native code and reflection
 -keep class io.ktor.** { *; }
 -keep class io.ktor.client.** { *; }
--keep class io.ktor.client.engine.cio.** { *; }
 -keep class io.ktor.util.** { *; }
 -keepclassmembers class io.ktor.** { *; }
 
@@ -221,3 +220,17 @@
 # Keep BuildKonfig (generated configuration)
 -keep class com.l2loot.BuildKonfig { *; }
 -keep class com.l2loot.Config { *; }
+
+#################################### Enums ########################################
+# Keep enums used in state management and database
+# ProGuard obfuscates enum names which breaks valueOf() and database persistence
+-keep enum com.l2loot.domain.model.HPMultiplier { *; }
+-keep enum com.l2loot.domain.model.DropCategory { *; }
+
+# Keep all enum methods to ensure proper functionality
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+    **[] $VALUES;
+    public *;
+}
