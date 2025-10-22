@@ -2,11 +2,34 @@
 # Copy this file to 'local.properties' and fill in your values
 # The local.properties file is in .gitignore and won't be committed
 
-# Your Firebase Cloud Run endpoints (or Cloud Functions URLs)
+# Build Flavors
+# -------------
+# This project supports two build flavors: prod and dev
+# - Use ./gradlew packageMsiProd for production builds
+# - Use ./gradlew packageMsiDev for development builds
+#
+# Dev builds will use *_DEV URLs if provided, otherwise fall back to prod URLs
+# This allows you to test with prod backend until dev backend is ready
+
+# Production Firebase Cloud Run endpoints (or Cloud Functions URLs)
 FIREBASE_ANALYTICS_URL=https://analytics-xxxxx.a.run.app
-FIREBASE_SELLABLE_ITEMS_URL=https://sellableitems-xxxxx.a.run.app
-FIREBASE_ANONYMOUS_AUTH_URL=https://anonymousauth-xxxxx.a.run.app
+SELLABLE_ITEMS_URL=https://sellableitems-xxxxx.a.run.app
+ANONYMOUS_AUTH_URL=https://anonymousauth-xxxxx.a.run.app
+EXTERNAL_LINKS_URL=https://externallinks-xxxxx.a.run.app
+
+# Development Firebase endpoints (optional - falls back to prod URLs if not set)
+FIREBASE_ANALYTICS_URL_DEV=https://analytics-dev-xxxxx.a.run.app
+SELLABLE_ITEMS_URL_DEV=https://sellableitems-dev-xxxxx.a.run.app
+ANONYMOUS_AUTH_URL_DEV=https://anonymousauth-dev-xxxxx.a.run.app
+EXTERNAL_LINKS_URL_DEV=https://externallinks-dev-xxxxx.a.run.app
 
 # Your Firebase Project ID
 FIREBASE_PROJECT_ID=your-project-id
+
+# GitHub Token for Private Release Repository (optional)
+# Only needed for dev builds if L2LootClientAppTest is private
+# Create a Personal Access Token with 'repo' (or 'public_repo') scope:
+# https://github.com/settings/tokens
+# For prod builds, leave empty (L2LootClientAppReleases should be public)
+GITHUB_TOKEN=
 

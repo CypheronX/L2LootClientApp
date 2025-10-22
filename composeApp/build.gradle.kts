@@ -59,12 +59,23 @@ compose.desktop {
         jvmArgs += listOf("--enable-native-access=ALL-UNNAMED")
 
         nativeDistributions {
-            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
-            packageName = "L2Loot"
+            targetFormats(TargetFormat.Msi)
+            
+            val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+            
+            packageName = when (flavor) {
+                "prod" -> "L2Loot"
+                "stage" -> "L2Loot Stage"
+                else -> "L2Loot Dev"
+            }
             packageVersion = versionNameProperty
-            description = "Lineage 2 QoL app for Spoilers"
-            copyright = "© 2025 L2Loot. All rights reserved."
-            vendor = "L2Loot"
+            description = when (flavor) {
+                "prod" -> "Lineage 2 QoL app for Spoilers"
+                "stage" -> "Lineage 2 QoL app for Spoilers (Stage)"
+                else -> "Lineage 2 QoL app for Spoilers (Dev)"
+            }
+            copyright = "Copyright © 2025 Cypheron. Licensed under BUSL 1.1 (3-Year Term)."
+            vendor = "Cypheron"
             
             modules(
                 "java.sql",
@@ -77,8 +88,17 @@ compose.desktop {
             
             windows {
                 iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.ico"))
-                menuGroup = "L2Loot"
-                upgradeUuid = "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c"
+                licenseFile.set(rootProject.file("LICENSE.txt"))
+                menuGroup = when (flavor) {
+                    "prod" -> "L2Loot"
+                    "stage" -> "L2Loot Stage"
+                    else -> "L2Loot Dev"
+                }
+                upgradeUuid = when (flavor) {
+                    "prod" -> "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c"
+                    "stage" -> "c0e1f9f6-7f6f-6f0c-be5d-0f4f3f6c7d8e"
+                    else -> "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"
+                }
                 perUserInstall = true
                 dirChooser = true
                 shortcut = true
@@ -93,4 +113,107 @@ compose.desktop {
             }
         }
     }
+}
+
+tasks.register("packageMsiProd") {
+    group = "distribution"
+    description = "Package MSI installer for Production"
+    
+    doFirst {
+        println("Building Production MSI...")
+        println("Note: Make sure to run: ./gradlew clean before switching flavors")
+        
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "prod") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building production MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=prod")
+        }
+    }
+}
+
+tasks.register("packageMsiDev") {
+    group = "distribution"
+    description = "Package MSI installer for Development"
+    
+    doFirst {
+        println("Building Development MSI...")
+        println("Note: Make sure to run: ./gradlew clean before switching flavors")
+        
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "dev") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building development MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=dev")
+        }
+    }
+}
+
+tasks.register("packageMsiStage") {
+    group = "distribution"
+    description = "Package MSI installer for Stage/Testing"
+
+    doFirst {
+        println("Building Stage MSI...")
+        println("Note: Make sure to run: ./gradlew clean before switching flavors")
+
+        val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+        if (flavor != "stage") {
+            println("WARNING: buildkonfig.flavor is '$flavor' but building stage MSI!")
+            println("Run with: ./gradlew packageReleaseMsi -Pbuildkonfig.flavor=stage")
+        }
+    }
+}
+
+tasks.register<Zip>("zipAppUpdate") {
+    group = "distribution"
+    description = "Create update ZIP from built app distributable"
+    
+    val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
+    val appName = when (flavor) {
+        "prod" -> "L2Loot"
+        "stage" -> "L2Loot Stage"
+        else -> "L2Loot Dev"
+    }
+    
+    // Depend on both MSI creation and app folder generation
+    dependsOn("packageReleaseMsi", "createReleaseDistributable")
+    
+    from(layout.buildDirectory.dir("compose/binaries/main-release/app/$appName"))
+
+    destinationDirectory.set(layout.buildDirectory.dir("compose/binaries/main-release/update"))
+    archiveFileName.set(when (flavor) {
+        "prod" -> "L2Loot-Update-$versionNameProperty.zip"
+        "stage" -> "L2Loot-Stage-Update-$versionNameProperty.zip"
+        else -> "L2Loot-Dev-Update-$versionNameProperty.zip"
+    })
+}
+
+tasks.register("createAppImage") {
+    group = "distribution"
+    description = "Create runtime image for the app"
+    
+    dependsOn("createRuntimeImage", "proguardReleaseJars")
+    
+    doLast {
+        println("App image created successfully")
+    }
+}
+
+tasks.register<Copy>("copyUpdaterToResources") {
+    group = "distribution"
+    description = "Copy updater JAR to app resources"
+
+    dependsOn(":updater:packageReleaseUberJarForCurrentOS")
+
+    from("${rootProject.projectDir}/updater/build/compose/jars")
+
+    into("src/jvmMain/composeResources/files/updater")
+
+    include("*.jar")
+
+    rename { "L2LootUpdater.jar" }
+}
+
+// Ensure resource copying tasks wait for updater to be copied
+tasks.matching { it.name == "copyNonXmlValueResourcesForJvmMain" }.configureEach {
+    dependsOn("copyUpdaterToResources")
 }

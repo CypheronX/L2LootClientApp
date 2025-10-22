@@ -2,13 +2,14 @@ package com.l2loot.features.sellable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.BuildConfig
-import com.l2loot.data.raw_data.SellableItemJson
-import com.l2loot.data.sellable.SellableRepository
-import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.domain.logging.LootLogger
+import com.l2loot.domain.model.ExternalLinks
+import com.l2loot.domain.repository.ExternalLinksRepository
+import com.l2loot.domain.repository.SellableRepository
+import com.l2loot.domain.repository.UserSettingsRepository
+import com.l2loot.domain.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
@@ -16,7 +17,9 @@ import kotlinx.coroutines.Job
 
 internal class SellableViewModel(
     private val sellableRepository: SellableRepository,
-    private val userSettingsRepository: UserSettingsRepository
+    private val userSettingsRepository: UserSettingsRepository,
+    private val externalLinksRepository: ExternalLinksRepository,
+    private val logger: LootLogger
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SellableScreenState.initial())
@@ -26,6 +29,7 @@ internal class SellableViewModel(
     private val priceUpdateDebounceMs = 500L
 
     init {
+        loadExternalLinks()
         loadSellableItems()
         
         viewModelScope.launch {
@@ -49,22 +53,40 @@ internal class SellableViewModel(
             }
             is SellableScreenEvent.TogglePriceSource -> {
                 viewModelScope.launch {
-                    userSettingsRepository.updateIsAynixPrices(event.value)
-                    
                     if (event.value) {
                         _state.update { it.copy(loading = true) }
-                        try {
-                            sellableRepository.fetchAynixPricesOnce()
-                            loadSellableItems()
-                        } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
-                                println("❌ Failed to fetch Aynix prices: ${e.message}")
+                        when (val result = sellableRepository.fetchAynixPrices()) {
+                            is Result.Success -> {
+                                userSettingsRepository.updateIsAynixPrices(event.value)
                             }
-                            _state.update { it.copy(loading = false) }
+                            is Result.Failure -> {
+                                logger.error("Failed to fetch Aynix prices: ${result.error}")
+                                _state.update { it.copy(loading = false, error = "Failed to fetch prices: ${result.error}") }
+                            }
                         }
                     } else {
-                        loadSellableItems()
+                        userSettingsRepository.updateIsAynixPrices(event.value)
                     }
+                }
+            }
+            is SellableScreenEvent.OnSearch -> {
+                onSearch(event.value)
+            }
+        }
+    }
+
+    private fun loadExternalLinks() {
+        viewModelScope.launch {
+            when (val result = externalLinksRepository.fetchExternalLinks()) {
+                is Result.Success -> {
+                    _state.update {
+                        it.copy(
+                            marketOwnersLink = result.data.marketOwnersDiscord
+                        )
+                    }
+                }
+                is Result.Failure -> {
+
                 }
             }
         }
@@ -72,56 +94,41 @@ internal class SellableViewModel(
 
     private fun loadSellableItems() {
         viewModelScope.launch {
-            try {
-                _state.update { it.copy(loading = true, error = null) }
-                
-                val startTime = System.currentTimeMillis()
-                
-                val items = sellableRepository.getAllItemsWithPrices()
-                val useAynixPrices = _state.value.pricesByAynix
-                
-                val prices = items.associate { item ->
-                    val selectedPrice = if (useAynixPrices && item.aynix_price != null) {
-                        item.aynix_price
-                    } else {
-                        item.original_price
+            _state.update { it.copy(loading = true, error = null) }
+            
+            val startTime = System.currentTimeMillis()
+            
+            when (val result = sellableRepository.getAllItemsWithPrices()) {
+                is Result.Success -> {
+                    val items = result.data
+                    val useAynixPrices = _state.value.pricesByAynix
+                    
+                    val prices = items.associate { item ->
+                        val selectedPrice = item.getDisplayPrice(useAynixPrices)
+                        item.key to selectedPrice.toString()
                     }
-                    item.key to selectedPrice.toString()
-                }
-                
-                val itemsForUI = items.map { item ->
-                    val selectedPrice = if (useAynixPrices && item.aynix_price != null) {
-                        item.aynix_price
-                    } else {
-                        item.original_price
+                    
+                    val elapsed = System.currentTimeMillis() - startTime
+                    if (elapsed < 600) {
+                        delay(600 - elapsed)
                     }
-                    SellableItemJson(
-                        item_id = item.item_id,
-                        key = item.key,
-                        name = item.name,
-                        price = selectedPrice ?: 0
-                    )
+                    
+                    _state.update { 
+                        it.copy(
+                            items = items,
+                            prices = prices,
+                            loading = false,
+                            error = null
+                        )
+                    }
                 }
-                
-                val elapsed = System.currentTimeMillis() - startTime
-                if (elapsed < 600) {
-                    delay(600 - elapsed)
-                }
-                
-                _state.update { 
-                    it.copy(
-                        items = itemsForUI,
-                        prices = prices,
-                        loading = false,
-                        error = null
-                    )
-                }
-            } catch (exception: Exception) {
-                _state.update { 
-                    it.copy(
-                        loading = false,
-                        error = exception.message ?: "Unknown error occurred"
-                    )
+                is Result.Failure -> {
+                    _state.update { 
+                        it.copy(
+                            loading = false,
+                            error = result.error.toString()
+                        )
+                    }
                 }
             }
         }
@@ -140,16 +147,21 @@ internal class SellableViewModel(
             priceUpdateJob?.cancel()
             priceUpdateJob = viewModelScope.launch {
                 delay(priceUpdateDebounceMs)
-                try {
-                    val priceValue = newPrice.toLongOrNull() ?: 0
-                    sellableRepository.updateItemPrice(itemKey, priceValue)
-                } catch (e: Exception) {
-                    if (BuildConfig.DEBUG) {
-                        println("❌ Failed to update price: ${e.message}")
+                val priceValue = newPrice.toLongOrNull() ?: 0
+                when (val result = sellableRepository.updateItemPrice(itemKey, priceValue)) {
+                    is Result.Success -> {
+                        // Price updated successfully
+                    }
+                    is Result.Failure -> {
+                        logger.error("Failed to update price: ${result.error}")
                     }
                 }
             }
         }
+    }
+
+    private fun onSearch(searchValue: String) {
+        _state.update { it.copy(searchValue = searchValue) }
     }
 
 }

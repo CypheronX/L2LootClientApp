@@ -46,10 +46,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import com.l2loot.BuildConfig
-import com.l2loot.data.settings.UserSettingsRepository
-import com.l2loot.data.update.UpdateInfo
+import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
+import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.launch
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
@@ -62,10 +61,6 @@ fun SettingsScreen() {
     val viewModel = koinViewModel<SettingsViewModel>()
     val state by viewModel.state.collectAsState()
     val horizontalScrollState = rememberScrollState()
-    
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(SettingsEvent.CheckForUpdates(BuildConfig.VERSION_NAME))
-    }
 
     BoxWithConstraints(
         modifier = Modifier
@@ -102,10 +97,6 @@ fun SettingsScreen() {
                     Column(
                         verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space16)
                     ) {
-                        state.availableUpdate?.let { updateInfo ->
-                            UpdateSection(updateInfo)
-                        }
-
                         SettingsSection(
                             trackUserEvents = state.trackUserEvents,
                             onTrackUserEventsChange = { viewModel.onEvent(SettingsEvent.SetTracking(it)) }
@@ -128,15 +119,83 @@ fun SettingsScreen() {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Text(
-                    text = "Special thanks to Tabi and AYNIX for consultation, testing and help during development.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = "Special thanks to Tabi and AYNIX for consultation, testing and help during development.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+
+                    AboutSection()
+                }
 
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
             }
         }
+    }
+}
+
+@Composable
+private fun AboutSection() {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space4)
+    ) {
+        Text(
+            text = "L2Loot v${Config.VERSION_NAME}",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Text(
+            text = "© 2025 Cypheron",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Text(
+            text = "BUSL 1.1 (3-Year Term)",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        val githubText = buildAnnotatedString {
+            pushStringAnnotation(
+                tag = "URL",
+                annotation = "https://github.com/CypheronX/L2LootClientApp"
+            )
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.secondary,
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize
+                )
+            ) {
+                append("github.com/CypheronX/L2LootClientApp")
+            }
+            pop()
+        }
+
+        ClickableText(
+            text = githubText,
+            onClick = { offset ->
+                githubText.getStringAnnotations(
+                    tag = "URL",
+                    start = offset,
+                    end = offset
+                ).firstOrNull()?.let { annotation ->
+                    uriHandler.openUri(annotation.item)
+                }
+            },
+            modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+        )
     }
 }
 
@@ -178,72 +237,6 @@ private fun SettingsSection(
 }
 
 @Composable
-private fun UpdateSection(
-    updateInfo: UpdateInfo
-) {
-    Card(
-        colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(LocalSpacing.current.space16),
-            verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space12)
-        ) {
-            Text(
-                text = "Version ${updateInfo.version} is now available!",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(LocalSpacing.current.space8)
-            ) {
-                Button(
-                    modifier = Modifier
-                        .pointerHoverIcon(PointerIcon.Hand),
-                    onClick = {
-                        try {
-                            Desktop.getDesktop().browse(URI(updateInfo.downloadUrl))
-                        } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
-                                println("Failed to open download URL: ${e.message}")
-                            }
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary
-                    )
-                ) {
-                    Text("Download")
-                }
-
-                OutlinedButton(
-                    modifier = Modifier
-                        .pointerHoverIcon(PointerIcon.Hand),
-                    onClick = {
-                        try {
-                            Desktop.getDesktop().browse(URI(updateInfo.releaseUrl))
-                        } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
-                                println("Failed to open release URL: ${e.message}")
-                            }
-                        }
-                    }
-                ) {
-                    Text("Release Notes")
-                }
-            }
-        }
-    }
-}
-
-@Composable
 private fun SupportSection(
     viewModel: SettingsViewModel,
     userSettingsRepository: UserSettingsRepository
@@ -265,7 +258,7 @@ private fun SupportSection(
                 kofiPainter = kofiBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load support icons: ${e.message}")
             }
         }
@@ -311,7 +304,7 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://patreon.com/Cypheron?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open Patreon URL: ${e.message}")
                             }
                         }
@@ -340,7 +333,7 @@ private fun SupportSection(
                         try {
                             Desktop.getDesktop().browse(URI("https://ko-fi.com/cypheron"))
                         } catch (e: Exception) {
-                            if (BuildConfig.DEBUG) {
+                            if (Config.IS_DEBUG) {
                                 println("Failed to open Ko-fi URL: ${e.message}")
                             }
                         }
@@ -452,7 +445,7 @@ private fun ReportBugSection() {
 
                 pushStringAnnotation(
                     tag = "URL",
-                    annotation = "https://github.com/aleksbalev/L2LootClientAppReleases/issues"
+                    annotation = "https://github.com/CypheronX/L2LootClientApp/issues"
                 )
                 withStyle(
                     style = SpanStyle(
