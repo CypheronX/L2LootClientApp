@@ -67,8 +67,8 @@ compose.desktop {
             packageName = if (isProd) "L2Loot" else "L2Loot Dev"
             packageVersion = versionNameProperty
             description = if (isProd) "Lineage 2 QoL app for Spoilers" else "Lineage 2 QoL app for Spoilers (Dev)"
-            copyright = "© 2025 L2Loot. All rights reserved."
-            vendor = "L2Loot"
+            copyright = "Copyright © 2025 Cypheron. Licensed under BUSL 1.1 (3-Year Term)."
+            vendor = "Cypheron"
             
             modules(
                 "java.sql",
@@ -83,6 +83,7 @@ compose.desktop {
                 iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.ico"))
                 menuGroup = if (isProd) "L2Loot" else "L2Loot Dev"
                 upgradeUuid = if (isProd) "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c" else "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"
+                licenseFile.set(project.file("LICENSE.txt"))
                 perUserInstall = true
                 dirChooser = true
                 shortcut = true

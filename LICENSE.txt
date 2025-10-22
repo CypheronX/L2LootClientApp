@@ -1,0 +1,117 @@
+Business Source License 1.1
+
+License text copyright © 2024 MariaDB Corporation Ab, All Rights Reserved.
+
+Implementation copyright © 2025 Cypheron. All Rights Reserved.
+
+Terms
+
+The Licensor hereby grants you the right to copy, modify, create derivative
+works, redistribute, and otherwise use the L2Loot subject to the
+terms of this License. To reproduce, distribute, create derivative works,
+display, and perform the L2Loot, you must satisfy the following
+conditions:
+
+1.  **Attribution**
+    You must retain in the Source Code and any Object Code of the L2Loot:
+
+    a.  the above copyright notice(s);
+    b.  this list of conditions; and
+    c.  the disclaimer and license text below in the "Licensor Liability"
+        and "Licensor Indemnities" sections.
+
+    You must also reproduce the above copyright notice(s), this list of
+        conditions, the Licensor Liability section, and the Licensor
+        Indemnities section in all copies of the Object Code or portions
+        thereof that you distribute.
+
+2.  **Source Code Distribution**
+    If you distribute Source Code of the L2Loot, you must also provide
+    a copy of the Source Code to recipients of the compiled and/or
+    object code of the L2Loot, including an offer to supply such Source
+    Code (such as a URL where it may be downloaded at no charge) with the
+    distributed copy of the Object Code. You may charge a fee for the
+    Source Code distribution, provided you do so reasonably and
+    non-discriminatorily, and provided that the Source Code is free of
+    Malicious Code.
+
+3.  **Malicious Code**
+    The L2Loot is not Malicious Code. You expressly and knowingly
+    acknowledge that the L2Loot is not certified as noninfringing in
+    all jurisdictions, and that the L2Loot has not been tested in all
+    jurisdictions or on all uses. As a result, Licensor Liability
+    provisions in Section 6 below apply to the L2Loot. If you use the
+    L2Loot or distribute it to others, you do so at your own risk, and
+    you indemnify Licensor against all claims, costs, damage, or expenses
+    resulting from your use of the L2Loot.
+
+4.  **Commercial Use**
+    If you distribute the L2Loot or any portion thereof in conjunction
+    with a product (including a commercial product) that: (a) requires a
+    license fee for use; (b) generates sales revenue; or (c) otherwise
+    creates a profit opportunity, then you must pay Licensor a fee equal
+    to USD $1000 per annum. Payments must be sent in each of the three (3)
+    calendar years that follow the calendar year in which you first use
+    the L2Loot in production. You must send payments no later than thirty
+    (30) days after the end of the calendar year.
+
+5.  **Change License**
+    The Change License is the Apache License 2.0.
+    This L2Loot will change to the Change License three (3) years after
+    the first commercial distribution.
+    The Additional Use Grant does not apply to this L2Loot.
+
+6.  **Licensor Liability**
+    To the maximum extent permitted by applicable law, the L2Loot is
+    provided by the Licensor on an "AS IS" basis, without warranty of any
+    kind, EXPRESS OR IMPLIED. The Licensor HEREBY EXPRESSLY DISCLAIMS all
+    implied warranties of NON-INFRINGEMENT, MERCHANTABILITY, and/or
+    FITNESS FOR A PARTICULAR PURPOSE. The entire risk as to the quality
+    and performance of the L2Loot is borne by you. You understand and
+    agree that any use of the L2Loot, including the foregoing
+    warranties, is at your sole risk. Without limiting the foregoing, you
+    acknowledge and agree that: (a) the L2Loot may contain latent or
+    patent defects; (b) use of the L2Loot may result in unexpected
+    results, data loss and/or communications failures; (c) the L2Loot
+    includes no protection against viruses and other harmful code; and
+    (d) you are solely responsible for recovery of any data lost while
+    using the L2Loot.
+
+7.  **Licensor Indemnities**
+    TO THE MAXIMUM EXTENT PERMITTED BY LAW, LICENSOR SHALL NOT BE LIABLE
+    FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL, EXEMPLARY
+    OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS,
+    DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM: (i)
+    YOUR USE OF THE L2LOOT; (ii) YOUR INABILITY TO USE THE L2LOOT;
+    (iii) THE COST OF PROCUREMENT OF SUBSTITUTE GOODS AND SERVICES; AND
+    (iv) UNAUTHORIZED ACCESS TO OR ALTERATION OF YOUR TRANSMISSIONS OR
+    DATA, WHETHER OR NOT LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGES. Some jurisdictions do not allow the exclusion of
+    certain warranties or the limitation or exclusion of liability for
+    certain damages. Accordingly, in such jurisdictions, the foregoing
+    disclaimers, exclusions, and limitations shall apply to the maximum
+    extent permitted by applicable law, even if any remedy fails its
+    fundamental purpose.
+
+How to Apply the License
+
+Write prominently wherever the appropriate copyright notice must appear
+(such as in executable files, about boxes, or the "About" section of a
+document or online document): "L2Loot by Cypheron is subject to the terms
+of the Business Source License v1.1, available at
+https://mariadb.com/bsl1-1-text."
+
+Write prominently wherever the appropriate copy of the license text must
+appear (such as in documentation and/or other materials where the
+license text or notice is made available to end users): "L2Loot by Cypheron
+is subject to the terms of the Business Source License v1.1,
+available at https://mariadb.com/bsl1-1-text and the "Change License"
+is specified as the Apache License version 2.0, available at
+http://www.apache.org/licenses/LICENSE-2.0".
+
+Any use of the L2Loot in violation of the foregoing shall be deemed a
+breach of this License and subject to the full remedies available at law.
+No license is granted (implicitly, by estoppel, or otherwise) to any
+body corporate or person except as expressly provided herein.
+
+END OF TERMS AND CONDITIONS
