@@ -74,8 +74,8 @@ compose.desktop {
                 "stage" -> "Lineage 2 QoL app for Spoilers (Stage)"
                 else -> "Lineage 2 QoL app for Spoilers (Dev)"
             }
-            copyright = "© 2025 L2Loot. All rights reserved."
-            vendor = "L2Loot"
+            copyright = "Copyright © 2025 Cypheron. Licensed under BUSL 1.1 (3-Year Term)."
+            vendor = "Cypheron"
             
             modules(
                 "java.sql",
@@ -88,6 +88,7 @@ compose.desktop {
             
             windows {
                 iconFile.set(project.file("src/jvmMain/composeResources/files/app_icon/spoil_logo.ico"))
+                licenseFile.set(project.file("LICENSE.txt"))
                 menuGroup = when (flavor) {
                     "prod" -> "L2Loot"
                     "stage" -> "L2Loot Stage"
@@ -149,11 +150,11 @@ tasks.register("packageMsiDev") {
 tasks.register("packageMsiStage") {
     group = "distribution"
     description = "Package MSI installer for Stage/Testing"
-    
+
     doFirst {
         println("Building Stage MSI...")
         println("Note: Make sure to run: ./gradlew clean before switching flavors")
-        
+
         val flavor = project.findProperty("buildkonfig.flavor") as? String ?: "prod"
         if (flavor != "stage") {
             println("WARNING: buildkonfig.flavor is '$flavor' but building stage MSI!")
@@ -177,7 +178,7 @@ tasks.register<Zip>("zipAppUpdate") {
     dependsOn("packageReleaseMsi", "createReleaseDistributable")
     
     from(layout.buildDirectory.dir("compose/binaries/main-release/app/$appName"))
-    
+
     destinationDirectory.set(layout.buildDirectory.dir("compose/binaries/main-release/update"))
     archiveFileName.set(when (flavor) {
         "prod" -> "L2Loot-Update-$versionNameProperty.zip"
@@ -200,15 +201,15 @@ tasks.register("createAppImage") {
 tasks.register<Copy>("copyUpdaterToResources") {
     group = "distribution"
     description = "Copy updater JAR to app resources"
-    
+
     dependsOn(":updater:packageReleaseUberJarForCurrentOS")
-    
+
     from("${rootProject.projectDir}/updater/build/compose/jars")
-    
+
     into("src/jvmMain/composeResources/files/updater")
 
     include("*.jar")
-    
+
     rename { "L2LootUpdater.jar" }
 }
 

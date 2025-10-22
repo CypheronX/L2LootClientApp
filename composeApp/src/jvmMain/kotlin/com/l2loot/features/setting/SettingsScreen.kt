@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -118,15 +119,83 @@ fun SettingsScreen() {
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Text(
-                    text = "Special thanks to Tabi and AYNIX for consultation, testing and help during development.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = "Special thanks to Tabi and AYNIX for consultation, testing and help during development.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f, fill = false)
+                    )
+
+                    AboutSection()
+                }
 
                 Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
             }
         }
+    }
+}
+
+@Composable
+private fun AboutSection() {
+    val uriHandler = LocalUriHandler.current
+
+    Column(
+        horizontalAlignment = Alignment.End,
+        verticalArrangement = Arrangement.spacedBy(LocalSpacing.current.space4)
+    ) {
+        Text(
+            text = "L2Loot v${Config.VERSION_NAME}",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Text(
+            text = "© 2025 Cypheron",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        Text(
+            text = "BUSL 1.1 (3-Year Term)",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
+        val githubText = buildAnnotatedString {
+            pushStringAnnotation(
+                tag = "URL",
+                annotation = "https://github.com/CypheronX/L2LootClientApp"
+            )
+            withStyle(
+                style = SpanStyle(
+                    color = MaterialTheme.colorScheme.secondary,
+                    textDecoration = TextDecoration.Underline,
+                    fontSize = MaterialTheme.typography.bodySmall.fontSize
+                )
+            ) {
+                append("github.com/CypheronX/L2LootClientApp")
+            }
+            pop()
+        }
+
+        ClickableText(
+            text = githubText,
+            onClick = { offset ->
+                githubText.getStringAnnotations(
+                    tag = "URL",
+                    start = offset,
+                    end = offset
+                ).firstOrNull()?.let { annotation ->
+                    uriHandler.openUri(annotation.item)
+                }
+            },
+            modifier = Modifier.pointerHoverIcon(PointerIcon.Hand)
+        )
     }
 }
 
