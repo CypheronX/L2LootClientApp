@@ -1,4 +1,4 @@
-[![License: BUSL 1.1 (3yr)](https://mariadb.com/bsl11/)
+[![License: BUSL 1.1 (3yr)](https://img.shields.io/badge/License-BUSL%201.1%20(3yr)-blue.svg)](https://mariadb.com/bsl11/)
 
 # L2Loot by Cypheron
 
