@@ -20,10 +20,8 @@ class UpdateCheckerRepositoryImpl(
     private val githubToken: String = Config.GITHUB_TOKEN
     
     override suspend fun checkForUpdate(currentVersion: String): UpdateInfo? = withContext(Dispatchers.IO) {
-        // TESTING: Changed from /releases/latest to /releases to include prereleases
-        // TODO: Revert this back to /releases/latest for production
-        val result = httpClient.get<List<GitHubRelease>>(
-            route = "https://api.github.com/repos/$githubRepo/releases"
+        val result = httpClient.get<GitHubRelease>(
+            route = "https://api.github.com/repos/$githubRepo/releases/latest"
         ) {
             header("Accept", "application/vnd.github.v3+json")
             
@@ -34,8 +32,7 @@ class UpdateCheckerRepositoryImpl(
         
         when (result) {
             is Result.Success -> {
-                // Get the first (most recent) release, including prereleases
-                val release = result.data.firstOrNull() ?: return@withContext null
+                val release = result.data
                 
                 // Parse version from tag_name
                 // Supports formats:
@@ -50,12 +47,9 @@ class UpdateCheckerRepositoryImpl(
                 
                 logger.debug("Checking for updates: current=$currentVersion, latest=$latestVersion (from tag: ${release.tag_name})")
                 
-                // Compare versions
                 if (isNewerVersion(latestVersion, currentVersion)) {
-                    // Find the MSI asset
                     val msiAsset = release.assets.find { it.name.endsWith(".msi") }
                     
-                    // Find the update ZIP asset
                     val zipAsset = release.assets.find { 
                         it.name.contains("-Update-", ignoreCase = true) && it.name.endsWith(".zip", ignoreCase = true)
                     } ?: release.assets.find { it.name.endsWith(".zip", ignoreCase = true) }
@@ -100,9 +94,7 @@ class UpdateCheckerRepositoryImpl(
                     logger.debug("Skipping dev tag in production build: $tag")
                     return null
                 }
-                // Remove "dev-v" prefix and everything after the version (commit sha)
                 val withoutPrefix = tag.removePrefix("stage-v")
-                // Split by "-" and take first part (major.minor.patch)
                 val versionParts = withoutPrefix.split("-").firstOrNull()
                 versionParts
             }
@@ -110,7 +102,6 @@ class UpdateCheckerRepositoryImpl(
             tag.startsWith("v") -> {
                 tag.removePrefix("v")
             }
-            // Already without prefix: 1.0.0
             else -> tag
         }
     }
