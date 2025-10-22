@@ -26,8 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.l2loot.BuildConfig
+import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToImageBitmap
@@ -45,11 +44,12 @@ fun SellableItem(
     enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    var imageBitmap by remember {
+    var imageBitmap by remember(sellableItem.key) {
         mutableStateOf<ImageBitmap?>(null)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(sellableItem.key) {
+        imageBitmap = null
         try {
             val imageBytes = Res.readBytes("files/sellable_items/${sellableItem.key}.png")
 
@@ -57,8 +57,8 @@ fun SellableItem(
                 imageBitmap = imageBytes.decodeToImageBitmap()
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
-                println("Failed to load svg icons: ${e.message}")
+            if (Config.IS_DEBUG) {
+                println("Failed to load image for ${sellableItem.key}: ${e.message}")
             }
         }
     }

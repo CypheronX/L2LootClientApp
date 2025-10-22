@@ -1,4 +1,4 @@
-import com.l2loot.data.monsters.strategy.DropCategory;
+import com.l2loot.domain.model.DropCategory;
 
 CREATE TABLE droplist (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

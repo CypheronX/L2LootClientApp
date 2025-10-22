@@ -80,6 +80,15 @@
 -dontwarn org.conscrypt.**
 -dontwarn org.bouncycastle.**
 -dontwarn org.openjsse.**
+
+# Keep OkHttp classes to prevent VerifyError - ProGuard breaks OkHttp's bytecode otherwise
+-keep class okhttp3.** { *; }
+-keep class okio.** { *; }
+-keep interface okhttp3.** { *; }
+-keep interface okio.** { *; }
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+-dontnote okhttp3.internal.platform.**
+-dontnote okio.**
 #################################### SLF4J #####################################
 -dontwarn org.slf4j.**
 
@@ -180,7 +189,6 @@
 # Keep Ktor CIO engine - it uses native code and reflection
 -keep class io.ktor.** { *; }
 -keep class io.ktor.client.** { *; }
--keep class io.ktor.client.engine.cio.** { *; }
 -keep class io.ktor.util.** { *; }
 -keepclassmembers class io.ktor.** { *; }
 
@@ -209,5 +217,20 @@
     public static <fields>;
 }
 
-# Keep BuildConfig
--keep class com.l2loot.BuildConfig { *; }
+# Keep BuildKonfig (generated configuration)
+-keep class com.l2loot.BuildKonfig { *; }
+-keep class com.l2loot.Config { *; }
+
+#################################### Enums ########################################
+# Keep enums used in state management and database
+# ProGuard obfuscates enum names which breaks valueOf() and database persistence
+-keep enum com.l2loot.domain.model.HPMultiplier { *; }
+-keep enum com.l2loot.domain.model.DropCategory { *; }
+
+# Keep all enum methods to ensure proper functionality
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+    **[] $VALUES;
+    public *;
+}

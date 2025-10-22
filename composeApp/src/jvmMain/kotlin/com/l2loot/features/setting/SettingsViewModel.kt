@@ -2,9 +2,9 @@ package com.l2loot.features.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.l2loot.BuildConfig
-import com.l2loot.data.analytics.AnalyticsService
-import com.l2loot.data.settings.UserSettingsRepository
+import com.l2loot.domain.firebase.AnalyticsService
+import com.l2loot.domain.repository.UpdateCheckerRepository
+import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 internal class SettingsViewModel(
     val userSettingsRepository: UserSettingsRepository,
     val analyticsService: AnalyticsService,
-    val updateChecker: com.l2loot.data.update.UpdateChecker
 ) : ViewModel() {
     private val _state = MutableStateFlow(SettingsState.initial())
     val state = _state.asStateFlow()
@@ -41,22 +40,6 @@ internal class SettingsViewModel(
                         currentState.copy(
                             trackUserEvents = event.value
                         )
-                    }
-                }
-            }
-            is SettingsEvent.CheckForUpdates -> {
-                viewModelScope.launch {
-                    try {
-                        val updateInfo = updateChecker.checkForUpdate(event.currentVersion)
-                        _state.update { currentState ->
-                            currentState.copy(
-                                availableUpdate = updateInfo
-                            )
-                        }
-                    } catch (e: Exception) {
-                        if (BuildConfig.DEBUG) {
-                            println("Failed to check for updates: ${e.message}")
-                        }
                     }
                 }
             }

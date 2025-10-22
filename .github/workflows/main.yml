@@ -1,14 +1,21 @@
-name: Build and Release to Public Repo
+name: Build and Release
 
 on:
   push:
     tags:
       - v*
+    branches:
+      - test
   workflow_dispatch:
 
 jobs:
-  build-and-release:
+  build-prod:
+    name: Build Production Release
     runs-on: windows-latest
+    environment: prod
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
     steps:
       - name: Checkout private repository
         uses: actions/checkout@v4
@@ -29,39 +36,154 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build MSI Installer
+      - name: Build Updater JAR
+        shell: bash
+        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+
+      - name: Build Production MSI and Update ZIP
         env:
           FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
-          FIREBASE_SELLABLE_ITEMS_URL: ${{ secrets.FIREBASE_SELLABLE_ITEMS_URL }}
-          FIREBASE_ANONYMOUS_AUTH_URL: ${{ secrets.FIREBASE_ANONYMOUS_AUTH_URL }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-        run: ./gradlew composeApp:packageReleaseMsi
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
+          buildkonfig_flavor: prod
+        shell: bash
+        run: |
+          touch local.properties
+          echo "FIREBASE_ANALYTICS_URL=$FIREBASE_ANALYTICS_URL" >> local.properties
+          echo "SELLABLE_ITEMS_URL=$SELLABLE_ITEMS_URL" >> local.properties
+          echo "ANONYMOUS_AUTH_URL=$ANONYMOUS_AUTH_URL" >> local.properties
+          echo "EXTERNAL_LINKS_URL=$EXTERNAL_LINKS_URL" >> local.properties
+          ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
 
 
       - name: Upload Release to Public Repository
         uses: softprops/action-gh-release@v2
         with:
-          repository: aleksbalev/L2LootClientAppReleases
+          repository: CypheronX/L2LootClientAppReleases
           token: ${{ secrets.PUBLIC_REPO_TOKEN }}
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
+          draft: true
+          prerelease: true
           files: |
             composeApp/build/compose/binaries/main-release/msi/L2Loot-${{ steps.get_version.outputs.version_name }}.msi
+            composeApp/build/compose/binaries/main-release/update/L2Loot-Update-${{ steps.get_version.outputs.version_name }}.zip
           body: |
             ## L2Loot ${{ github.ref_name }}
             
             ### Installation
             
-            **Windows MSI Installer (Recommended):**
+            **Windows MSI Installer:**
             - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.msi`
             - Run the installer and follow the setup wizard
             - The app will be installed and a desktop shortcut will be created
             
-            **Windows EXE Portable:**
-            - Download `L2Loot-${{ steps.get_version.outputs.version_name }}.exe`
-            - Extract and run the executable
+            **Auto-Update:**
+            - The app will automatically check for updates on startup
+            - Updates will be downloaded and installed automatically
             
             ### What's New
             - Add your release notes here
+
+  build-dev:
+    name: Build Development Build
+    runs-on: windows-latest
+    environment: dev
+    if: github.ref == 'refs/heads/test' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout private repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Change wrapper permission
+        run: chmod +x ./gradlew
+
+      - name: Get Version Name
+        id: get_version
+        shell: bash
+        run: |
+          source version.properties
+          echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
+
+      - name: Build Updater JAR
+        shell: bash
+        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+
+      - name: Build Stage MSI and Update ZIP
+        env:
+          FIREBASE_ANALYTICS_URL: ${{ secrets.FIREBASE_ANALYTICS_URL }}
+          SELLABLE_ITEMS_URL: ${{ secrets.SELLABLE_ITEMS_URL }}
+          ANONYMOUS_AUTH_URL: ${{ secrets.ANONYMOUS_AUTH_URL }}
+          EXTERNAL_LINKS_URL: ${{ secrets.EXTERNAL_LINKS_URL }}
+          FIREBASE_ANALYTICS_URL_DEV: ${{ secrets.FIREBASE_ANALYTICS_URL_DEV }}
+          SELLABLE_ITEMS_URL_DEV: ${{ secrets.SELLABLE_ITEMS_URL_DEV }}
+          ANONYMOUS_AUTH_URL_DEV: ${{ secrets.ANONYMOUS_AUTH_URL_DEV }}
+          EXTERNAL_LINKS_URL_DEV: ${{ secrets.EXTERNAL_LINKS_URL_DEV }}
+          GITHUB_TOKEN: ${{ secrets.L2LOOT_UPDATE_CHECK_GITHUB_TOKEN }}
+          buildkonfig_flavor: stage
+        shell: bash
+        run: |
+          touch local.properties
+          echo "FIREBASE_ANALYTICS_URL=$FIREBASE_ANALYTICS_URL" >> local.properties
+          echo "SELLABLE_ITEMS_URL=$SELLABLE_ITEMS_URL" >> local.properties
+          echo "ANONYMOUS_AUTH_URL=$ANONYMOUS_AUTH_URL" >> local.properties
+          echo "EXTERNAL_LINKS_URL=$EXTERNAL_LINKS_URL" >> local.properties
+          echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> local.properties
+          ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
+
+      - name: Get Short Commit SHA
+        id: commit_sha
+        run: echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Create Stage Release in Test Repository
+        uses: softprops/action-gh-release@v2
+        with:
+          repository: CypheronX/L2LootClientAppTest
+          token: ${{ secrets.TEST_REPO_TOKEN }}
+          tag_name: stage-v${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          name: Stage Build v${{ steps.get_version.outputs.version_name }} (${{ steps.commit_sha.outputs.short_sha }})
+          draft: false
+          prerelease: true
+          make_latest: false
+          files: |
+            composeApp/build/compose/binaries/main-release/msi/*.msi
+            composeApp/build/compose/binaries/main-release/update/*.zip
+          body: |
+            ## 🚧 Stage Build v${{ steps.get_version.outputs.version_name }}
+            
+            **Commit:** ${{ github.sha }}
+            **Branch:** test
+            **Build Date:** ${{ github.event.head_commit.timestamp }}
+            
+            ### ⚠️ Important
+            This is a **development build** for testing purposes only.
+            - Uses dev backend endpoints (or prod as fallback)
+            - Can be installed alongside production version
+            - Database stored in `%APPDATA%\L2LootStage`
+            
+            ### Installation
+            1. Download `L2Loot Stage-${{ steps.get_version.outputs.version_name }}.msi`
+            2. Run the installer
+            3. App will appear as "L2Loot Stage" in Start Menu
+            
+            **Auto-Update:**
+            - The app will automatically check for updates on startup
+            
+            ### Recent Changes
+            ${{ github.event.head_commit.message }}
+
+      - name: Also Upload as Artifact (for quick access)
+        uses: actions/upload-artifact@v4
+        with:
+          name: L2Loot-Stage-${{ steps.get_version.outputs.version_name }}-${{ steps.commit_sha.outputs.short_sha }}
+          path: composeApp/build/compose/binaries/main-release/msi/*.msi
+          retention-days: 7

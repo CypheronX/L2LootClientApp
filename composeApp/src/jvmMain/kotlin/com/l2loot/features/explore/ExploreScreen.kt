@@ -33,7 +33,6 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,12 +49,13 @@ import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.l2loot.BuildConfig
-import com.l2loot.data.monsters.strategy.HPMultiplier
+import com.l2loot.Config
+import com.l2loot.domain.model.HPMultiplier
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.explore.components.ExploreForm
 import com.l2loot.features.explore.components.MonsterCard
 import com.l2loot.features.explore.components.MonsterCardShimmer
+import com.l2loot.designsystem.components.NoResultsFound
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -86,7 +86,7 @@ fun ExploreScreen() {
         try {
             val filterBytes = Res.readBytes("files/svg/filter.svg")
             val spoilBytes = Res.readBytes("files/svg/spoil.svg")
-            val chevronBytes = Res.readBytes("files/svg/chevron.svg")
+            val chevronBytes = Res.readBytes("files/svg/times.svg")
 
             if (filterBytes.isNotEmpty()) {
                 filterPainter = filterBytes.decodeToSvgPainter(density)
@@ -98,7 +98,7 @@ fun ExploreScreen() {
                 chevronPainter = chevronBytes.decodeToSvgPainter(density)
             }
         } catch (e: Exception) {
-            if (BuildConfig.DEBUG) {
+            if (Config.IS_DEBUG) {
                 println("Failed to load svg icons: ${e.message}")
             }
         }
@@ -317,32 +317,11 @@ fun ExploreScreen() {
                     }
 
                     if (state.monsters.isEmpty() && !state.isRefreshing) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .align(Alignment.Center)
-                        ) {
-                            spoilPainter?.let { painter ->
-                                Image(
-                                    painter = painter,
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(
-                                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
-                                    ),
-                                    modifier = Modifier.size(120.dp)
-                                )
-                            }
-                            
-                            Spacer(modifier = Modifier.size(LocalSpacing.current.space24))
-                            
-                            Text(
-                                text = "These lands hold no spoils for ye by yer criteria.",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                            )
-                        }
+                        NoResultsFound(
+                            iconPainter = spoilPainter,
+                            message = "These lands hold no spoils for ye by yer criteria.",
+                            modifier = Modifier.align(Alignment.Center)
+                        )
                     }
 
                     if (state.monsters.isNotEmpty()) {
