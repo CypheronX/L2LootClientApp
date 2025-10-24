@@ -11,6 +11,6 @@ interface SellableRepository {
 
     suspend fun updateItemPrice(itemKey: String, newPrice: Long): Result<Unit, DataError.Local>
 
-    suspend fun fetchAynixPrices(): Result<Unit, DataError.Remote>
+    suspend fun fetchAynixPrices(forceRefresh: Boolean = false): Result<Unit, DataError.Remote>
 }
 

@@ -146,7 +146,7 @@ class MainViewModel(
                     try {
                         val settings = userSettingsRepository.getSettings().firstOrNull()
                         if (settings?.isAynixPrices == true) {
-                            sellableRepository.fetchAynixPrices()
+                            sellableRepository.fetchAynixPrices(forceRefresh = true)
                         }
                     } catch (e: Exception) {
                         logger.error("Failed to auto-fetch Aynix prices on startup", e)
