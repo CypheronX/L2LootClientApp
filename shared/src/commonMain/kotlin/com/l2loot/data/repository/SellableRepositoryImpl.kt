@@ -42,12 +42,15 @@ class SellableRepositoryImpl(
         }
     }
 
-    override suspend fun fetchAynixPrices(): Result<Unit, DataError.Remote> {
-        val now = System.currentTimeMillis()
-        if (cachedAynixPrices != null && (now - cacheTimestamp) < pollingIntervalMs) {
-            val remainingMinutes = (pollingIntervalMs - (now - cacheTimestamp)) / 60000
-            logger.info("Using cached Aynix prices ($remainingMinutes min until refresh)")
-            return Result.Success(Unit)
+    override suspend fun fetchAynixPrices(forceRefresh: Boolean): Result<Unit, DataError.Remote> {
+        if (!forceRefresh) {
+            val now = System.currentTimeMillis()
+            
+            if (cachedAynixPrices != null && (now - cacheTimestamp) < pollingIntervalMs) {
+                val remainingMinutes = (pollingIntervalMs - (now - cacheTimestamp)) / 60000
+                logger.info("Using cached Aynix prices ($remainingMinutes min until refresh)")
+                return Result.Success(Unit)
+            }
         }
         
         return when (val result = fetchItemsFromFirebase()) {
