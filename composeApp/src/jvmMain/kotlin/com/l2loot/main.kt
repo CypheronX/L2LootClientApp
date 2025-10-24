@@ -7,6 +7,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.KeyShortcut
+import androidx.compose.ui.input.key.key
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -66,7 +70,10 @@ fun main(args: Array<String>) {
             onCloseRequest = ::exitApplication,
             title = "L2Loot",
             icon = spoilLogoPainter,
-            state = windowRatio
+            state = windowRatio,
+            onKeyEvent = {
+                it.key == Key.Escape
+            }
         ) {
             App()
         }
