@@ -136,6 +136,10 @@ jobs:
           echo "SELLABLE_ITEMS_URL=$SELLABLE_ITEMS_URL" >> local.properties
           echo "ANONYMOUS_AUTH_URL=$ANONYMOUS_AUTH_URL" >> local.properties
           echo "EXTERNAL_LINKS_URL=$EXTERNAL_LINKS_URL" >> local.properties
+          echo "FIREBASE_ANALYTICS_URL_DEV=FIREBASE_ANALYTICS_URL_DEV" >> local.properties
+          echo "SELLABLE_ITEMS_URL_DEV=SELLABLE_ITEMS_URL_DEV" >> local.properties
+          echo "ANONYMOUS_AUTH_URL_DEV=ANONYMOUS_AUTH_URL_DEV" >> local.properties
+          echo "EXTERNAL_LINKS_URL_DEV=EXTERNAL_LINKS_URL_DEV" >> local.properties
           echo "GITHUB_TOKEN=$GITHUB_TOKEN" >> local.properties
           ./gradlew clean zipAppUpdate -Pbuildkonfig.flavor=$buildkonfig_flavor
 
