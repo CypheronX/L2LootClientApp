@@ -21,27 +21,28 @@ UPDATE sellable_item
 SET item_price = ?
 WHERE key = ?;
 
--- Get item with appropriate price based on setting
--- If useAynixPrices = true and Aynix price exists, use it; otherwise use original
+-- Get item with appropriate price based on setting and selected server
+-- If useManagedPrices = true and managed price exists for the server, use it; otherwise use original
 getItemPrice:
 SELECT
     si.item_id,
     si.key,
     si.name,
-    COALESCE(ap.price, si.item_price) AS effective_price,
-    CASE WHEN ap.price IS NOT NULL THEN 1 ELSE 0 END AS is_aynix_price
+    COALESCE(mp.price, si.item_price) AS effective_price,
+    CASE WHEN mp.price IS NOT NULL THEN 1 ELSE 0 END AS is_managed_price
 FROM sellable_item si
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id
-WHERE si.item_id = ?;
+LEFT JOIN managed_prices mp ON si.item_id = mp.item_id
+WHERE si.item_id = ? AND (mp.server_name = ? OR mp.server_name IS NULL);
 
--- Get all items with prices
+-- Get all items with prices (will need server parameter from code)
 getAllItemsWithPrices:
 SELECT
     si.item_id,
     si.key,
     si.name,
     si.item_price AS original_price,
-    ap.price AS aynix_price,
-    ap.last_updated AS aynix_last_updated
+    mp.price AS managed_price,
+    mp.last_updated AS managed_last_updated,
+    mp.server_name AS server_name
 FROM sellable_item si
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id;
+LEFT JOIN managed_prices mp ON si.item_id = mp.item_id AND mp.server_name = ?;

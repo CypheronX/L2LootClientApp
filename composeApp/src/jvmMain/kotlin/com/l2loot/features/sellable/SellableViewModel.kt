@@ -3,7 +3,7 @@ package com.l2loot.features.sellable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.l2loot.domain.logging.LootLogger
-import com.l2loot.domain.model.ExternalLinks
+import com.l2loot.domain.model.ServerName
 import com.l2loot.domain.repository.ExternalLinksRepository
 import com.l2loot.domain.repository.SellableRepository
 import com.l2loot.domain.repository.UserSettingsRepository
@@ -34,12 +34,17 @@ internal class SellableViewModel(
         
         viewModelScope.launch {
             userSettingsRepository.getSettings().collect { settings ->
-                val newPricesByAynix = settings?.isAynixPrices ?: false
-                val oldPricesByAynix = _state.value.pricesByAynix
+                val newManagedPrices = settings?.isManagedPrices ?: false
+                val oldManagedPrices = _state.value.managedPrices
+                val newServer = settings?.serverName ?: ServerName.DEFAULT
+                val oldServer = _state.value.server
                 
-                _state.update { it.copy(pricesByAynix = newPricesByAynix) }
+                _state.update { it.copy(
+                    managedPrices = newManagedPrices,
+                    server = newServer
+                ) }
                 
-                if (newPricesByAynix != oldPricesByAynix) {
+                if (newManagedPrices != oldManagedPrices || newServer != oldServer) {
                     loadSellableItems()
                 }
             }
@@ -55,22 +60,26 @@ internal class SellableViewModel(
                 viewModelScope.launch {
                     if (event.value) {
                         _state.update { it.copy(loading = true) }
-                        when (val result = sellableRepository.fetchAynixPrices()) {
+                        val currentServer = _state.value.server
+                        when (val result = sellableRepository.fetchManagedPrices(currentServer)) {
                             is Result.Success -> {
-                                userSettingsRepository.updateIsAynixPrices(event.value)
+                                userSettingsRepository.updateIsManagedPrices(event.value)
                             }
                             is Result.Failure -> {
-                                logger.error("Failed to fetch Aynix prices: ${result.error}")
+                                logger.error("Failed to fetch ${currentServer.displayName} prices: ${result.error}")
                                 _state.update { it.copy(loading = false, error = "Failed to fetch prices: ${result.error}") }
                             }
                         }
                     } else {
-                        userSettingsRepository.updateIsAynixPrices(event.value)
+                        userSettingsRepository.updateIsManagedPrices(event.value)
                     }
                 }
             }
             is SellableScreenEvent.OnSearch -> {
                 onSearch(event.value)
+            }
+            is SellableScreenEvent.ServerChanged -> {
+                onServerChanged(event.server)
             }
         }
     }
@@ -97,14 +106,15 @@ internal class SellableViewModel(
             _state.update { it.copy(loading = true, error = null) }
             
             val startTime = System.currentTimeMillis()
+            val currentServer = _state.value.server
             
-            when (val result = sellableRepository.getAllItemsWithPrices()) {
+            when (val result = sellableRepository.getAllItemsWithPrices(currentServer)) {
                 is Result.Success -> {
                     val items = result.data
-                    val useAynixPrices = _state.value.pricesByAynix
+                    val useManagedPrices = _state.value.managedPrices
                     
                     val prices = items.associate { item ->
-                        val selectedPrice = item.getDisplayPrice(useAynixPrices)
+                        val selectedPrice = item.getDisplayPrice(useManagedPrices)
                         item.key to selectedPrice.toString()
                     }
                     
@@ -135,9 +145,7 @@ internal class SellableViewModel(
     }
 
     fun updatePrice(itemKey: String, newPrice: String) {
-        // Only allow updates when NOT using Aynix prices
-        if (!_state.value.pricesByAynix) {
-            // Update UI state immediately for responsiveness
+        if (!_state.value.managedPrices) {
             _state.update { currentState ->
                 currentState.copy(
                     prices = currentState.prices + (itemKey to newPrice)
@@ -162,6 +170,29 @@ internal class SellableViewModel(
 
     private fun onSearch(searchValue: String) {
         _state.update { it.copy(searchValue = searchValue) }
+    }
+
+    private fun onServerChanged(server: ServerName) {
+        _state.update { it.copy(server = server) }
+
+        loadSellableItems()
+        
+        if (_state.value.managedPrices) {
+            viewModelScope.launch {
+                userSettingsRepository.updateChosenServer(server)
+
+                _state.update { it.copy(loading = true) }
+                when (val result = sellableRepository.fetchManagedPrices(server)) {
+                    is Result.Success -> {
+                        loadSellableItems()
+                    }
+                    is Result.Failure -> {
+                        logger.error("Failed to fetch ${server.displayName} prices: ${result.error}")
+                        _state.update { it.copy(loading = false, error = "Failed to fetch prices: ${result.error}") }
+                    }
+                }
+            }
+        }
     }
 
 }

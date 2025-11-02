@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToOneOrNull
+import com.l2loot.domain.model.ServerName
 import com.l2loot.domain.model.UserSettings
 import com.l2loot.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.flow.map
@@ -44,14 +45,15 @@ class UserSettingsRepositoryImpl(
                     maxLevel = it?.max_level,
                     limit = it?.limit_results ?: 10,
                     showRiftMobs = it?.show_rift_mobs ?: false,
-                    isAynixPrices = it?.is_aynix_prices ?: false,
+                    isManagedPrices = it?.is_managed_prices ?: false,
                     trackEvents = it?.track_events ?: true,
                     appOpenCount = it?.app_open_count ?: 0,
                     lastUpdated = it?.last_updated,
                     lastPromptDate = it?.last_prompt_date ?: 0,
                     sessionCountSincePrompt = it?.session_count_since_prompt ?: 0,
                     lastSupportClickDate = it?.last_support_click_date ?: 0,
-                    hpMultipliers = hpMultipliers
+                    hpMultipliers = hpMultipliers,
+                    serverName = ServerName.fromKey(it?.server ?: "") ?: ServerName.DEFAULT
                 )
             }
     }
@@ -72,7 +74,7 @@ class UserSettingsRepositoryImpl(
                 max_level = maxLevel.toLong(),
                 limit_results = limitResults.toLong(),
                 show_rift_mobs = showRiftMobs,
-                is_aynix_prices = isAynixPrices,
+                is_managed_prices = isAynixPrices,
                 last_updated = timestamp
             )
         }
@@ -139,11 +141,11 @@ class UserSettingsRepositoryImpl(
         }
     }
 
-    override suspend fun updateIsAynixPrices(isAynixPrices: Boolean) {
+    override suspend fun updateIsManagedPrices(isManagedPrices: Boolean) {
         withContext(Dispatchers.IO) {
             val timestamp = System.currentTimeMillis()
-            database.userSettingsQueries.updateIsAynixPrices(
-                is_aynix_prices = isAynixPrices,
+            database.userSettingsQueries.updateIsManagedPrices(
+                is_managed_prices = isManagedPrices,
                 last_updated = timestamp
             )
         }
@@ -202,6 +204,14 @@ class UserSettingsRepositoryImpl(
             database.userSettingsQueries.updateHPMultipliers(
                 hp_multipliers = multipliersString,
                 last_updated = timestamp
+            )
+        }
+    }
+
+    override suspend fun updateChosenServer(serverName: ServerName) {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.updateChosenServer(
+                server = serverName.serverKey
             )
         }
     }

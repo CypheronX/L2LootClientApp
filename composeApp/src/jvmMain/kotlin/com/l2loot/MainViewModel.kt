@@ -138,15 +138,18 @@ class MainViewModel(
             }
         }
 
-        // Handle Aynix prices fetch
+        // Handle Managed prices fetch
         viewModelScope.launch {
             state.collect { currentState ->
                 val authState = currentState.authState
                 if (authState == AuthState.Success) {
                     try {
                         val settings = userSettingsRepository.getSettings().firstOrNull()
-                        if (settings?.isAynixPrices == true) {
-                            sellableRepository.fetchAynixPrices(forceRefresh = true)
+                        if (settings?.isManagedPrices == true) {
+                            sellableRepository.fetchManagedPrices(
+                                serverName = settings.serverName,
+                                forceRefresh = true
+                            )
                         }
                     } catch (e: Exception) {
                         logger.error("Failed to auto-fetch Aynix prices on startup", e)

@@ -11,9 +11,10 @@ internal data class ExploreScreenState(
     val maxLevel: String,
     val limit: String,
     val showRiftMobs: Boolean,
-    val useAynixPrices: Boolean,
+    val useManagedPrices: Boolean,
     val isRefreshing: Boolean,
     val selectedHPMultipliers: Set<HPMultiplier>,
+    val serverName: String,
 ) {
     companion object {
         fun initial() = ExploreScreenState(
@@ -23,9 +24,10 @@ internal data class ExploreScreenState(
             maxLevel = "",
             limit = "10",
             showRiftMobs = false,
-            useAynixPrices = false,
+            useManagedPrices = false,
             isRefreshing = false,
             selectedHPMultipliers = emptySet(),
+            serverName = "reborn_teon"
         )
     }
 }
@@ -37,7 +39,8 @@ internal fun ExploreScreenState.toMonsterQueryParams() = MonsterQueryParams(
     limit = limit.toIntOrNull() ?: 10,
     hpMultipliers = if (selectedHPMultipliers.isEmpty()) null else selectedHPMultipliers.toList(),
     includeRift = showRiftMobs,
-    useAynixPrices = useAynixPrices
+    useManagedPrices = useManagedPrices,
+    serverName = serverName
 )
 
 internal sealed interface ExploreScreenEvent {

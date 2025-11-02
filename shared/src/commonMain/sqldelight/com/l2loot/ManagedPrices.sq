@@ -1,0 +1,47 @@
+-- Dynamic market prices from managed servers (Aynix, Essence, etc.)
+CREATE TABLE managed_prices (
+    item_id INTEGER NOT NULL,
+    server_name TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    last_updated INTEGER NOT NULL,
+    PRIMARY KEY (item_id, server_name),
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+CREATE INDEX managed_prices_item_id_idx ON managed_prices(item_id);
+CREATE INDEX managed_prices_server_name_idx ON managed_prices(server_name);
+CREATE INDEX managed_prices_composite_idx ON managed_prices(item_id, server_name);
+
+-- Get price for an item from a specific server
+getPrice:
+SELECT price, last_updated
+FROM managed_prices
+WHERE item_id = ? AND server_name = ?;
+
+-- Get all prices for a specific server
+getAllPricesForServer:
+SELECT *
+FROM managed_prices
+WHERE server_name = ?;
+
+-- Get all prices from all servers
+getAllPrices:
+SELECT *
+FROM managed_prices;
+
+-- Upsert price (insert or update)
+upsertPrice:
+INSERT INTO managed_prices (item_id, server_name, price, last_updated)
+VALUES (?, ?, ?, ?)
+ON CONFLICT(item_id, server_name) DO UPDATE SET
+    price = excluded.price,
+    last_updated = excluded.last_updated;
+
+-- Delete all prices for a specific server
+deleteServerPrices:
+DELETE FROM managed_prices
+WHERE server_name = ?;
+
+-- Batch upsert (for bulk updates from API)
+-- You'll call this multiple times from code
+

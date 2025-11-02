@@ -2,6 +2,7 @@ package com.l2loot.data.networking
 
 import io.ktor.client.plugins.logging.Logger
 import com.l2loot.Config
+import com.l2loot.domain.firebase.FirebaseAuthService
 import com.l2loot.domain.logging.LootLogger
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
@@ -11,12 +12,16 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
+import io.ktor.http.encodedPath
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import kotlinx.coroutines.runBlocking
 
 class HttpClientFactory(
-    private val lootLogger: LootLogger
+    private val lootLogger: LootLogger,
+    private val authService: FirebaseAuthService?
 ) {
 
     fun create(engine: HttpClientEngine): HttpClient {
@@ -41,7 +46,15 @@ class HttpClientFactory(
             }
             defaultRequest {
                 contentType(ContentType.Application.Json)
-
+                
+                if (authService != null && !url.encodedPath.contains("anonymousauth", ignoreCase = true)) {
+                    runBlocking {
+                        val token = authService.getIdToken()
+                        if (token != null) {
+                            headers.append(HttpHeaders.Authorization, "Bearer $token")
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,0 +1,93 @@
+-- Migration 2: Support multiple servers for managed prices
+-- This migration only applies when upgrading from version 1 (which had aynix_prices)
+-- For fresh installs, the schema already has managed_prices
+
+-- Step 1: Check if we need to migrate (aynix_prices exists)
+-- If aynix_prices doesn't exist, this migration is skipped (fresh install)
+
+-- Step 2: Create new table only if it doesn't already exist
+CREATE TABLE IF NOT EXISTS managed_prices (
+    item_id INTEGER NOT NULL,
+    server_name TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    last_updated INTEGER NOT NULL,
+    PRIMARY KEY (item_id, server_name),
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+-- Step 3: Migrate data from aynix_prices if it exists
+-- Using INSERT OR IGNORE to avoid errors if table is already populated
+INSERT OR IGNORE INTO managed_prices (item_id, server_name, price, last_updated)
+SELECT item_id, 'reborn_teon', price, last_updated 
+FROM aynix_prices
+WHERE EXISTS (SELECT 1 FROM sqlite_master WHERE type='table' AND name='aynix_prices');
+
+-- Step 4: Drop old table if it exists
+DROP TABLE IF EXISTS aynix_prices;
+
+-- Step 5: Drop old index if it exists
+DROP INDEX IF EXISTS aynix_prices_item_id_idx;
+
+-- Step 6: Create indexes if they don't exist
+CREATE INDEX IF NOT EXISTS managed_prices_item_id_idx ON managed_prices(item_id);
+CREATE INDEX IF NOT EXISTS managed_prices_server_name_idx ON managed_prices(server_name);
+CREATE INDEX IF NOT EXISTS managed_prices_composite_idx ON managed_prices(item_id, server_name);
+
+-- Step 7: Update user_settings table to support server selection and rename is_aynix_prices
+-- Backup the data
+CREATE TEMPORARY TABLE IF NOT EXISTS user_settings_backup AS SELECT * FROM user_settings;
+
+-- Drop the old table
+DROP TABLE IF EXISTS user_settings;
+
+-- Recreate with new schema
+CREATE TABLE user_settings (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    user_guid TEXT NOT NULL DEFAULT '',
+    chronicle TEXT NOT NULL DEFAULT 'c5',
+    min_level INTEGER NOT NULL DEFAULT 1,
+    max_level INTEGER NOT NULL DEFAULT 85,
+    limit_results INTEGER NOT NULL DEFAULT 10,
+    show_rift_mobs INTEGER NOT NULL DEFAULT 0,
+    is_managed_prices INTEGER NOT NULL DEFAULT 0,
+    track_events INTEGER NOT NULL DEFAULT 1,
+    app_open_count INTEGER NOT NULL DEFAULT 0,
+    last_updated INTEGER NOT NULL DEFAULT 0,
+    last_prompt_date INTEGER NOT NULL DEFAULT 0,
+    session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
+    last_support_click_date INTEGER NOT NULL DEFAULT 0,
+    hp_multipliers TEXT NOT NULL DEFAULT '',
+    server TEXT NOT NULL DEFAULT 'reborn_teon'
+);
+
+-- Restore the data, handling both old column name (is_aynix_prices) and new (is_managed_prices)
+-- The backup will have whichever column name existed before, we just copy it as is
+INSERT OR IGNORE INTO user_settings (
+    id, user_guid, chronicle, min_level, max_level, limit_results, 
+    show_rift_mobs, is_managed_prices, track_events, app_open_count, 
+    last_updated, last_prompt_date, session_count_since_prompt, 
+    last_support_click_date, hp_multipliers, server
+)
+SELECT 
+    id, 
+    user_guid, 
+    chronicle, 
+    min_level, 
+    max_level, 
+    limit_results, 
+    show_rift_mobs,
+    is_aynix_prices as is_managed_prices,
+    track_events, 
+    app_open_count, 
+    last_updated, 
+    last_prompt_date, 
+    session_count_since_prompt, 
+    last_support_click_date, 
+    hp_multipliers,
+    'reborn_teon' as server
+FROM user_settings_backup
+WHERE EXISTS (SELECT 1 FROM sqlite_temp_master WHERE type='table' AND name='user_settings_backup');
+
+-- Drop the backup table
+DROP TABLE IF EXISTS user_settings_backup;
+

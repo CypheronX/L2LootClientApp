@@ -1,6 +1,8 @@
 package com.l2loot.data.firebase
 
 import com.l2loot.Config
+import com.l2loot.data.networking.models.EmptyRequest
+import com.l2loot.data.networking.models.SignInResponse
 import com.l2loot.data.networking.post
 import com.l2loot.domain.firebase.FirebaseAuthService
 import com.l2loot.domain.logging.LootLogger
@@ -8,7 +10,6 @@ import com.l2loot.domain.util.Result
 import io.ktor.client.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.Serializable
 import java.io.File
 import java.util.Properties
 
@@ -65,8 +66,7 @@ class FirebaseAuthServiceImpl(
                 val authResponse = result.data
                 currentIdToken = authResponse.idToken
 
-                val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: DEFAULT_TOKEN_LIFETIME_MS
-                tokenExpirationTime = System.currentTimeMillis() + expiresInMs
+                tokenExpirationTime = System.currentTimeMillis() + DEFAULT_TOKEN_LIFETIME_MS
 
                 persistToken()
                 true
@@ -117,15 +117,3 @@ class FirebaseAuthServiceImpl(
         }
     }
 }
-
-@Serializable
-private class EmptyRequest
-
-@Serializable
-private data class SignInResponse(
-    val idToken: String,
-    val expiresIn: String,
-    val refreshToken: String? = null,
-    val localId: String? = null
-)
-
