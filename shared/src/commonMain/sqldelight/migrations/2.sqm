@@ -17,10 +17,18 @@ CREATE TABLE IF NOT EXISTS managed_prices (
 
 -- Step 3: Migrate data from aynix_prices if it exists
 -- Using INSERT OR IGNORE to avoid errors if table is already populated
+-- First ensure aynix_prices exists for fresh installs
+CREATE TABLE IF NOT EXISTS aynix_prices (
+    item_id INTEGER NOT NULL PRIMARY KEY,
+    price INTEGER NOT NULL,
+    last_updated INTEGER NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+-- Now copy data if aynix_prices has any rows
 INSERT OR IGNORE INTO managed_prices (item_id, server_name, price, last_updated)
 SELECT item_id, 'reborn_teon', price, last_updated 
-FROM aynix_prices
-WHERE EXISTS (SELECT 1 FROM sqlite_master WHERE type='table' AND name='aynix_prices');
+FROM aynix_prices;
 
 -- Step 4: Drop old table if it exists
 DROP TABLE IF EXISTS aynix_prices;
@@ -76,7 +84,7 @@ SELECT
     max_level, 
     limit_results, 
     show_rift_mobs,
-    is_aynix_prices as is_managed_prices,
+    COALESCE(is_aynix_prices, is_managed_prices, 0) as is_managed_prices,
     track_events, 
     app_open_count, 
     last_updated, 
@@ -85,8 +93,7 @@ SELECT
     last_support_click_date, 
     hp_multipliers,
     'reborn_teon' as server
-FROM user_settings_backup
-WHERE EXISTS (SELECT 1 FROM sqlite_temp_master WHERE type='table' AND name='user_settings_backup');
+FROM user_settings_backup;
 
 -- Drop the backup table
 DROP TABLE IF EXISTS user_settings_backup;
