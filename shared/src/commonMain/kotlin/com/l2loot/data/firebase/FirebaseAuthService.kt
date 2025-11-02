@@ -21,6 +21,11 @@ class FirebaseAuthServiceImpl(
     private var tokenExpirationTime: Long = 0
     private val mutex = Mutex()
     
+    companion object {
+        private const val DEFAULT_TOKEN_LIFETIME_MS = 86400000L // 24 hours
+        private const val TOKEN_REFRESH_BUFFER_MS = 300000L // 5 minutes
+    }
+    
     private val tokenCacheFile: File by lazy {
         val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), Config.DB_DIR_NAME)
         if (!appDataDir.exists()) {
@@ -35,7 +40,7 @@ class FirebaseAuthServiceImpl(
 
     override suspend fun getIdToken(): String? {
         mutex.withLock {
-            if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - 300000) {
+            if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - TOKEN_REFRESH_BUFFER_MS) {
                 val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
                 logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
                 return currentIdToken
@@ -60,7 +65,7 @@ class FirebaseAuthServiceImpl(
                 val authResponse = result.data
                 currentIdToken = authResponse.idToken
 
-                val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: 3600000
+                val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: DEFAULT_TOKEN_LIFETIME_MS
                 tokenExpirationTime = System.currentTimeMillis() + expiresInMs
 
                 persistToken()
