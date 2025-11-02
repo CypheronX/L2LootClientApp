@@ -47,7 +47,10 @@ class HttpClientFactory(
             defaultRequest {
                 contentType(ContentType.Application.Json)
                 
-                if (authService != null && !url.encodedPath.contains("anonymousauth", ignoreCase = true)) {
+                val urlString = url.toString()
+                if (authService != null && 
+                    !urlString.contains("anonymousauth", ignoreCase = true) &&
+                    !urlString.contains("analytics", ignoreCase = true)) {
                     runBlocking {
                         val token = authService.getIdToken()
                         if (token != null) {
