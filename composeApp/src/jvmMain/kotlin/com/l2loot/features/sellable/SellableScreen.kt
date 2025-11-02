@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.l2loot.Config
+import com.l2loot.data.utils.time.formatTimestamp
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.sellable.components.SellableItem
 import com.l2loot.features.sellable.components.SellableItemData
@@ -172,6 +173,15 @@ fun SellableScreen() {
                                             },
                                             width = 240.dp
                                         )
+                                        
+                                        state.lastPriceUpdate?.let { timestamp ->
+                                            Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
+                                            Text(
+                                                text = "Last price update: ${formatTimestamp(timestamp)}",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                            )
+                                        }
                                     }
                                 }
                             }

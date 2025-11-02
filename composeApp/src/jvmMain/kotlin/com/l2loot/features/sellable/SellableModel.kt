@@ -13,6 +13,7 @@ internal data class SellableScreenState(
     val marketOwnersLink: String,
     val server: ServerName,
     val error: String?,
+    val lastPriceUpdate: Long?
 ) {
 
     private val allItemsWithoutAdena: List<SellableItem>
@@ -62,6 +63,7 @@ internal data class SellableScreenState(
             marketOwnersLink = "",
             server = ServerName.DEFAULT,
             error = null,
+            lastPriceUpdate = null
         )
     }
 }

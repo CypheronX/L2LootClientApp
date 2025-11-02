@@ -12,8 +12,10 @@ interface SellableRepository {
 
     suspend fun updateItemPrice(itemKey: String, newPrice: Long): Result<Unit, DataError.Local>
 
-    suspend fun fetchManagedPrices(serverName: ServerName, forceRefresh: Boolean = false): Result<Unit, DataError.Remote>
+    suspend fun fetchManagedPrices(serverName: ServerName, forceRefresh: Boolean = false): Result<Long?, DataError.Remote>
     
     suspend fun getAvailableServers(): Result<List<String>, DataError.Remote>
+    
+    suspend fun getLastPriceUpdateTime(serverName: ServerName): Long?
 }
 

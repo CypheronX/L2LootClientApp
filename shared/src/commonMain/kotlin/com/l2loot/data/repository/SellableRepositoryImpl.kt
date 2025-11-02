@@ -44,21 +44,28 @@ class SellableRepositoryImpl(
         }
     }
 
-    override suspend fun fetchManagedPrices(serverName: ServerName, forceRefresh: Boolean): Result<Unit, DataError.Remote> {
+    private data class FetchResult(
+        val items: List<SellableItem>,
+        val updatedTime: Long?
+    )
+
+    override suspend fun fetchManagedPrices(serverName: ServerName, forceRefresh: Boolean): Result<Long?, DataError.Remote> {
         if (!forceRefresh) {
             val now = System.currentTimeMillis()
             
             if (cachedManagedPrices[serverName] != null && (now - cacheTimestamp) < pollingIntervalMs) {
                 val remainingMinutes = (pollingIntervalMs - (now - cacheTimestamp)) / 60000
                 logger.info("Using cached ${serverName.displayName} prices ($remainingMinutes min until refresh)")
-                return Result.Success(Unit)
+                return Result.Success(null)
             }
         }
         
         return when (val result = fetchItemsFromFirebase(serverName)) {
             is Result.Success -> {
-                val items = result.data
+                val fetchResult = result.data
+                val items = fetchResult.items
                 val timestamp = System.currentTimeMillis()
+                val updateTimestamp = fetchResult.updatedTime?.let { it * 1000 } ?: timestamp
                 
                 cachedManagedPrices[serverName] = items
                 cacheTimestamp = timestamp
@@ -70,14 +77,14 @@ class SellableRepositoryImpl(
                                 item_id = item.itemId,
                                 server_name = serverName.serverKey,
                                 price = item.managedPrice ?: item.originalPrice,
-                                last_updated = timestamp
+                                last_updated = updateTimestamp
                             )
                         }
                     }
                 }
                 
                 logger.info("Fetched ${items.size} ${serverName.displayName} prices from Firebase (cached for 1 hour)")
-                Result.Success(Unit)
+                Result.Success(fetchResult.updatedTime?.let { it * 1000 })
             }
             is Result.Failure -> {
                 logger.error("Failed to fetch ${serverName.displayName} prices: ${result.error}")
@@ -112,7 +119,7 @@ class SellableRepositoryImpl(
         }
     }
 
-    private suspend fun fetchItemsFromFirebase(serverName: ServerName): Result<List<SellableItem>, DataError.Remote> {
+    private suspend fun fetchItemsFromFirebase(serverName: ServerName): Result<FetchResult, DataError.Remote> {
         val route = "${Config.SELLABLE_ITEMS_URL}?server=${serverName.serverKey}"
         
         return httpClient.get<ServerItemsResponse>(
@@ -123,7 +130,24 @@ class SellableRepositoryImpl(
             } else {
                 logger.info("Fetched ${response.items.size} items for server: ${response.server}")
             }
-            response.items.toDomainModels()
+            FetchResult(
+                items = response.items.toDomainModels(),
+                updatedTime = response.updatedTime
+            )
+        }
+    }
+    
+    override suspend fun getLastPriceUpdateTime(serverName: ServerName): Long? {
+        return withContext(Dispatchers.IO) {
+            try {
+                database.managedPricesQueries
+                    .getLastUpdateTime(serverName.serverKey)
+                    .executeAsOneOrNull()
+                    ?.MAX
+            } catch (e: Exception) {
+                logger.error("Failed to get last update time: ${e.message}")
+                null
+            }
         }
     }
 }

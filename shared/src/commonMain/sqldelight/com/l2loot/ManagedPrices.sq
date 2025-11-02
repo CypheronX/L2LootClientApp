@@ -42,6 +42,12 @@ deleteServerPrices:
 DELETE FROM managed_prices
 WHERE server_name = ?;
 
+-- Get the most recent update timestamp for a server
+getLastUpdateTime:
+SELECT MAX(last_updated)
+FROM managed_prices
+WHERE server_name = ?;
+
 -- Batch upsert (for bulk updates from API)
 -- You'll call this multiple times from code
 

@@ -47,6 +47,13 @@ internal class SellableViewModel(
                 if (newManagedPrices != oldManagedPrices || newServer != oldServer) {
                     loadSellableItems()
                 }
+                
+                if (newManagedPrices) {
+                    val timestamp = sellableRepository.getLastPriceUpdateTime(newServer)
+                    timestamp?.let {
+                        _state.update { state -> state.copy(lastPriceUpdate = it) }
+                    }
+                }
             }
         }
     }
@@ -64,6 +71,9 @@ internal class SellableViewModel(
                         when (val result = sellableRepository.fetchManagedPrices(currentServer)) {
                             is Result.Success -> {
                                 userSettingsRepository.updateIsManagedPrices(event.value)
+                                result.data?.let { updatedTime ->
+                                    _state.update { it.copy(lastPriceUpdate = updatedTime) }
+                                }
                             }
                             is Result.Failure -> {
                                 logger.error("Failed to fetch ${currentServer.displayName} prices: ${result.error}")
@@ -184,6 +194,9 @@ internal class SellableViewModel(
                 _state.update { it.copy(loading = true) }
                 when (val result = sellableRepository.fetchManagedPrices(server)) {
                     is Result.Success -> {
+                        result.data?.let { updatedTime ->
+                            _state.update { it.copy(lastPriceUpdate = updatedTime) }
+                        }
                         loadSellableItems()
                     }
                     is Result.Failure -> {
