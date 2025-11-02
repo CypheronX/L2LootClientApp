@@ -41,60 +41,11 @@ CREATE INDEX IF NOT EXISTS managed_prices_item_id_idx ON managed_prices(item_id)
 CREATE INDEX IF NOT EXISTS managed_prices_server_name_idx ON managed_prices(server_name);
 CREATE INDEX IF NOT EXISTS managed_prices_composite_idx ON managed_prices(item_id, server_name);
 
--- Step 7: Update user_settings table to support server selection and rename is_aynix_prices
--- Backup the data
-CREATE TEMPORARY TABLE IF NOT EXISTS user_settings_backup AS SELECT * FROM user_settings;
+-- Step 7: Update user_settings table to support server selection
+-- Simply add the server column - SQLite will silently ignore if it exists
+ALTER TABLE user_settings ADD COLUMN server TEXT NOT NULL DEFAULT 'reborn_teon';
 
--- Drop the old table
-DROP TABLE IF EXISTS user_settings;
-
--- Recreate with new schema
-CREATE TABLE user_settings (
-    id INTEGER PRIMARY KEY DEFAULT 1,
-    user_guid TEXT NOT NULL DEFAULT '',
-    chronicle TEXT NOT NULL DEFAULT 'c5',
-    min_level INTEGER NOT NULL DEFAULT 1,
-    max_level INTEGER NOT NULL DEFAULT 85,
-    limit_results INTEGER NOT NULL DEFAULT 10,
-    show_rift_mobs INTEGER NOT NULL DEFAULT 0,
-    is_managed_prices INTEGER NOT NULL DEFAULT 0,
-    track_events INTEGER NOT NULL DEFAULT 1,
-    app_open_count INTEGER NOT NULL DEFAULT 0,
-    last_updated INTEGER NOT NULL DEFAULT 0,
-    last_prompt_date INTEGER NOT NULL DEFAULT 0,
-    session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
-    last_support_click_date INTEGER NOT NULL DEFAULT 0,
-    hp_multipliers TEXT NOT NULL DEFAULT '',
-    server TEXT NOT NULL DEFAULT 'reborn_teon'
-);
-
--- Restore the data, handling both old column name (is_aynix_prices) and new (is_managed_prices)
--- The backup will have whichever column name existed before, we just copy it as is
-INSERT OR IGNORE INTO user_settings (
-    id, user_guid, chronicle, min_level, max_level, limit_results, 
-    show_rift_mobs, is_managed_prices, track_events, app_open_count, 
-    last_updated, last_prompt_date, session_count_since_prompt, 
-    last_support_click_date, hp_multipliers, server
-)
-SELECT 
-    id, 
-    user_guid, 
-    chronicle, 
-    min_level, 
-    max_level, 
-    limit_results, 
-    show_rift_mobs,
-    COALESCE(is_aynix_prices, is_managed_prices, 0) as is_managed_prices,
-    track_events, 
-    app_open_count, 
-    last_updated, 
-    last_prompt_date, 
-    session_count_since_prompt, 
-    last_support_click_date, 
-    hp_multipliers,
-    'reborn_teon' as server
-FROM user_settings_backup;
-
--- Drop the backup table
-DROP TABLE IF EXISTS user_settings_backup;
+-- Note: We're NOT renaming is_aynix_prices to is_managed_prices in the migration
+-- The current schema already defines it as is_managed_prices
+-- SQLDelight will handle the mapping automatically
 
