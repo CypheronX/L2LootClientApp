@@ -72,7 +72,8 @@ data class MonsterQueryParams(
     val limit: Int,
     val hpMultipliers: List<HPMultiplier>? = null,
     val includeRift: Boolean = false,
-    val useAynixPrices: Boolean = false
+    val useManagedPrices: Boolean = false,
+    val serverName: String = "reborn_teon"
 )
 
 /**

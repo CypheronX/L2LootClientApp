@@ -8,12 +8,13 @@ data class UserSettings(
     val maxLevel: Long?,
     val limit: Long,
     val showRiftMobs: Boolean,
-    val isAynixPrices: Boolean,
+    val isManagedPrices: Boolean,
     val trackEvents: Boolean,
     val appOpenCount: Long,
     val lastUpdated: Long?,
     val lastPromptDate: Long,
     val sessionCountSincePrompt: Long,
     val lastSupportClickDate: Long,
-    val hpMultipliers: Set<HPMultiplier>
+    val hpMultipliers: Set<HPMultiplier>,
+    val serverName: ServerName
 )

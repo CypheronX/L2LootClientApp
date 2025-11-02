@@ -93,7 +93,7 @@ class AnalyticsServiceImpl(
             parameters = jsonParams,
             clientId = userGuid,
             userId = userGuid,
-            timestamp = System.currentTimeMillis() / 1000
+            timestamp = System.currentTimeMillis() * 1000
         )
         
         val result = httpClient.post<ProxyPayload, Unit>(
@@ -106,7 +106,7 @@ class AnalyticsServiceImpl(
                 logger.debug("Analytics event '$eventName' sent successfully")
             }
             is Result.Failure -> {
-                logger.debug("Failed to send analytics event '$eventName': ${result.error}")
+                logger.error("Failed to send analytics event '$eventName': ${result.error}")
             }
         }
     }

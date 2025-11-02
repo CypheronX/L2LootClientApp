@@ -1,0 +1,72 @@
+-- Migrate from aynix_prices to managed_prices (multi-server support)
+-- Rename is_aynix_prices to is_managed_prices in user_settings
+
+-- Create managed_prices table
+CREATE TABLE IF NOT EXISTS managed_prices (
+    item_id INTEGER NOT NULL,
+    server_name TEXT NOT NULL,
+    price INTEGER NOT NULL,
+    last_updated INTEGER NOT NULL,
+    PRIMARY KEY (item_id, server_name),
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+-- Migrate data from aynix_prices if it exists
+CREATE TABLE IF NOT EXISTS aynix_prices (
+    item_id INTEGER NOT NULL PRIMARY KEY,
+    price INTEGER NOT NULL,
+    last_updated INTEGER NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES sellable_item(item_id) ON DELETE CASCADE
+);
+
+INSERT OR IGNORE INTO managed_prices (item_id, server_name, price, last_updated)
+SELECT item_id, 'reborn_teon', price, last_updated 
+FROM aynix_prices;
+
+DROP TABLE IF EXISTS aynix_prices;
+DROP INDEX IF EXISTS aynix_prices_item_id_idx;
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS managed_prices_item_id_idx ON managed_prices(item_id);
+CREATE INDEX IF NOT EXISTS managed_prices_server_name_idx ON managed_prices(server_name);
+CREATE INDEX IF NOT EXISTS managed_prices_composite_idx ON managed_prices(item_id, server_name);
+
+-- Recreate user_settings table with new column names
+CREATE TABLE user_settings_new (
+    id INTEGER PRIMARY KEY DEFAULT 1,
+    user_guid TEXT NOT NULL DEFAULT '',
+    chronicle TEXT NOT NULL DEFAULT 'c5',
+    min_level INTEGER NOT NULL DEFAULT 1,
+    max_level INTEGER NOT NULL DEFAULT 85,
+    limit_results INTEGER NOT NULL DEFAULT 10,
+    show_rift_mobs INTEGER NOT NULL DEFAULT 0,
+    is_managed_prices INTEGER NOT NULL DEFAULT 0,
+    track_events INTEGER NOT NULL DEFAULT 1,
+    app_open_count INTEGER NOT NULL DEFAULT 0,
+    last_updated INTEGER NOT NULL DEFAULT 0,
+    last_prompt_date INTEGER NOT NULL DEFAULT 0,
+    session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
+    last_support_click_date INTEGER NOT NULL DEFAULT 0,
+    hp_multipliers TEXT NOT NULL DEFAULT '',
+    server TEXT NOT NULL DEFAULT 'reborn_teon'
+);
+
+-- Copy data, mapping is_aynix_prices to is_managed_prices
+INSERT INTO user_settings_new (
+    id, user_guid, chronicle, min_level, max_level, limit_results,
+    show_rift_mobs, is_managed_prices, track_events, app_open_count,
+    last_updated, last_prompt_date, session_count_since_prompt,
+    last_support_click_date, hp_multipliers, server
+)
+SELECT
+    id, user_guid, chronicle, min_level, max_level, limit_results,
+    show_rift_mobs, 
+    COALESCE(is_aynix_prices, 0),
+    track_events, app_open_count,
+    last_updated, last_prompt_date, session_count_since_prompt,
+    last_support_click_date, hp_multipliers, 
+    'reborn_teon'
+FROM user_settings;
+
+DROP TABLE user_settings;
+ALTER TABLE user_settings_new RENAME TO user_settings;

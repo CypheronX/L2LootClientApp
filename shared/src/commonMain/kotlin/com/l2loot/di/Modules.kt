@@ -15,6 +15,7 @@ import com.l2loot.domain.repository.LoadDbDataRepository
 import com.l2loot.domain.repository.MonsterRepository
 import com.l2loot.domain.repository.UserSettingsRepository
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
@@ -24,9 +25,12 @@ val sharedModule = module {
     // Logger
     single<LootLogger> { KermitLogger }
     
-    // HttpClient
-    single { HttpClientFactory(get()) }
-    single { get<HttpClientFactory>().create(get()) }
+    single(qualifier = named("unauthenticated")) { 
+        HttpClientFactory(get(), null).create(get()) 
+    }
+    single { 
+        HttpClientFactory(get(), get()).create(get()) 
+    }
     
     // Repositories
     singleOf(::MonsterRepositoryImpl) bind MonsterRepository::class

@@ -1,11 +1,13 @@
 package com.l2loot.updater
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l2loot.theme.AppTheme
@@ -42,7 +44,8 @@ sealed class UpdateState {
 @Composable
 fun UpdaterWindow(
     arguments: UpdaterArguments,
-    onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit
+    onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit,
+    circularProgressionSize: Dp = 48.dp
 ) {
     var updateState by remember { mutableStateOf<UpdateState>(UpdateState.Checking) }
     var progress by remember { mutableFloatStateOf(0f) }
@@ -128,12 +131,14 @@ fun UpdaterWindow(
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface
+            shape = RoundedCornerShape(LocalSpacing.current.space28),
+            color = MaterialTheme.colorScheme.surface,
+            shadowElevation = LocalSpacing.current.space8
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp),
+                    .padding(LocalSpacing.current.space32),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -144,16 +149,16 @@ fun UpdaterWindow(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(LocalSpacing.current.space32))
                 
                 when (updateState) {
                     is UpdateState.Checking -> {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(circularProgressionSize),
                             color = MaterialTheme.colorScheme.primary
                         )
                         
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.space16))
                         
                         Text(
                             text = statusText,
@@ -200,7 +205,7 @@ fun UpdaterWindow(
                             progress = { progress },
                             gapSize = LocalSpacing.current.none,
                             drawStopIndicator = { },
-                            modifier = Modifier.padding(horizontal = 32.dp)
+                            modifier = Modifier.padding(horizontal = LocalSpacing.current.space32)
                                 .fillMaxWidth(fraction = 0.6f)
                         )
                         Spacer(modifier = Modifier.size(LocalSpacing.current.space16))

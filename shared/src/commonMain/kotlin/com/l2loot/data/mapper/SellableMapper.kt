@@ -11,7 +11,7 @@ fun GetAllItemsWithPrices.toDomainModel(): SellableItem {
         key = key,
         name = name,
         originalPrice = original_price,
-        aynixPrice = aynix_price
+        managedPrice = managed_price
     )
 }
 
@@ -21,7 +21,7 @@ fun SellableItemJson.toDomainModel(): SellableItem {
         key = key,
         name = name,
         originalPrice = 0,
-        aynixPrice = price
+        managedPrice = price
     )
 }
 

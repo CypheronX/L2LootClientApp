@@ -37,6 +37,13 @@ actual class DriverFactory {
                 println("🆕 Creating new database at: $dbPath")
             }
             L2LootDatabase.Schema.create(driver)
+            
+            val latestVersion = L2LootDatabase.Schema.version.toLong()
+            driver.execute(null, "PRAGMA user_version = $latestVersion", 0)
+            
+            if (Config.IS_DEBUG) {
+                println("✅ New database created at version $latestVersion")
+            }
         } else {
             if (Config.IS_DEBUG) {
                 println("✅ Using existing database at: $dbPath")
@@ -59,11 +66,16 @@ actual class DriverFactory {
                             if (Config.IS_DEBUG) {
                                 println("  📝 Rebuilt droplist table to support duplicate drops (double spoils)")
                             }
+                        },
+                        AfterVersion(2) { driver ->
+                            if (Config.IS_DEBUG) {
+                                println("  📝 Multi-server support: renamed is_aynix_prices to is_managed_prices and added server selection")
+                            }
                         }
                         // Add more migrations here as needed:
-                        // AfterVersion(2) { driver ->
+                        // AfterVersion(3) { driver ->
                         //     if (Config.IS_DEBUG) {
-                        //         println("  📝 Description of migration 2...")
+                        //         println("  📝 Description of migration 3...")
                         //     }
                         // }
                     )

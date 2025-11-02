@@ -1,6 +1,8 @@
 package com.l2loot.data.firebase
 
 import com.l2loot.Config
+import com.l2loot.data.networking.models.EmptyRequest
+import com.l2loot.data.networking.models.SignInResponse
 import com.l2loot.data.networking.post
 import com.l2loot.domain.firebase.FirebaseAuthService
 import com.l2loot.domain.logging.LootLogger
@@ -8,7 +10,6 @@ import com.l2loot.domain.util.Result
 import io.ktor.client.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.Serializable
 import java.io.File
 import java.util.Properties
 
@@ -20,6 +21,11 @@ class FirebaseAuthServiceImpl(
     private var currentIdToken: String? = null
     private var tokenExpirationTime: Long = 0
     private val mutex = Mutex()
+    
+    companion object {
+        private const val DEFAULT_TOKEN_LIFETIME_MS = 86400000L // 24 hours
+        private const val TOKEN_REFRESH_BUFFER_MS = 300000L // 5 minutes
+    }
     
     private val tokenCacheFile: File by lazy {
         val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), Config.DB_DIR_NAME)
@@ -35,7 +41,7 @@ class FirebaseAuthServiceImpl(
 
     override suspend fun getIdToken(): String? {
         mutex.withLock {
-            if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - 300000) {
+            if (currentIdToken != null && System.currentTimeMillis() < tokenExpirationTime - TOKEN_REFRESH_BUFFER_MS) {
                 val remainingMinutes = (tokenExpirationTime - System.currentTimeMillis()) / 60000
                 logger.debug("Reusing cached auth token ($remainingMinutes min remaining)")
                 return currentIdToken
@@ -60,8 +66,7 @@ class FirebaseAuthServiceImpl(
                 val authResponse = result.data
                 currentIdToken = authResponse.idToken
 
-                val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: 3600000
-                tokenExpirationTime = System.currentTimeMillis() + expiresInMs
+                tokenExpirationTime = System.currentTimeMillis() + DEFAULT_TOKEN_LIFETIME_MS
 
                 persistToken()
                 true
@@ -112,15 +117,3 @@ class FirebaseAuthServiceImpl(
         }
     }
 }
-
-@Serializable
-private class EmptyRequest
-
-@Serializable
-private data class SignInResponse(
-    val idToken: String,
-    val expiresIn: String,
-    val refreshToken: String? = null,
-    val localId: String? = null
-)
-
