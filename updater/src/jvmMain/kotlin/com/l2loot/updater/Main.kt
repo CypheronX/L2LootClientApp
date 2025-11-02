@@ -39,13 +39,11 @@ fun main(args: Array<String>) {
                 position = WindowPosition(Alignment.Center)
             ),
             resizable = false,
-            alwaysOnTop = true
         ) {
             UpdaterWindow(
                 arguments = arguments,
                 onComplete = { success, scope ->
                     if (success) {
-                        // Launch the updated app
                         scope.launch {
                             launchApp(arguments.appExePath)
                             exitApplication()
@@ -91,7 +89,6 @@ fun parseArguments(args: Array<String>): UpdaterArguments {
  */
 suspend fun launchApp(appExePath: String) = withContext(Dispatchers.IO) {
     try {
-        // Small delay to ensure updater window closes
         delay(500)
         
         val appExe = File(appExePath)
