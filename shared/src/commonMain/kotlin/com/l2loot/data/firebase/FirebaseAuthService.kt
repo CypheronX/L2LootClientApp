@@ -23,7 +23,7 @@ class FirebaseAuthServiceImpl(
     private val mutex = Mutex()
     
     companion object {
-        private const val DEFAULT_TOKEN_LIFETIME_MS = 86400000L // 24 hours
+        private const val DEFAULT_TOKEN_LIFETIME_MS = 3600000L // 1 hour (fallback)
         private const val TOKEN_REFRESH_BUFFER_MS = 300000L // 5 minutes
     }
     
@@ -66,7 +66,8 @@ class FirebaseAuthServiceImpl(
                 val authResponse = result.data
                 currentIdToken = authResponse.idToken
 
-                tokenExpirationTime = System.currentTimeMillis() + DEFAULT_TOKEN_LIFETIME_MS
+                val expiresInMs = authResponse.expiresIn.toLongOrNull()?.times(1000) ?: DEFAULT_TOKEN_LIFETIME_MS
+                tokenExpirationTime = System.currentTimeMillis() + expiresInMs
 
                 persistToken()
                 true
