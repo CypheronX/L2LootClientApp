@@ -109,6 +109,13 @@ fun UpdaterWindow(
                     statusText = "Installing update... ${(installProgress * 100).toInt()}%"
                 }
                 
+                // Update Windows registry version
+                try {
+                    updateWindowsRegistryVersion(updateInfo.version)
+                } catch (e: Exception) {
+                    println("Warning: Failed to update registry version: ${e.message}")
+                }
+                
                 // Cleanup
                 zipFile.toPath().deleteIfExists()
                 extractedDir.deleteRecursively()
@@ -330,6 +337,56 @@ suspend fun installUpdate(
         }
         
         onProgress((index + 1).toFloat() / totalFiles)
+    }
+}
+
+/**
+ * Update Windows registry DisplayVersion to reflect the new version
+ * This ensures Windows Apps & Features shows the correct version
+ */
+suspend fun updateWindowsRegistryVersion(newVersion: String) = withContext(Dispatchers.IO) {
+    try {
+        // Known upgrade UUIDs for each flavor
+        val upgradeUuids = listOf(
+            "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c", // prod
+            "c0e1f9f6-7f6f-6f0c-be5d-0f4f3f6c7d8e", // stage
+            "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"  // dev
+        )
+        
+        for (uuid in upgradeUuids) {
+            val registryPath = "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$uuid"
+            
+            val checkProcess = ProcessBuilder(
+                "reg", "query", registryPath, "/v", "DisplayVersion"
+            ).redirectErrorStream(true).start()
+            
+            val exitCode = checkProcess.waitFor()
+            
+            if (exitCode == 0) {
+                println("Updating registry version at: $registryPath")
+                
+                val updateProcess = ProcessBuilder(
+                    "reg", "add", registryPath,
+                    "/v", "DisplayVersion",
+                    "/t", "REG_SZ",
+                    "/d", newVersion,
+                    "/f"
+                ).redirectErrorStream(true).start()
+                
+                val updateResult = updateProcess.waitFor()
+                
+                if (updateResult == 0) {
+                    println("✓ Successfully updated Windows registry version to $newVersion")
+                } else {
+                    println("⚠ Registry update command failed with exit code: $updateResult")
+                }
+                
+                break
+            }
+        }
+    } catch (e: Exception) {
+        println("Error updating registry: ${e.message}")
+        throw e
     }
 }
 
