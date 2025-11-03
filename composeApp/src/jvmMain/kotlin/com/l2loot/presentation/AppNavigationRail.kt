@@ -2,6 +2,8 @@ package com.l2loot.presentation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,12 +18,14 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.PointerIcon
 import androidx.compose.ui.input.pointer.pointerHoverIcon
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import com.l2loot.Config
 import com.l2loot.design.LocalSpacing
@@ -55,6 +59,8 @@ fun AppNavigationRail(
     availableUpdate: UpdateInfo?,
     modifier: Modifier = Modifier
 ) {
+    val uriHandler = LocalUriHandler.current
+
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
         header = {
@@ -62,12 +68,19 @@ fun AppNavigationRail(
                 Column(
                     modifier = Modifier.padding(top = LocalSpacing.current.space36)
                         .padding(horizontal = LocalSpacing.current.space10),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Image(
                         painter = logo,
                         contentDescription = null,
-                        modifier = Modifier.size(95.dp, 37.dp)
+                        modifier = Modifier.size(95.dp, 62.dp)
+                            .clickable(
+                                indication = null,
+                                interactionSource = remember { MutableInteractionSource() }
+                            ) {
+                                uriHandler.openUri("https://lineage2wiki.org/")
+                            }
+                            .pointerHoverIcon(PointerIcon.Hand)
                     )
                 }
             }
