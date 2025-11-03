@@ -35,8 +35,60 @@ class FirebaseAuthServiceImpl(
         File(appDataDir, "auth_cache.properties")
     }
     
+    private val versionFile: File by lazy {
+        val appDataDir = File(System.getenv("APPDATA") ?: System.getProperty("user.home"), Config.DB_DIR_NAME)
+        if (!appDataDir.exists()) {
+            appDataDir.mkdirs()
+        }
+        File(appDataDir, "app_version.properties")
+    }
+    
     init {
+        checkVersionAndClearCacheIfNeeded()
         loadPersistedToken()
+    }
+    
+    /**
+     * Check if app version has changed and clear auth cache if so
+     * This ensures stale tokens from previous versions don't cause issues
+     * 
+     * Clears cache if:
+     * - Version file doesn't exist (upgrading from old version without tracking)
+     * - Version file exists but version is different
+     */
+    private fun checkVersionAndClearCacheIfNeeded() {
+        try {
+            val currentVersion = Config.VERSION_NAME
+            var lastVersion: String? = null
+            var shouldClearCache = false
+            
+            if (versionFile.exists()) {
+                val props = Properties()
+                versionFile.inputStream().use { props.load(it) }
+                lastVersion = props.getProperty("version")
+                
+                if (lastVersion != currentVersion) {
+                    logger.info("App version changed from $lastVersion to $currentVersion - clearing auth cache")
+                    shouldClearCache = true
+                }
+            } else {
+                logger.info("No version tracking file found - likely first run after upgrade - clearing auth cache")
+                shouldClearCache = true
+            }
+            
+            if (shouldClearCache && tokenCacheFile.exists()) {
+                tokenCacheFile.delete()
+                logger.info("Auth cache cleared successfully")
+            }
+            
+            val props = Properties()
+            props.setProperty("version", currentVersion)
+            props.setProperty("lastUpdated", System.currentTimeMillis().toString())
+            versionFile.outputStream().use { props.store(it, "App Version Tracking") }
+            
+        } catch (e: Exception) {
+            logger.warn("Failed to check version: ${e.message}")
+        }
     }
 
     override suspend fun getIdToken(): String? {
