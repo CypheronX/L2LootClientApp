@@ -39,12 +39,12 @@ SELECT
     -- Selected sellable_item columns
     si.key AS item_key,
     si.name AS item_name,
-    -- Use Aynix price if available and user setting enabled, otherwise use original price
+    -- Use managed price if available and user setting enabled, otherwise use original price
     COALESCE(ap.price, si.item_price) AS item_price
 FROM monsters m
 INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+LEFT JOIN managed_prices ap ON si.item_id = ap.item_id AND ap.server_name = :serverName AND :useManagedPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.is_rift = 0
@@ -74,7 +74,7 @@ SELECT
 FROM monsters m
 INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+LEFT JOIN managed_prices ap ON si.item_id = ap.item_id AND ap.server_name = :serverName AND :useManagedPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.hp_multiplier IN :hpMultipliers
@@ -106,7 +106,7 @@ SELECT
 FROM monsters m
 INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+LEFT JOIN managed_prices ap ON si.item_id = ap.item_id AND ap.server_name = :serverName AND :useManagedPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.chronicle = :chronicle
@@ -136,7 +136,7 @@ SELECT
 FROM monsters m
 INNER JOIN droplist d ON m.id = d.mob_id AND d.chronicle = m.chronicle
 INNER JOIN sellable_item si ON d.item_id = si.item_id
-LEFT JOIN aynix_prices ap ON si.item_id = ap.item_id AND :useAynixPrices = 1
+LEFT JOIN managed_prices ap ON si.item_id = ap.item_id AND ap.server_name = :serverName AND :useManagedPrices = 1
 WHERE m.level >= :minLevel
   AND m.level <= :maxLevel
   AND m.hp_multiplier IN :hpMultipliers

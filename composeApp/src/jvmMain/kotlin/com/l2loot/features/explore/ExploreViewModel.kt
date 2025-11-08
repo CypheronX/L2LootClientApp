@@ -35,8 +35,9 @@ internal class ExploreViewModel(
                     maxLevel = initialSettings?.maxLevel?.toString() ?: "",
                     chronicle = initialSettings?.chronicle ?: "c5",
                     showRiftMobs = initialSettings?.showRiftMobs ?: false,
-                    useAynixPrices = initialSettings?.isAynixPrices ?: false,
-                    selectedHPMultipliers = initialSettings?.hpMultipliers ?: emptySet()
+                    useManagedPrices = initialSettings?.isManagedPrices ?: false,
+                    selectedHPMultipliers = initialSettings?.hpMultipliers ?: emptySet(),
+                    serverName = initialSettings?.serverName?.serverKey ?: "reborn_teon"
                 )
             }
             
@@ -50,8 +51,9 @@ internal class ExploreViewModel(
                         maxLevel = settings?.maxLevel?.toString() ?: "",
                         chronicle = settings?.chronicle ?: "c5",
                         showRiftMobs = settings?.showRiftMobs ?: false,
-                        useAynixPrices = settings?.isAynixPrices ?: false,
-                        selectedHPMultipliers = settings?.hpMultipliers ?: emptySet()
+                        useManagedPrices = settings?.isManagedPrices ?: false,
+                        selectedHPMultipliers = settings?.hpMultipliers ?: emptySet(),
+                        serverName = settings?.serverName?.serverKey ?: "reborn_teon"
                     )
                 }
             }

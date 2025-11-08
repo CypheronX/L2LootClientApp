@@ -1,16 +1,19 @@
 package com.l2loot.features.sellable
 
 import com.l2loot.domain.model.SellableItem
+import com.l2loot.domain.model.ServerName
 import com.l2loot.extensions.abbreviationMatch
 
 internal data class SellableScreenState(
     val items: List<SellableItem>,
     val loading: Boolean,
-    val pricesByAynix: Boolean,
+    val managedPrices: Boolean,
     val prices: Map<String, String>,
     val searchValue: String,
     val marketOwnersLink: String,
+    val server: ServerName,
     val error: String?,
+    val lastPriceUpdate: Long?
 ) {
 
     private val allItemsWithoutAdena: List<SellableItem>
@@ -53,12 +56,14 @@ internal data class SellableScreenState(
     companion object {
         fun initial() = SellableScreenState(
             items = emptyList(),
-            pricesByAynix = false,
+            managedPrices = false,
             loading = true,
             prices = emptyMap(),
             searchValue = "",
             marketOwnersLink = "",
+            server = ServerName.DEFAULT,
             error = null,
+            lastPriceUpdate = null
         )
     }
 }
@@ -67,4 +72,5 @@ internal sealed interface SellableScreenEvent {
     data class PriceChanged(val itemKey: String, val price: String) : SellableScreenEvent
     data class TogglePriceSource(val value: Boolean) : SellableScreenEvent
     data class OnSearch(val value: String) : SellableScreenEvent
+    data class ServerChanged(val server: ServerName) : SellableScreenEvent
 }

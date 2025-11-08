@@ -1,11 +1,13 @@
 package com.l2loot.updater
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l2loot.theme.AppTheme
@@ -42,7 +44,8 @@ sealed class UpdateState {
 @Composable
 fun UpdaterWindow(
     arguments: UpdaterArguments,
-    onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit
+    onComplete: (success: Boolean, scope: kotlinx.coroutines.CoroutineScope) -> Unit,
+    circularProgressionSize: Dp = 48.dp
 ) {
     var updateState by remember { mutableStateOf<UpdateState>(UpdateState.Checking) }
     var progress by remember { mutableFloatStateOf(0f) }
@@ -106,6 +109,13 @@ fun UpdaterWindow(
                     statusText = "Installing update... ${(installProgress * 100).toInt()}%"
                 }
                 
+                // Update Windows registry version
+                try {
+                    updateWindowsRegistryVersion(updateInfo.version)
+                } catch (e: Exception) {
+                    println("Warning: Failed to update registry version: ${e.message}")
+                }
+                
                 // Cleanup
                 zipFile.toPath().deleteIfExists()
                 extractedDir.deleteRecursively()
@@ -128,12 +138,14 @@ fun UpdaterWindow(
     AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface
+            shape = RoundedCornerShape(LocalSpacing.current.space28),
+            color = MaterialTheme.colorScheme.surface,
+            shadowElevation = LocalSpacing.current.space8
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(32.dp),
+                    .padding(LocalSpacing.current.space32),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -144,16 +156,16 @@ fun UpdaterWindow(
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(LocalSpacing.current.space32))
                 
                 when (updateState) {
                     is UpdateState.Checking -> {
                         CircularProgressIndicator(
-                            modifier = Modifier.size(48.dp),
+                            modifier = Modifier.size(circularProgressionSize),
                             color = MaterialTheme.colorScheme.primary
                         )
                         
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(LocalSpacing.current.space16))
                         
                         Text(
                             text = statusText,
@@ -200,7 +212,7 @@ fun UpdaterWindow(
                             progress = { progress },
                             gapSize = LocalSpacing.current.none,
                             drawStopIndicator = { },
-                            modifier = Modifier.padding(horizontal = 32.dp)
+                            modifier = Modifier.padding(horizontal = LocalSpacing.current.space32)
                                 .fillMaxWidth(fraction = 0.6f)
                         )
                         Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
@@ -325,6 +337,56 @@ suspend fun installUpdate(
         }
         
         onProgress((index + 1).toFloat() / totalFiles)
+    }
+}
+
+/**
+ * Update Windows registry DisplayVersion to reflect the new version
+ * This ensures Windows Apps & Features shows the correct version
+ */
+suspend fun updateWindowsRegistryVersion(newVersion: String) = withContext(Dispatchers.IO) {
+    try {
+        // Known upgrade UUIDs for each flavor
+        val upgradeUuids = listOf(
+            "a8e9c7c4-5f4d-4e8a-9c3b-8f2d1e4a5b6c", // prod
+            "c0e1f9f6-7f6f-6f0c-be5d-0f4f3f6c7d8e", // stage
+            "b9f0d8d5-6f5e-5f9b-ad4c-9f3e2f5b6c7d"  // dev
+        )
+        
+        for (uuid in upgradeUuids) {
+            val registryPath = "HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\$uuid"
+            
+            val checkProcess = ProcessBuilder(
+                "reg", "query", registryPath, "/v", "DisplayVersion"
+            ).redirectErrorStream(true).start()
+            
+            val exitCode = checkProcess.waitFor()
+            
+            if (exitCode == 0) {
+                println("Updating registry version at: $registryPath")
+                
+                val updateProcess = ProcessBuilder(
+                    "reg", "add", registryPath,
+                    "/v", "DisplayVersion",
+                    "/t", "REG_SZ",
+                    "/d", newVersion,
+                    "/f"
+                ).redirectErrorStream(true).start()
+                
+                val updateResult = updateProcess.waitFor()
+                
+                if (updateResult == 0) {
+                    println("✓ Successfully updated Windows registry version to $newVersion")
+                } else {
+                    println("⚠ Registry update command failed with exit code: $updateResult")
+                }
+                
+                break
+            }
+        }
+    } catch (e: Exception) {
+        println("Error updating registry: ${e.message}")
+        throw e
     }
 }
 

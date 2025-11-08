@@ -26,7 +26,8 @@ class BasicMonsterQueryStrategy(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
             chronicle = params.chronicle,
-            useAynixPrices = if (params.useAynixPrices) 1 else 0
+            useManagedPrices = if (params.useManagedPrices) 1 else 0,
+            serverName = params.serverName
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -89,7 +90,8 @@ class HPFilteredMonsterQueryStrategy(
             maxLevel = params.maxLevel.toLong(),
             hpMultipliers = params.hpMultipliers,
             chronicle = params.chronicle,
-            useAynixPrices = if (params.useAynixPrices) 1 else 0
+            useManagedPrices = if (params.useManagedPrices) 1 else 0,
+            serverName = params.serverName
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -148,7 +150,8 @@ class RiftIncludedMonsterQueryStrategy(
             minLevel = params.minLevel.toLong(),
             maxLevel = params.maxLevel.toLong(),
             chronicle = params.chronicle,
-            useAynixPrices = if (params.useAynixPrices) 1 else 0
+            useManagedPrices = if (params.useManagedPrices) 1 else 0,
+            serverName = params.serverName
         )
             .asFlow()
             .mapToList(Dispatchers.IO)
@@ -211,7 +214,8 @@ class HPFilteredRiftIncludedMonsterQueryStrategy(
             maxLevel = params.maxLevel.toLong(),
             hpMultipliers = params.hpMultipliers,
             chronicle = params.chronicle,
-            useAynixPrices = if (params.useAynixPrices) 1 else 0
+            useManagedPrices = if (params.useManagedPrices) 1 else 0,
+            serverName = params.serverName
         )
             .asFlow()
             .mapToList(Dispatchers.IO)

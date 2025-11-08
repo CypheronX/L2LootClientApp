@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -138,22 +140,25 @@ class MainViewModel(
             }
         }
 
-        // Handle Aynix prices fetch
+        // Handle Managed prices fetch
         viewModelScope.launch {
-            state.collect { currentState ->
-                val authState = currentState.authState
-                if (authState == AuthState.Success) {
-                    try {
-                        val settings = userSettingsRepository.getSettings().firstOrNull()
-                        if (settings?.isAynixPrices == true) {
-                            sellableRepository.fetchAynixPrices(forceRefresh = true)
-                        }
-                    } catch (e: Exception) {
-                        logger.error("Failed to auto-fetch Aynix prices on startup", e)
+            val authState = state.first { it.authState != AuthState.Loading }.authState
+            
+            if (authState == AuthState.Success) {
+                try {
+                    val settings = userSettingsRepository.getSettings().filterNotNull().first()
+                    if (settings.isManagedPrices) {
+                        logger.info("Fetching managed prices on startup for server: ${settings.serverName.displayName}")
+                        sellableRepository.fetchManagedPrices(
+                            serverName = settings.serverName,
+                            forceRefresh = true
+                        )
                     }
-                } else if (authState == AuthState.Failed) {
-                    logger.warn("Skipping Aynix price fetch due to authentication failure")
+                } catch (e: Exception) {
+                    logger.error("Failed to auto-fetch managed prices on startup", e)
                 }
+            } else {
+                logger.warn("Skipping managed price fetch due to authentication failure")
             }
         }
     }

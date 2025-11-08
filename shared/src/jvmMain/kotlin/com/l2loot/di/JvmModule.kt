@@ -11,6 +11,7 @@ import com.l2loot.domain.firebase.AnalyticsService
 import com.l2loot.domain.repository.UpdateCheckerRepository
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val jvmModule = module {
@@ -24,5 +25,5 @@ val jvmModule = module {
     // Services
     single<AnalyticsService> { AnalyticsServiceImpl(get(), get()) }
     single<UpdateCheckerRepository> { UpdateCheckerRepositoryImpl(httpClient = get(), logger = get()) }
-    single<FirebaseAuthService> { FirebaseAuthServiceImpl(get(), get()) }
+    single<FirebaseAuthService> { FirebaseAuthServiceImpl(get(named("unauthenticated")), get()) }
 }

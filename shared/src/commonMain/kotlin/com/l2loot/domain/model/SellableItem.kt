@@ -5,12 +5,12 @@ data class SellableItem(
     val key: String,
     val name: String,
     val originalPrice: Long,
-    val aynixPrice: Long? = null
+    val managedPrice: Long? = null
 ) {
 
-    fun getDisplayPrice(useAynixPrices: Boolean): Long {
-        return if (useAynixPrices && aynixPrice != null) {
-            aynixPrice
+    fun getDisplayPrice(useManagedPrices: Boolean): Long {
+        return if (useManagedPrices && managedPrice != null) {
+            managedPrice
         } else {
             originalPrice
         }

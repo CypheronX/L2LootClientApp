@@ -9,14 +9,15 @@ CREATE TABLE user_settings (
     max_level INTEGER NOT NULL DEFAULT 85,
     limit_results INTEGER NOT NULL DEFAULT 10,
     show_rift_mobs INTEGER AS Boolean NOT NULL DEFAULT 0,
-    is_aynix_prices INTEGER AS Boolean NOT NULL DEFAULT 0,
+    is_managed_prices INTEGER AS Boolean NOT NULL DEFAULT 0,
     track_events INTEGER AS Boolean NOT NULL DEFAULT 1,
     app_open_count INTEGER NOT NULL DEFAULT 0,
     last_updated INTEGER NOT NULL DEFAULT 0,
     last_prompt_date INTEGER NOT NULL DEFAULT 0,
     session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
     last_support_click_date INTEGER NOT NULL DEFAULT 0,
-    hp_multipliers TEXT NOT NULL DEFAULT ''
+    hp_multipliers TEXT NOT NULL DEFAULT '',
+    server TEXT NOT NULL DEFAULT 'reborn_teon'
 );
 
 -- Get current settings (will return null if no settings exist)
@@ -27,7 +28,7 @@ WHERE id = 1;
 
 -- Insert or update settings (UPSERT)
 upsertSettings:
-INSERT INTO user_settings (id, chronicle, min_level, max_level, limit_results, show_rift_mobs, is_aynix_prices, last_updated)
+INSERT INTO user_settings (id, chronicle, min_level, max_level, limit_results, show_rift_mobs, is_managed_prices, last_updated)
 VALUES (1, ?, ?, ?, ?, ?, ?, ?)
 ON CONFLICT(id) DO UPDATE SET
     chronicle = excluded.chronicle,
@@ -35,7 +36,7 @@ ON CONFLICT(id) DO UPDATE SET
     max_level = excluded.max_level,
     limit_results = excluded.limit_results,
     show_rift_mobs = excluded.show_rift_mobs,
-    is_aynix_prices = excluded.is_aynix_prices,
+    is_managed_prices = excluded.is_managed_prices,
     last_updated = excluded.last_updated;
 
 updateUserGuid:
@@ -79,9 +80,9 @@ UPDATE user_settings
 SET show_rift_mobs = ?, last_updated = ?
 WHERE id = 1;
 
-updateIsAynixPrices:
+updateIsManagedPrices:
 UPDATE user_settings
-SET is_aynix_prices = ?, last_updated = ?
+SET is_managed_prices = ?, last_updated = ?
 WHERE id = 1;
 
 incrementAppOpenCount:
@@ -107,6 +108,11 @@ WHERE id = 1;
 updateHPMultipliers:
 UPDATE user_settings
 SET hp_multipliers = ?, last_updated = ?
+WHERE id = 1;
+
+updateChosenServer:
+UPDATE user_settings
+SET server = ?
 WHERE id = 1;
 
 -- Initialize with defaults if no settings exist

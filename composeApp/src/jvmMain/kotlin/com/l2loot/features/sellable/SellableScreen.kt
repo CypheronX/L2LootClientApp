@@ -1,8 +1,10 @@
 package com.l2loot.features.sellable
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.ScrollbarStyle
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.background
@@ -37,12 +39,15 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.l2loot.Config
+import com.l2loot.data.utils.time.formatTimestamp
 import com.l2loot.design.LocalSpacing
 import com.l2loot.features.sellable.components.SellableItem
 import com.l2loot.features.sellable.components.SellableItemData
 import com.l2loot.features.sellable.components.SellableItemShimmer
 import com.l2loot.designsystem.components.NoResultsFound
 import com.l2loot.designsystem.components.SearchInput
+import com.l2loot.designsystem.components.SelectInput
+import com.l2loot.domain.model.ServerName
 import l2loot.composeapp.generated.resources.Res
 import org.jetbrains.compose.resources.decodeToSvgPainter
 import org.koin.compose.viewmodel.koinViewModel
@@ -54,6 +59,7 @@ fun SellableScreen() {
     val horizontalScrollState = rememberScrollState()
     
     var searchIconPainter by remember { mutableStateOf<Painter?>(null) }
+    var expandedServer by remember { mutableStateOf(false) }
     val density = LocalDensity.current
 
     LaunchedEffect(Unit) {
@@ -122,24 +128,62 @@ fun SellableScreen() {
                         ) {
                             Column(
                                 horizontalAlignment = Alignment.Start,
-                                modifier = Modifier
-                                    .width(154.dp)
-                                    .padding(LocalSpacing.current.space16)
+                                modifier = Modifier.padding(LocalSpacing.current.space20)
                             ) {
-                                Text(
-                                    "Use prices by AYNIX",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
-                                Spacer(modifier = Modifier.size(LocalSpacing.current.space6))
-                                Switch(
-                                    checked = state.pricesByAynix,
-                                    onCheckedChange = {
-                                        viewModel.onEvent(SellableScreenEvent.TogglePriceSource(it))
-                                    },
+                                Column(
+                                    horizontalAlignment = Alignment.Start,
                                     modifier = Modifier
-                                        .pointerHoverIcon(PointerIcon.Hand)
-                                )
+                                        .width(240.dp)
+                                ) {
+                                    Text(
+                                        "Use Managed Prices",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.size(LocalSpacing.current.space6))
+                                    Switch(
+                                        checked = state.managedPrices,
+                                        onCheckedChange = {
+                                            viewModel.onEvent(SellableScreenEvent.TogglePriceSource(it))
+                                        },
+                                        modifier = Modifier
+                                            .pointerHoverIcon(PointerIcon.Hand)
+                                    )
+                                }
+
+                                AnimatedVisibility(
+                                    visible = state.managedPrices,
+                                    enter = fadeIn() + expandVertically(),
+                                    exit = fadeOut() + shrinkVertically()
+                                ) {
+                                    Column {
+                                        Spacer(modifier = Modifier.size(LocalSpacing.current.space16))
+
+                                        SelectInput(
+                                            value = state.server.displayName,
+                                            options = ServerName.entries.map { it.displayName },
+                                            expanded = expandedServer,
+                                            onExpandedChange = { expandedServer = it },
+                                            label = {
+                                                Text(text = "Server", style = MaterialTheme.typography.bodySmall)
+                                            },
+                                            onValueChange = { displayName ->
+                                                val server = ServerName.entries.find { it.displayName == displayName }
+                                                server?.let { viewModel.onEvent(SellableScreenEvent.ServerChanged(it)) }
+                                            },
+                                            width = 240.dp
+                                        )
+                                        
+                                        state.lastPriceUpdate?.let { timestamp ->
+                                            Spacer(modifier = Modifier.size(LocalSpacing.current.space8))
+                                            Text(
+                                                text = "Last price update: ${formatTimestamp(timestamp)}",
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
 
@@ -222,7 +266,7 @@ fun SellableScreen() {
                                                                 onPriceChange = { newPrice ->
                                                                     viewModel.updatePrice(sellable.key, newPrice)
                                                                 },
-                                                                enabled = !state.pricesByAynix
+                                                                enabled = !state.managedPrices
                                                             )
                                                         }
                                                     }
@@ -270,7 +314,7 @@ fun SellableScreen() {
                                                                 onPriceChange = { newPrice ->
                                                                     viewModel.updatePrice(sellable.key, newPrice)
                                                                 },
-                                                                enabled = !state.pricesByAynix
+                                                                enabled = !state.managedPrices
                                                             )
                                                         }
                                                     }
@@ -319,7 +363,7 @@ fun SellableScreen() {
                                 fontSize = MaterialTheme.typography.bodySmall.fontSize
                             )
                         ) {
-                            append("*Prices by AYNIX - AYNIX is owner of Discord Channel ")
+                            append("*Managed Prices - are prices managed by trusted people like AYNIX from ")
                         }
 
                         pushStringAnnotation(
@@ -343,7 +387,7 @@ fun SellableScreen() {
                                 fontSize = MaterialTheme.typography.bodySmall.fontSize
                             )
                         ) {
-                            append(".  Prices are relevant only for Reborn Signature Server")
+                            append(". Prices are relevant only for Server that you have chosen from the selector")
                         }
                     }
 
