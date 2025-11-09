@@ -29,20 +29,19 @@ class UpdateInstaller(
             }
             val appExePath = File(appPath, exeName).absolutePath
             
-            val updaterJar = extractUpdaterToTemp()
+            val updaterExe = extractUpdaterToTemp()
             
-            val javaExe = findBundledJava()
+            // The executable must be run from its own directory to find .cfg and runtime
+            val updaterDir = updaterExe.parentFile
             
-            logger.info("Launching updater: ${updaterJar.absolutePath}")
-            logger.info("Using Java: $javaExe")
+            logger.info("Launching updater: ${updaterExe.absolutePath}")
+            logger.info("Working directory: ${updaterDir.absolutePath}")
             
             val githubRepo = Config.GITHUB_RELEASE_REPO
             val checkUpdateUrl = "https://api.github.com/repos/$githubRepo/releases/latest"
             
             val command = buildList {
-                add(javaExe)
-                add("-jar")
-                add(updaterJar.absolutePath)
+                add(updaterExe.absolutePath)
                 add("--check-update-url")
                 add(checkUpdateUrl)
                 add("--install-path")
@@ -61,7 +60,7 @@ class UpdateInstaller(
             }
             
             ProcessBuilder(command)
-                .directory(updaterJar.parentFile)
+                .directory(updaterDir)
                 .start()
             
             logger.info("Updater launched successfully. Exiting main app.")
@@ -74,39 +73,92 @@ class UpdateInstaller(
         }
     }
     
-    /**
-     * Extract updater JAR from app resources to temp directory
-     */
     private fun extractUpdaterToTemp(): File {
-        val tempDir = Files.createTempDirectory("l2loot-updater").toFile()
-        val updaterJar = File(tempDir, "L2LootUpdater.jar")
+        val appName = Config.APP_NAME
+        val appDataDir = File(System.getProperty("user.home"), "AppData/Local/$appName/updater")
+        appDataDir.mkdirs()
         
-        // Try multiple resource paths
-        val possiblePaths = listOf(
-            "l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
-            "/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
-            "composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
-            "/composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.jar",
-            "files/updater/L2LootUpdater.jar",
-            "/files/updater/L2LootUpdater.jar"
-        )
+        val updaterDir = File(appDataDir, "app")
+        val updaterExe = File(updaterDir, "L2Loot Updater/L2Loot Updater.exe")
+        val versionMarker = File(appDataDir, "version.txt")
+        val currentAppVersion = Config.VERSION_NAME
         
-        logger.debug("Searching for updater JAR in resources...")
-        for (path in possiblePaths) {
-            logger.debug("Trying path: $path")
-            val resourceStream = javaClass.classLoader.getResourceAsStream(path)
-            if (resourceStream != null) {
-                logger.info("Found updater at: $path")
-                resourceStream.use { input ->
-                    Files.copy(input, updaterJar.toPath(), StandardCopyOption.REPLACE_EXISTING)
-                }
-                logger.info("Updater extracted to: ${updaterJar.absolutePath}")
-                return updaterJar
+        val needsExtraction = when {
+            !updaterExe.exists() -> true
+            !versionMarker.exists() -> true
+            else -> {
+                val storedVersion = versionMarker.readText().trim()
+                storedVersion != currentAppVersion
             }
         }
         
-        logger.error("Failed to find updater JAR in any known path")
-        throw UpdateInstallerException("Updater JAR not found in resources")
+        if (needsExtraction) {
+            if (updaterDir.exists()) {
+                updaterDir.deleteRecursively()
+            }
+            val updaterZip = File(appDataDir, "L2LootUpdater.zip")
+            
+            // Try multiple resource paths for the ZIP file
+            val possiblePaths = listOf(
+                "l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.zip",
+                "/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.zip",
+                "composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.zip",
+                "/composeResources/l2loot.composeapp.generated.resources/files/updater/L2LootUpdater.zip",
+                "files/updater/L2LootUpdater.zip",
+                "/files/updater/L2LootUpdater.zip"
+            )
+            
+            var found = false
+            for (path in possiblePaths) {
+                val resourceStream = javaClass.classLoader.getResourceAsStream(path)
+                if (resourceStream != null) {
+                    resourceStream.use { input ->
+                        Files.copy(input, updaterZip.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                    }
+                    found = true
+                    break
+                }
+            }
+            
+            if (!found) {
+                throw UpdateInstallerException("Updater ZIP not found in resources")
+            }
+            
+            java.util.zip.ZipFile(updaterZip).use { zip ->
+                val entries = zip.entries()
+                while (entries.hasMoreElements()) {
+                    val entry = entries.nextElement()
+                    val destFile = File(updaterDir, entry.name)
+                    if (entry.isDirectory) {
+                        destFile.mkdirs()
+                    } else {
+                        destFile.parentFile?.mkdirs()
+                        zip.getInputStream(entry).use { input ->
+                            Files.copy(input, destFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
+                        }
+                        if (destFile.name.endsWith(".exe") || destFile.name.endsWith(".sh")) {
+                            destFile.setExecutable(true, false)
+                        }
+                    }
+                }
+            }
+            
+            updaterZip.delete()
+            versionMarker.writeText(currentAppVersion)
+        }
+        
+        val updaterAppDir = File(updaterDir, "L2Loot Updater")
+        val extractedExe = File(updaterAppDir, "L2Loot Updater.exe")
+        
+        if (!extractedExe.exists()) {
+            val exeFiles = updaterDir.walkTopDown().filter { it.isFile && it.name.endsWith(".exe") }.toList()
+            if (exeFiles.isNotEmpty()) {
+                return exeFiles[0]
+            }
+            throw UpdateInstallerException("Updater executable not found after extraction")
+        }
+        
+        return extractedExe
     }
     
     /**
@@ -138,31 +190,6 @@ class UpdateInstaller(
         return currentDir
     }
     
-    /**
-     * Find the bundled Java executable from the app's runtime
-     * Returns the path to java.exe in the bundled JVM
-     */
-    private fun findBundledJava(): String {
-        val appPath = getAppInstallationPath()
-        
-        // Check common locations for bundled JVM
-        val possibleLocations = listOf(
-            File(appPath, "runtime/bin/java.exe"),           // Windows runtime location
-            File(appPath, "app/runtime/bin/java.exe"),       // Alternative location
-            File(appPath, "../runtime/bin/java.exe")         // Relative location
-        )
-        
-        for (javaExe in possibleLocations) {
-            if (javaExe.exists()) {
-                logger.info("Found bundled Java at: ${javaExe.absolutePath}")
-                return javaExe.absolutePath
-            }
-        }
-        
-        // Fallback to system Java if bundled not found
-        logger.warn("Bundled Java not found, using system Java")
-        return "java"
-    }
 }
 
 /**

@@ -1,39 +1,40 @@
-# Updater JAR
+# Updater Executable
 
-This directory should contain the `L2LootUpdater.jar` file.
+This directory should contain the `L2LootUpdater.zip` file, which contains the complete native app folder structure (executable, config, runtime, etc.).
 
 ## Building the Updater
 
-To build the updater JAR and copy it to this location, run:
+To build the updater native executable and copy it to this location, run:
 
 ```bash
-./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+./gradlew copyUpdaterToResources
 ```
 
 Or on Windows PowerShell:
 
 ```powershell
-.\gradlew.bat :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+.\gradlew.bat copyUpdaterToResources
 ```
 
-The updater will be built from the `updater/` module and automatically copied here.
+The updater will be built from the `updater/` module as a standalone native executable and automatically copied here.
 
-## Why JAR Instead of EXE?
+## Why Native EXE?
 
-The updater uses an UberJar (single JAR file) instead of a native EXE because:
-- **Much smaller size**: ~5-10MB vs 50-100MB for bundled EXE
-- **Uses main app's JVM**: Runs using the JVM bundled with the main L2Loot app
-- **No extra dependencies**: No need to bundle another JVM runtime
+The updater is built as a standalone native executable because:
+- **No Java dependency**: Runs independently without requiring Java to be installed
+- **Self-contained**: Includes its own JVM runtime, so it doesn't depend on the main app's JVM
+- **Easier deployment**: Single executable file that can be run directly
+- **Better user experience**: No need to locate or bundle Java executables
 
 ## Manual Build
 
 If you need to build manually:
 
-1. Navigate to the updater module: `cd updater`
-2. Build the JAR: `../gradlew packageReleaseUberJarForCurrentOS`
-3. Copy the JAR from `updater/build/compose/jars/*.jar` to this directory as `L2LootUpdater.jar`
+1. Build the native distribution: `./gradlew :updater:createReleaseDistributable`
+2. Create a ZIP of the app folder: `./gradlew zipUpdaterForResources`
+3. Copy the ZIP from `build/updater-resources/L2LootUpdater.zip` to this directory
 
 ## CI/CD
 
-The GitHub Actions workflow builds the updater JAR before packaging the main app to ensure it's included in the distribution.
+The GitHub Actions workflow builds the updater executable before packaging the main app to ensure it's included in the distribution.
 

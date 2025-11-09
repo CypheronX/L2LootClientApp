@@ -26,3 +26,5 @@ mykeystore.b64
 replacements.txt
 git-filter-repo
 composeApp/src/jvmMain/composeResources/files/updater/L2LootUpdater.jar
+composeApp/src/jvmMain/composeResources/files/updater/L2LootUpdater.exe
+composeApp/src/jvmMain/composeResources/files/updater/L2LootUpdater.zip
