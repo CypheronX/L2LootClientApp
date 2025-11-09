@@ -36,9 +36,9 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build Updater JAR
+      - name: Build Updater Executable
         shell: bash
-        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+        run: ./gradlew copyUpdaterToResources
 
       - name: Build Production MSI and Update ZIP
         env:
@@ -113,9 +113,9 @@ jobs:
           source version.properties
           echo "version_name=${versionMajor}.${versionMinor}.${versionPatch}" >> $GITHUB_OUTPUT
 
-      - name: Build Updater JAR
+      - name: Build Updater Executable
         shell: bash
-        run: ./gradlew :updater:packageReleaseUberJarForCurrentOS copyUpdaterToResources
+        run: ./gradlew copyUpdaterToResources
 
       - name: Build Stage MSI and Update ZIP
         env:
