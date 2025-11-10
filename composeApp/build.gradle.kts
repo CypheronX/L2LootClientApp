@@ -198,22 +198,37 @@ tasks.register("createAppImage") {
     }
 }
 
+tasks.register<Zip>("zipUpdaterForResources") {
+    group = "distribution"
+    description = "Create ZIP of updater app folder for embedding in resources"
+
+    dependsOn(":updater:createReleaseDistributable")
+
+    val updaterName = "L2Loot Updater"
+    
+    // Native distribution creates an app folder with the executable, cfg, runtime, etc.
+    // We need to package the entire folder structure
+    from("${rootProject.projectDir}/updater/build/compose/binaries/main-release/app/$updaterName")
+
+    destinationDirectory.set(layout.buildDirectory.dir("updater-resources"))
+    archiveFileName.set("L2LootUpdater.zip")
+}
+
 tasks.register<Copy>("copyUpdaterToResources") {
     group = "distribution"
-    description = "Copy updater JAR to app resources"
+    description = "Copy updater ZIP to app resources"
 
-    dependsOn(":updater:packageReleaseUberJarForCurrentOS")
+    dependsOn("zipUpdaterForResources")
 
-    from("${rootProject.projectDir}/updater/build/compose/jars")
+    from(layout.buildDirectory.dir("updater-resources")) {
+        include("L2LootUpdater.zip")
+    }
 
     into("src/jvmMain/composeResources/files/updater")
-
-    include("*.jar")
-
-    rename { "L2LootUpdater.jar" }
 }
 
 // Ensure resource copying tasks wait for updater to be copied
 tasks.matching { it.name == "copyNonXmlValueResourcesForJvmMain" }.configureEach {
     dependsOn("copyUpdaterToResources")
 }
+
