@@ -1,0 +1,3 @@
+UPDATE droplist
+SET max = 1
+WHERE mob_id = 22008 AND item_id = 1881 AND category = -1 AND chronicle = "c5";
