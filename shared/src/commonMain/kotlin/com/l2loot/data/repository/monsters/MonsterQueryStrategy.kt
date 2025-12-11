@@ -33,7 +33,7 @@ class BasicMonsterQueryStrategy(
             .mapToList(Dispatchers.IO)
             .map { rows ->
                 val monsters = groupRowsByMonster(rows)
-                    .sortedByDescending { it.getAverageIncome() }
+                    .sortedByDescending { it.getAverageIncome(params.onlySpoilIncome) }
                     .take(params.limit)
                 Result.success(monsters)
             }
@@ -97,7 +97,7 @@ class HPFilteredMonsterQueryStrategy(
             .mapToList(Dispatchers.IO)
             .map { rows ->
                 val monsters = groupRowsByMonster(rows)
-                    .sortedByDescending { it.getAverageIncome() }
+                    .sortedByDescending { it.getAverageIncome(params.onlySpoilIncome) }
                     .take(params.limit)
                 Result.success(monsters)
             }
@@ -157,7 +157,7 @@ class RiftIncludedMonsterQueryStrategy(
             .mapToList(Dispatchers.IO)
             .map { rows ->
                 val monsters = groupRowsByMonster(rows)
-                    .sortedByDescending { it.getAverageIncome() }
+                    .sortedByDescending { it.getAverageIncome(params.onlySpoilIncome) }
                     .take(params.limit)
                 Result.success(monsters)
             }
@@ -221,7 +221,7 @@ class HPFilteredRiftIncludedMonsterQueryStrategy(
             .mapToList(Dispatchers.IO)
             .map { rows ->
                 val monsters = groupRowsByMonster(rows)
-                    .sortedByDescending { it.getAverageIncome() }
+                    .sortedByDescending { it.getAverageIncome(params.onlySpoilIncome) }
                     .take(params.limit)
                 Result.success(monsters)
             }

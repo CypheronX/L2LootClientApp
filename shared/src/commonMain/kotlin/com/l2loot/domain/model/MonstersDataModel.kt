@@ -72,6 +72,7 @@ data class MonsterQueryParams(
     val limit: Int,
     val hpMultipliers: List<HPMultiplier>? = null,
     val includeRift: Boolean = false,
+    val onlySpoilIncome: Boolean = false,
     val useManagedPrices: Boolean = false,
     val serverName: String = "reborn_teon"
 )
@@ -132,7 +133,11 @@ data class MonsterResult(
             return drops.filter { it.category == DropCategory.MATERIALS }
         }
 
-    fun getAverageIncome(): Int {
+    fun getAverageIncome(showSpoilIncome: Boolean): Int {
+        if (showSpoilIncome) {
+            return spoilAverageIncome()
+        }
+
         return spoilAverageIncome() + adenaAverageIncome() + droppedSellableAverageIncome()
     }
 

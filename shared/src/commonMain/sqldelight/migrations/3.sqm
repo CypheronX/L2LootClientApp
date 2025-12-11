@@ -1,0 +1,8 @@
+import kotlin.Boolean;
+
+UPDATE droplist
+SET max = 1
+WHERE mob_id = 22008 AND item_id = 1881 AND category = -1 AND chronicle = "c5";
+
+ALTER TABLE user_settings
+ADD COLUMN show_spoil_income INTEGER AS Boolean NOT NULL DEFAULT 0;

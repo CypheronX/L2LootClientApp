@@ -8,6 +8,7 @@ data class UserSettings(
     val maxLevel: Long?,
     val limit: Long,
     val showRiftMobs: Boolean,
+    val showSpoilIncome: Boolean,
     val isManagedPrices: Boolean,
     val trackEvents: Boolean,
     val appOpenCount: Long,
