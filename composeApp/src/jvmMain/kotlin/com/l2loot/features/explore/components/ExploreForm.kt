@@ -48,11 +48,13 @@ fun ExploreForm(
     limit: String,
     limitOptions: List<String>,
     showRiftMobs: Boolean,
+    showSpoilIncome: Boolean,
     onChronicleChange: (String) -> Unit,
     onMinLevelChange: (String) -> Unit,
     onMaxLevelChange: (String) -> Unit,
     onLimitChange: (String) -> Unit,
     onShowRiftMobsChange: (Boolean) -> Unit,
+    onSpoilIncomeChange: (Boolean) -> Unit,
     onSubmit: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -181,6 +183,22 @@ fun ExploreForm(
                         Switch(
                             checked = showRiftMobs,
                             onCheckedChange = onShowRiftMobsChange,
+                            modifier = Modifier
+                                .pointerHoverIcon(PointerIcon.Hand)
+                        )
+                    }
+
+                    Column(
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier
+                            .width(133.dp),
+                    ) {
+                        Text("Spoil Income Only",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurface)
+                        Switch(
+                            checked = showSpoilIncome,
+                            onCheckedChange = onSpoilIncomeChange,
                             modifier = Modifier
                                 .pointerHoverIcon(PointerIcon.Hand)
                         )

@@ -35,6 +35,7 @@ internal class ExploreViewModel(
                     maxLevel = initialSettings?.maxLevel?.toString() ?: "",
                     chronicle = initialSettings?.chronicle ?: "c5",
                     showRiftMobs = initialSettings?.showRiftMobs ?: false,
+                    showSpoilIncome = initialSettings?.showSpoilIncome ?: false,
                     useManagedPrices = initialSettings?.isManagedPrices ?: false,
                     selectedHPMultipliers = initialSettings?.hpMultipliers ?: emptySet(),
                     serverName = initialSettings?.serverName?.serverKey ?: "reborn_teon"
@@ -51,6 +52,7 @@ internal class ExploreViewModel(
                         maxLevel = settings?.maxLevel?.toString() ?: "",
                         chronicle = settings?.chronicle ?: "c5",
                         showRiftMobs = settings?.showRiftMobs ?: false,
+                        showSpoilIncome = settings?.showSpoilIncome ?: false,
                         useManagedPrices = settings?.isManagedPrices ?: false,
                         selectedHPMultipliers = settings?.hpMultipliers ?: emptySet(),
                         serverName = settings?.serverName?.serverKey ?: "reborn_teon"
@@ -112,6 +114,12 @@ internal class ExploreViewModel(
                 _state.update { it.copy(showRiftMobs = event.showRiftMobs) }
                 viewModelScope.launch {
                     userSettingsRepository.updateShowRiftMobs(event.showRiftMobs)
+                }
+            }
+            is ExploreScreenEvent.ShowSpoilIncomeChanged -> {
+                _state.update { it.copy(showRiftMobs = event.showSpoilIncome) }
+                viewModelScope.launch {
+                    userSettingsRepository.updateShowSpoilIncome(event.showSpoilIncome)
                 }
             }
             is ExploreScreenEvent.HPMultiplierToggled -> {
