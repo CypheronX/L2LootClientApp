@@ -13,6 +13,7 @@ interface UserSettingsRepository {
         maxLevel: Int,
         limitResults: Int,
         showRiftMobs: Boolean,
+        showSpoilIncome: Boolean,
         isAynixPrices: Boolean
     )
     suspend fun updateChronicle(chronicle: String)
@@ -21,6 +22,7 @@ interface UserSettingsRepository {
     suspend fun updateLevelRange(minLevel: Int, maxLevel: Int)
     suspend fun updateLimit(limit: Int)
     suspend fun updateShowRiftMobs(showRiftMobs: Boolean)
+    suspend fun updateShowSpoilIncome(showSpoilIncome: Boolean)
     suspend fun updateIsManagedPrices(isManagedPrices: Boolean)
     suspend fun updateUserGuid(guid: String)
     suspend fun updateTrackEvents(trackEvents: Boolean)

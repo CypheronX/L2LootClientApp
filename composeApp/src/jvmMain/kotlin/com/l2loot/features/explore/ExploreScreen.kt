@@ -143,11 +143,13 @@ fun ExploreScreen() {
                     limit = state.limit,
                     limitOptions = viewModel.limitOptions,
                     showRiftMobs = state.showRiftMobs,
+                    showSpoilIncome = state.showSpoilIncome,
                     onChronicleChange = { viewModel.onEvent(ExploreScreenEvent.ChronicleChanged(it)) },
                     onMinLevelChange = { viewModel.onEvent(ExploreScreenEvent.MinLevelChanged(it)) },
                     onMaxLevelChange = { viewModel.onEvent(ExploreScreenEvent.MaxLevelChanged(it)) },
                     onLimitChange = { viewModel.onEvent(ExploreScreenEvent.LimitChanged(it)) },
                     onShowRiftMobsChange = { viewModel.onEvent(ExploreScreenEvent.ShowRiftMobsChanged(it)) },
+                    onSpoilIncomeChange = { viewModel.onEvent(ExploreScreenEvent.ShowSpoilIncomeChanged(it)) },
                     onSubmit = { viewModel.onEvent(ExploreScreenEvent.Explore) },
                 )
 
@@ -311,7 +313,10 @@ fun ExploreScreen() {
                             }
                         } else {
                             items(state.monsters) { monster ->
-                                MonsterCard(monsterData = monster)
+                                MonsterCard(
+                                    monsterData = monster,
+                                    showSpoilIncome = state.showSpoilIncome
+                                )
                             }
                         }
                     }

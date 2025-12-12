@@ -45,6 +45,7 @@ class UserSettingsRepositoryImpl(
                     maxLevel = it?.max_level,
                     limit = it?.limit_results ?: 10,
                     showRiftMobs = it?.show_rift_mobs ?: false,
+                    showSpoilIncome = it?.show_spoil_income ?: false,
                     isManagedPrices = it?.is_managed_prices ?: false,
                     trackEvents = it?.track_events ?: true,
                     appOpenCount = it?.app_open_count ?: 0,
@@ -64,6 +65,7 @@ class UserSettingsRepositoryImpl(
         maxLevel: Int,
         limitResults: Int,
         showRiftMobs: Boolean,
+        showSpoilIncome: Boolean,
         isAynixPrices: Boolean
     ) {
         withContext(Dispatchers.IO) {
@@ -74,6 +76,7 @@ class UserSettingsRepositoryImpl(
                 max_level = maxLevel.toLong(),
                 limit_results = limitResults.toLong(),
                 show_rift_mobs = showRiftMobs,
+                show_spoil_income = showSpoilIncome,
                 is_managed_prices = isAynixPrices,
                 last_updated = timestamp
             )
@@ -136,6 +139,16 @@ class UserSettingsRepositoryImpl(
             val timestamp = System.currentTimeMillis()
             database.userSettingsQueries.updateShowRiftMobs(
                 show_rift_mobs = showRiftMobs,
+                last_updated = timestamp
+            )
+        }
+    }
+
+    override suspend fun updateShowSpoilIncome(showSpoilIncome: Boolean) {
+        withContext(Dispatchers.IO) {
+            val timestamp = System.currentTimeMillis()
+            database.userSettingsQueries.updateShowSpoilIncome(
+                show_spoil_income = showSpoilIncome,
                 last_updated = timestamp
             )
         }

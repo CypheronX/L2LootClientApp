@@ -11,6 +11,7 @@ internal data class ExploreScreenState(
     val maxLevel: String,
     val limit: String,
     val showRiftMobs: Boolean,
+    val showSpoilIncome: Boolean,
     val useManagedPrices: Boolean,
     val isRefreshing: Boolean,
     val selectedHPMultipliers: Set<HPMultiplier>,
@@ -24,6 +25,7 @@ internal data class ExploreScreenState(
             maxLevel = "",
             limit = "10",
             showRiftMobs = false,
+            showSpoilIncome = false,
             useManagedPrices = false,
             isRefreshing = false,
             selectedHPMultipliers = emptySet(),
@@ -39,6 +41,7 @@ internal fun ExploreScreenState.toMonsterQueryParams() = MonsterQueryParams(
     limit = limit.toIntOrNull() ?: 10,
     hpMultipliers = if (selectedHPMultipliers.isEmpty()) null else selectedHPMultipliers.toList(),
     includeRift = showRiftMobs,
+    onlySpoilIncome = showSpoilIncome,
     useManagedPrices = useManagedPrices,
     serverName = serverName
 )
@@ -49,6 +52,7 @@ internal sealed interface ExploreScreenEvent {
     data class MaxLevelChanged(val maxLevel: String) : ExploreScreenEvent
     data class LimitChanged(val limit: String) : ExploreScreenEvent
     data class ShowRiftMobsChanged(val showRiftMobs: Boolean) : ExploreScreenEvent
+    data class ShowSpoilIncomeChanged(val showSpoilIncome: Boolean) : ExploreScreenEvent
     data class HPMultiplierToggled(val multiplier: HPMultiplier) : ExploreScreenEvent
     object Explore : ExploreScreenEvent
 }

@@ -56,6 +56,7 @@ import org.jetbrains.compose.resources.decodeToSvgPainter
 @Composable
 fun MonsterCard(
     monsterData: MonsterResult,
+    showSpoilIncome: Boolean,
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
@@ -211,7 +212,7 @@ fun MonsterCard(
                             .alignBy(FirstBaseline)
                     )
                     Text(
-                        text = "${monsterData.getAverageIncome()} a.",
+                        text = "${monsterData.getAverageIncome(showSpoilIncome)} a.",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier
