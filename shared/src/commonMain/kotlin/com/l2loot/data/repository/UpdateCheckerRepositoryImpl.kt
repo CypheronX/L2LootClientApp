@@ -78,7 +78,7 @@ class UpdateCheckerRepositoryImpl(
         }
     }
     
-    /**
+    /** 
      * Parses version from various tag formats:
      * - v1.0.0 -> 1.0.0 (prod)
      * - stage-v1.0.0-abc123 -> 1.0.0 (stage only)

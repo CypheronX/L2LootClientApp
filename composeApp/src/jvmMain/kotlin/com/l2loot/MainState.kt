@@ -12,5 +12,6 @@ data class MainState(
     val showSupportDialog: Boolean = false,
     val isSupportDialogReminder: Boolean = false,
     val availableUpdate: UpdateInfo? = null,
-    val showUpdateNotification: Boolean = false
+    val showUpdateNotification: Boolean = false,
+    val showCbtDialog: Boolean = false
 )

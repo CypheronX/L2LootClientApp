@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "meldoc": {
+      "command": "meldoc",
+      "args": [
+        "mcp",
+        "serve"
+      ]
+    }
+  },
+  "allowedTools": [
+    "mcp__meldoc-cli__*",
+    "mcp__meldoc__*"
+  ]
+}

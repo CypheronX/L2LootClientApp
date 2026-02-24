@@ -71,13 +71,12 @@ actual class DriverFactory {
                             if (Config.IS_DEBUG) {
                                 println("  📝 Multi-server support: renamed is_aynix_prices to is_managed_prices and added server selection")
                             }
+                        },
+                        AfterVersion(3) { driver ->
+                            if (Config.IS_DEBUG) {
+                                println("  📝 Added cbt_dialog_shown_count to user_settings")
+                            }
                         }
-                        // Add more migrations here as needed:
-                        // AfterVersion(3) { driver ->
-                        //     if (Config.IS_DEBUG) {
-                        //         println("  📝 Description of migration 3...")
-                        //     }
-                        // }
                     )
                     
                     // Manually set the database version (SQLDelight doesn't always do this correctly)

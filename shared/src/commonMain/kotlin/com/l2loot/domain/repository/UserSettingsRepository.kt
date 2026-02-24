@@ -33,4 +33,5 @@ interface UserSettingsRepository {
     suspend fun updateLastSupportClickDate(timestamp: Long)
     suspend fun updateHPMultipliers(multipliers: Set<HPMultiplier>)
     suspend fun updateChosenServer(serverName: ServerName)
+    suspend fun incrementCbtDialogShownCount()
 }
