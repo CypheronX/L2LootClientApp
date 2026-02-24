@@ -113,11 +113,38 @@ fun App(
                 showConsentDialog = state.showConsentDialog,
                 showSupportDialog = state.showSupportDialog,
                 isSupportDialogReminder = state.isSupportDialogReminder,
+                showCbtDialog = state.showCbtDialog,
                 analyticsService = analyticsService,
                 onAcceptConsent = viewModel::acceptConsent,
                 onDeclineConsent = viewModel::declineConsent,
                 onDismissSupport = viewModel::hideSupportDialog,
                 onUpdateSupportClickDate = viewModel::updateSupportClickDate,
+                onDismissCbt = {
+                    viewModel.onCbtDialogShown()
+                    viewModel.hideCbtDialog()
+                },
+                onJoinDiscord = {
+                    viewModel.onCbtDialogShown()
+                    viewModel.hideCbtDialog()
+                    try {
+                        java.awt.Desktop.getDesktop().browse(java.net.URI("https://discord.gg/mcuHsQzNCm"))
+                    } catch (e: Exception) {
+                        if (Config.IS_DEBUG) {
+                            println("Failed to open Discord URL: ${e.message}")
+                        }
+                    }
+                },
+                onRegister = {
+                    viewModel.onCbtDialogShown()
+                    viewModel.hideCbtDialog()
+                    try {
+                        java.awt.Desktop.getDesktop().browse(java.net.URI("https://cbt.l2genesis.com/"))
+                    } catch (e: Exception) {
+                        if (Config.IS_DEBUG) {
+                            println("Failed to open registration URL: ${e.message}")
+                        }
+                    }
+                },
                 scope = scope
             )
             

@@ -14,11 +14,15 @@ fun AppDialogManager(
     showConsentDialog: Boolean,
     showSupportDialog: Boolean,
     isSupportDialogReminder: Boolean,
+    showCbtDialog: Boolean,
     analyticsService: AnalyticsService,
     onAcceptConsent: () -> Unit,
     onDeclineConsent: () -> Unit,
     onDismissSupport: () -> Unit,
     onUpdateSupportClickDate: (Long) -> Unit,
+    onDismissCbt: () -> Unit,
+    onJoinDiscord: () -> Unit,
+    onRegister: () -> Unit,
     scope: CoroutineScope
 ) {
     if (showConsentDialog) {
@@ -35,6 +39,14 @@ fun AppDialogManager(
             updateSupportClickDate = onUpdateSupportClickDate,
             scope = scope,
             isReminderAfterSupport = isSupportDialogReminder
+        )
+    }
+
+    if (showCbtDialog) {
+        CbtAnnouncementDialog(
+            onDismiss = onDismissCbt,
+            onJoinDiscord = onJoinDiscord,
+            onRegister = onRegister
         )
     }
 }

@@ -140,6 +140,18 @@ class MainViewModel(
             }
         }
 
+        // Handle CBT announcement dialog
+        viewModelScope.launch {
+            val settings = userSettingsRepository.getSettings().filterNotNull().first()
+            if (settings.cbtDialogShownCount < 2) {
+                while (state.value.isLoading || state.value.showConsentDialog || state.value.showSupportDialog) {
+                    delay(100)
+                }
+                delay(500)
+                _state.update { it.copy(showCbtDialog = true) }
+            }
+        }
+
         // Handle Managed prices fetch
         viewModelScope.launch {
             val authState = state.first { it.authState != AuthState.Loading }.authState
@@ -173,6 +185,16 @@ class MainViewModel(
 
     fun hideSupportDialog() {
         _state.update { it.copy(showSupportDialog = false) }
+    }
+
+    fun hideCbtDialog() {
+        _state.update { it.copy(showCbtDialog = false) }
+    }
+
+    fun onCbtDialogShown() {
+        viewModelScope.launch {
+            userSettingsRepository.incrementCbtDialogShownCount()
+        }
     }
 
     fun hideUpdateNotification() {

@@ -18,7 +18,8 @@ CREATE TABLE user_settings (
     session_count_since_prompt INTEGER NOT NULL DEFAULT 0,
     last_support_click_date INTEGER NOT NULL DEFAULT 0,
     hp_multipliers TEXT NOT NULL DEFAULT '',
-    server TEXT NOT NULL DEFAULT 'reborn_teon'
+    server TEXT NOT NULL DEFAULT 'reborn_teon',
+    cbt_dialog_shown_count INTEGER NOT NULL DEFAULT 0
 );
 
 -- Get current settings (will return null if no settings exist)
@@ -120,6 +121,11 @@ WHERE id = 1;
 updateChosenServer:
 UPDATE user_settings
 SET server = ?
+WHERE id = 1;
+
+incrementCbtDialogShownCount:
+UPDATE user_settings
+SET cbt_dialog_shown_count = cbt_dialog_shown_count + 1
 WHERE id = 1;
 
 -- Initialize with defaults if no settings exist

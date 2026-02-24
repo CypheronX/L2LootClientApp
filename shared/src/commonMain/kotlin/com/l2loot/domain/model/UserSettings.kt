@@ -17,5 +17,6 @@ data class UserSettings(
     val sessionCountSincePrompt: Long,
     val lastSupportClickDate: Long,
     val hpMultipliers: Set<HPMultiplier>,
-    val serverName: ServerName
+    val serverName: ServerName,
+    val cbtDialogShownCount: Long
 )

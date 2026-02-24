@@ -54,7 +54,8 @@ class UserSettingsRepositoryImpl(
                     sessionCountSincePrompt = it?.session_count_since_prompt ?: 0,
                     lastSupportClickDate = it?.last_support_click_date ?: 0,
                     hpMultipliers = hpMultipliers,
-                    serverName = ServerName.fromKey(it?.server ?: "") ?: ServerName.DEFAULT
+                    serverName = ServerName.fromKey(it?.server ?: "") ?: ServerName.DEFAULT,
+                    cbtDialogShownCount = it?.cbt_dialog_shown_count ?: 0
                 )
             }
     }
@@ -226,6 +227,12 @@ class UserSettingsRepositoryImpl(
             database.userSettingsQueries.updateChosenServer(
                 server = serverName.serverKey
             )
+        }
+    }
+
+    override suspend fun incrementCbtDialogShownCount() {
+        withContext(Dispatchers.IO) {
+            database.userSettingsQueries.incrementCbtDialogShownCount()
         }
     }
 }
