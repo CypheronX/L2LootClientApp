@@ -42,11 +42,11 @@ fun AppDialogManager(
         )
     }
 
-    if (showCbtDialog) {
-        CbtAnnouncementDialog(
-            onDismiss = onDismissCbt,
-            onJoinDiscord = onJoinDiscord,
-            onRegister = onRegister
-        )
-    }
+//    if (showCbtDialog) {
+//        CbtAnnouncementDialog(
+//            onDismiss = onDismissCbt,
+//            onJoinDiscord = onJoinDiscord,
+//            onRegister = onRegister
+//        )
+//    }
 }
